@@ -1,0 +1,88 @@
+.signuppage * {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.signuppage {
+    display: flex;
+}
+
+.get-started {
+    font-size: 40px;
+    margin: 40px;
+    color: #4166F5;
+}
+
+.form-label, .form-control {
+    font-size: 20px;
+}
+
+.checkHaveAccount {
+    font-size: 18px;
+}
+
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    padding-right: 50px; 
+}
+
+.password-input .eye-password {
+    position: absolute;
+    top: 50%;
+    right: 10px; 
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.eye-icon {
+    color: #603fef;
+}
+
+#create-account {
+    background-color: #bc13fe;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 0.6em;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.checkHaveAccount a {
+    color: #4166F5;
+    text-decoration: none;
+}
+
+.picture {
+    width: 40vw;
+    background-repeat: no-repeat;
+}
+
+.picture img {
+    max-width: 100%;
+    height: auto;
+}
+
+.form-label {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.right-half {
+    margin-left: 25px;
+}
+
+.error-message, .success-message {
+    font-size: 20px;
+}
+
+.alert-success {
+    background-color: #32CD32;
+    color: white;
+}
+
+.alert-danger {
+    background-color: #ff2400;
+    color: white;
+}
