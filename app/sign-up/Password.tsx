@@ -1,5 +1,5 @@
-import { React, useState, ChangeEvent } from "react";
-"Use Client"
+"use client"
+import { useState, ChangeEvent } from "react";
 import EyeForPassword from "./EyeForPassword";
 
 interface PasswordInputProps {

@@ -1,11 +1,12 @@
-import { React, useState, ChangeEvent } from "react";
-import Password from "./Password.jsx";
-import EyeForPassword from "./EyeForPassword.jsx";
-import "./SignUpPage.css";
+"use client"
+
+import { useState, ChangeEvent } from "react";
+import Password from "./Password";
+import EyeForPassword from "./EyeForPassword";
+import "./signup.css";
 import * as pc from "./PasswordChecks.js";
-import danger from "images/failure.svg";
-import success from "images/success.svg";
-"Use Client"
+//import danger from "images/danger.svg";
+//import success from "images/success.svg";
 
 function GetStarted() {
   return <h2 className="get-started"> Get Started </h2>;
@@ -153,13 +154,15 @@ function CreateAccount({ password, confirmPassword }) {
           className="alert alert-danger alert-dismissible fade show"
           role="alert"
         >
-          <svg
+          {/* <svg
             className="bi flex-shrink-0 me-2"
             role="img"
             aria-label="Danger:"
           >
             <use xlinkHref={`${danger}#danger`} />
-          </svg>
+            <use xlinkhref="images/danger.svg" />
+          </svg> */}
+          <img src="images/danger.svg" className="bi flex-shrink-0 me-2" />
           {errorMsg}
           <button
             type="button"
@@ -175,13 +178,14 @@ function CreateAccount({ password, confirmPassword }) {
           className="alert alert-success alert-dismissible fade show"
           role="alert"
         >
-          <svg
+          {/* <svg
             className="bi flex-shrink-0 me-2"
             role="img"
             aria-label="Success:"
           >
             <use xlinkHref={`${success}#success`} />
-          </svg>
+          </svg> */}
+          <img src="images/success.svg" className="bi flex-shrink-0 me-2" />
           {successMsg}
           <button
             type="button"
