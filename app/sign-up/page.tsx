@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
 import { useState, ChangeEvent } from "react";
-import Password from "./Password";
-import EyeForPassword from "./EyeForPassword";
+import Password from "./password";
+import EyeForPassword from "./eyeforpassword";
 import "./signup.css";
-import * as pc from "./PasswordChecks.js";
-//import danger from "images/danger.svg";
-//import success from "images/success.svg";
+import * as pc from "./passwordchecks.js";
 
 function GetStarted() {
   return <h2 className="get-started"> Get Started </h2>;
@@ -110,19 +108,19 @@ function CreateAccount({ password, confirmPassword }) {
       setSuccessStatus(false);
       setFailureStatus(true);
     } else if (!pc.atLeastOneCap(password)) {
-      setErrorMsg("Password should be at least have one capital letter");
+      setErrorMsg("Password should at least have one capital letter");
       setSuccessStatus(false);
       setFailureStatus(true);
     } else if (!pc.atLeastOneLower(password)) {
-      setErrorMsg("Password should be at least have one lowercase letter");
+      setErrorMsg("Password should at least have one lowercase letter");
       setSuccessStatus(false);
       setFailureStatus(true);
     } else if (!pc.atLeastOneNumber(password)) {
-      setErrorMsg("Password should be at least have one number");
+      setErrorMsg("Password should at least have one number");
       setSuccessStatus(false);
       setFailureStatus(true);
     } else if (!pc.atLeastOneSpecial(password)) {
-      setErrorMsg("Password should be at least have one special character");
+      setErrorMsg("Password should at least have one special character");
       setSuccessStatus(false);
       setFailureStatus(true);
     } else {
@@ -154,15 +152,11 @@ function CreateAccount({ password, confirmPassword }) {
           className="alert alert-danger alert-dismissible fade show"
           role="alert"
         >
-          {/* <svg
+          <img
+            src={"images/danger.svg"}
             className="bi flex-shrink-0 me-2"
-            role="img"
-            aria-label="Danger:"
-          >
-            <use xlinkHref={`${danger}#danger`} />
-            <use xlinkhref="images/danger.svg" />
-          </svg> */}
-          <img src="images/danger.svg" className="bi flex-shrink-0 me-2" />
+            id="danger-icon"
+          />
           {errorMsg}
           <button
             type="button"
@@ -178,14 +172,11 @@ function CreateAccount({ password, confirmPassword }) {
           className="alert alert-success alert-dismissible fade show"
           role="alert"
         >
-          {/* <svg
+          <img
+            src="images/success.svg"
             className="bi flex-shrink-0 me-2"
-            role="img"
-            aria-label="Success:"
-          >
-            <use xlinkHref={`${success}#success`} />
-          </svg> */}
-          <img src="images/success.svg" className="bi flex-shrink-0 me-2" />
+            id="success-icon"
+          />
           {successMsg}
           <button
             type="button"
