@@ -17,6 +17,13 @@ body {
 
 #filter-container {
   background-color: palegreen;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-tags {
+  display: flex;
+  flex-direction: column;
 }
 
 #listing-container {

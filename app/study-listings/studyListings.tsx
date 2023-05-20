@@ -46,17 +46,25 @@ function StudyCard(listingData : StudyListing) {
 }
 
 type StudyListingsProps = {
-  filters: string[],
+  filters: string[][],
   data: {[id: string] : StudyListing}
 }
 
 export default function StudyListings({ filters, data } : StudyListingsProps) {
   const listings = Object.entries(data).map(([key, value]) => {
-    for (let i = 0; i < filters.length; i++) {
-      if (value.tags.includes(filters[i])) {
-        return <StudyCard key={key} {...value} />
+    // Check if listing has ALL the tags
+    for (let i = 0; i < filters[0].length; i++) {
+      if (!value.tags.includes(filters[0][i])) {
+        return null
       }
     }
+    // Check if listing might have the tag
+    for (let i = 0; i < filters[1].length; i++) {
+      if (value.tags.includes(filters[1][i])) {
+        return <StudyCard {...value} />
+      }
+    }
+
     return null
   })
 

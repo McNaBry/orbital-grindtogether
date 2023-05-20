@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import './study_listing.css'
+import './studyListings.css'
 import StudyListings, { StudyListing } from "./studyListings"
 import FilterPanel from "./filterPanel"
 
@@ -38,28 +38,24 @@ const data : { [id: string] : StudyListing } = {
 }
 
 export default function ListingsPage() {
-  const [filters, setFilters] = useState<Array<string>>(new Array<string>())
-  const [isMustInclude, setIsMustInclude] = useState<boolean>(false)
-  const [isAddFilter, setIsAddFilter] = useState<boolean>(true)
+  const [filters, setFilters] = useState(Array.from({ length : 2 }, () => new Array<string>()))
 
-  function modifyFilters(filter:string) {
+  function modifyFilters(filter:string, isAddFilter:boolean, isMustInclude:boolean) {
     if (filter == '') return
 
     const newFilters = filters.slice()
+    const filterArray = isMustInclude ? newFilters[0] : newFilters[1]
     if (isAddFilter) {
-      if (newFilters.includes(filter)) return
-      newFilters.push(filter)
+      if (filterArray.includes(filter)) return
+      filterArray.push(filter)
     } else {
-      if (!newFilters.includes(filter)) return
-      delete newFilters[newFilters.indexOf(filter)]
+      if (!filterArray.includes(filter)) return
+      delete filterArray[filterArray.indexOf(filter)]
     }
 
     setFilters(newFilters)
     console.log("New filter: " + newFilters)
   }
-
-  const toggleIsMustInclude = () => setIsMustInclude(!isMustInclude)
-  const toggleIsAddFilter = () => setIsAddFilter(!isAddFilter)
 
   return (
     <div className="container">
@@ -70,9 +66,7 @@ export default function ListingsPage() {
       <div className="row">
         <FilterPanel 
           filters={filters} 
-          modifyFilters={modifyFilters} 
-          toggleIsMustInclude={toggleIsMustInclude} 
-          toggleIsAddFilter={toggleIsAddFilter}
+          modifyFilters={modifyFilters}
         />
         <StudyListings filters={filters} data={data} />
       </div>
