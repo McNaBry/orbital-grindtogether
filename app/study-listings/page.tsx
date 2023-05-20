@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useRef } from "react"
 import './study_listing.css'
 
 type StudyListing = {
@@ -75,20 +78,80 @@ function StudyCard(listingData : StudyListing) {
   )
 }
 
-export default function StudyListings() {
+function StudyListings({ filters }) {
   const listings = Object.entries(data).map(([_, value]) => {
-      return <StudyCard {...value} />
+    for (let i = 0; i < filters.length; i++) {
+      if (value.tags.includes(filters[i])) {
+        return <StudyCard {...value} />
+      }
+    }
+      return null
   })
   return (
-    <>
-      <div className="container">
+    <div className="container col-8" id="listing-container">
+      <div className="row g-0 justify-content-evenly">
+          {listings}
+      </div>
+    </div>
+  )
+}
+
+function FilterPanel({ filters, modifyFilters, toggleIsMustInclude, toggleIsAddFilter }) {
+  const [inputFilter, setInputFilter] = useState('')
+  
+  const handleChange = (e) => {
+    setInputFilter(e.target.value);
+  };
+
+  return (
+    <div className="container col-4" id="filter-container">
+      <h3>Filter Panel</h3>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Enter desired filter"
+        onChange={handleChange}
+      />
+      <br/>
+      <button className="btn btn-primary" type="submit" onClick={() => modifyFilters(inputFilter)}>Add filter</button>
+      <br/>
+      <Tags tags={filters} />
+    </div>
+  )
+}
+
+export default function ListingsPage() {
+  const [filters, setFilters] = useState(new Array<string>())
+  const [isMustInclude, setIsMustInclude] = useState(false)
+  const [isAddFilter, setIsAddFilter] = useState(true)
+
+  function modifyFilters(filter:string) {
+    if (filter == '' || filters.includes(filter)) return
+
+    const newFilters = filters.slice()
+    newFilters.push(filter)
+    setFilters(newFilters)
+    console.log(newFilters)
+  }
+
+  const toggleIsMustInclude = () => setIsMustInclude(!isMustInclude)
+  const toggleIsAddFilter = () => setIsAddFilter(!isAddFilter)
+
+  return (
+    <div className="container">
+      <div className="" style={{backgroundColor: "orange"}}>
         <h1>Study Listings</h1>
+        <h5>Showing 1 result</h5>
       </div>
-      <div className="container" id="listing-container">
-        <div className="row g-0 justify-content-evenly">
-            {listings}
-        </div>
+      <div className="row">
+        <FilterPanel 
+          filters={filters} 
+          modifyFilters={modifyFilters} 
+          toggleIsMustInclude={toggleIsMustInclude} 
+          toggleIsAddFilter={toggleIsAddFilter}
+        />
+        <StudyListings filters={filters} />
       </div>
-    </>
+    </div>
   )
 }

@@ -15,6 +15,10 @@ body {
     background-color: #DCD7C9;
 }
 
+#filter-container {
+    background-color: palegreen;
+}
+
 #listing-container {
     background-color: red;
 }
