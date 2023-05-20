@@ -8,53 +8,53 @@
 */
 
 * {
-    font-family: Poppins;
+  font-family: Poppins;
 }
 
 body {
-    background-color: #DCD7C9;
+  background-color: #DCD7C9;
 }
 
 #filter-container {
-    background-color: palegreen;
+  background-color: palegreen;
 }
 
 #listing-container {
-    background-color: red;
+  background-color: red;
 }
 
 .card-title {
-    color: #223030;
+  color: #223030;
 }
 
 .card {
-    background-color: #F6F5F1;
-    margin: 5px;
+  background-color: #F6F5F1;
+  margin: 5px;
 }
 
 .card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-bottom-right-radius: 0px;
-    border-top-right-radius: 0px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
 .tag-row {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    margin-bottom: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-bottom: 5px;
 }
 
 .badge {
-    margin-right: 5px;
-    background-color: #966844;
+  margin-right: 5px;
+  background-color: #966844;
 }
 
 .tag {
-    font-family: Montserrat;
-    width: fit-content;
-    text-align: center;
-    border-radius: 0.5rem;
+  font-family: Montserrat;
+  width: fit-content;
+  text-align: center;
+  border-radius: 0.5rem;
 }

@@ -1,16 +1,9 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import './study_listing.css'
-
-type StudyListing = {
-  title:    string,
-  desc:     string,
-  tags:     string[],
-  date:     string,
-  freq:     string,
-  interest: string
-}
+import StudyListings, { StudyListing } from "./studyListings"
+import FilterPanel from "./filterPanel"
 
 const data : { [id: string] : StudyListing } = {
   invite_1: {
@@ -19,7 +12,8 @@ const data : { [id: string] : StudyListing } = {
     tags:     ["CS2040S", "COM3", "SOC"],
     date:     "24/10/2023",
     freq:     "Every Week",
-    interest: "20"
+    interest: "20",
+    id: 1001
   },
 
   invite_2: {
@@ -28,7 +22,8 @@ const data : { [id: string] : StudyListing } = {
     tags:     ["CS1231S", "COM3", "SOC"],
     date:     "24/10/2023",
     freq:     "Every Week",
-    interest: "0"
+    interest: "0",
+    id: 1002
   },
 
   invite_3: {
@@ -37,101 +32,30 @@ const data : { [id: string] : StudyListing } = {
     tags:     ["CS3230", "COM3", "Study-Date", "SOC"],
     date:     "25/10/2023",
     freq:     "Once",
-    interest: "2"
+    interest: "2",
+    id: 1003
   }
 }
 
-function Tags({ tags } : Pick<StudyListing, 'tags'>) {
-  let tagBoxes = tags.map((tag) => {
-    return <span className="badge">{tag}</span>
-  })
-
-  return (
-    <div className="tag-row">
-      {tagBoxes}
-    </div>
-  )
-}
-
-function StudyCard(listingData : StudyListing) {
-  const {title, desc, tags, date, freq, interest} = listingData
-  return (
-    <div className="card">
-      <div className="row g-0">
-        <div className="col-6 col-md-3">
-          <img src="images/terrace_pic.png" className="card-img img-fluid rounded-start" alt="No Image Available"/>
-        </div>
-        <div className="col-6 col-md-9">
-          <div className="card-body">
-            <h5 className="card-title">{title}</h5>
-            <Tags tags={tags}/>
-            <p className="card-text">{desc}</p>
-            <p className="card-text row" style={{marginTop: "auto"}}>
-              <small className="text-body-secondary">{date}</small>
-              <small className="text-body-secondary">{freq}</small>
-              <small className="text-body-secondary">{interest} people interested</small>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function StudyListings({ filters }) {
-  const listings = Object.entries(data).map(([_, value]) => {
-    for (let i = 0; i < filters.length; i++) {
-      if (value.tags.includes(filters[i])) {
-        return <StudyCard {...value} />
-      }
-    }
-      return null
-  })
-  return (
-    <div className="container col-8" id="listing-container">
-      <div className="row g-0 justify-content-evenly">
-          {listings}
-      </div>
-    </div>
-  )
-}
-
-function FilterPanel({ filters, modifyFilters, toggleIsMustInclude, toggleIsAddFilter }) {
-  const [inputFilter, setInputFilter] = useState('')
-  
-  const handleChange = (e) => {
-    setInputFilter(e.target.value);
-  };
-
-  return (
-    <div className="container col-4" id="filter-container">
-      <h3>Filter Panel</h3>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Enter desired filter"
-        onChange={handleChange}
-      />
-      <br/>
-      <button className="btn btn-primary" type="submit" onClick={() => modifyFilters(inputFilter)}>Add filter</button>
-      <br/>
-      <Tags tags={filters} />
-    </div>
-  )
-}
-
 export default function ListingsPage() {
-  const [filters, setFilters] = useState(new Array<string>())
-  const [isMustInclude, setIsMustInclude] = useState(false)
-  const [isAddFilter, setIsAddFilter] = useState(true)
+  const [filters, setFilters] = useState<Array<string>>(new Array<string>())
+  const [isMustInclude, setIsMustInclude] = useState<boolean>(false)
+  const [isAddFilter, setIsAddFilter] = useState<boolean>(true)
 
   function modifyFilters(filter:string) {
-    if (filter == '' || filters.includes(filter)) return
+    if (filter == '') return
 
     const newFilters = filters.slice()
-    newFilters.push(filter)
+    if (isAddFilter) {
+      if (newFilters.includes(filter)) return
+      newFilters.push(filter)
+    } else {
+      if (!newFilters.includes(filter)) return
+      delete newFilters[newFilters.indexOf(filter)]
+    }
+
     setFilters(newFilters)
-    console.log(newFilters)
+    console.log("New filter: " + newFilters)
   }
 
   const toggleIsMustInclude = () => setIsMustInclude(!isMustInclude)
@@ -150,7 +74,7 @@ export default function ListingsPage() {
           toggleIsMustInclude={toggleIsMustInclude} 
           toggleIsAddFilter={toggleIsAddFilter}
         />
-        <StudyListings filters={filters} />
+        <StudyListings filters={filters} data={data} />
       </div>
     </div>
   )
