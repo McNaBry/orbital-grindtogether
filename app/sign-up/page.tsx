@@ -4,7 +4,7 @@ import { useState, ChangeEvent } from "react";
 import Password from "./password";
 import EyeForPassword from "./eyeForPassword";
 import "./signup.css";
-import * as pc from "./passwordchecks.js";
+import * as pc from "./passwordChecks.js";
 
 function GetStarted() {
   return <h2 className="get-started"> Get Started </h2>;
