@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent } from "react";
 import Password from "./password";
-import EyeForPassword from "./eyeforpassword";
+import EyeForPassword from "./eyeForPassword";
 import "./signup.css";
 import * as pc from "./passwordchecks.js";
 
