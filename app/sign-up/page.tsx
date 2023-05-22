@@ -235,8 +235,6 @@ function SignUpPage() {
             onChange={handleConfirmPasswordChange}
           />
         </div>
-        <CreateAccount password={password} confirmPassword={confirmPassword} />
-        <AlreadyHaveAccount />
       </div>
     </div>
   );
