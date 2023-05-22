@@ -2,9 +2,9 @@
 
 import { useState, ChangeEvent } from "react";
 import Password from "./password";
-import EyeForPassword from "./eyeforpassword";
+import EyeForPassword from "./eyeForPassword";
 import "./signup.css";
-import * as pc from "./passwordchecks.js";
+import * as pc from "./passwordChecks.js";
 
 function GetStarted() {
   return <h2 className="get-started"> Get Started </h2>;
@@ -92,7 +92,12 @@ function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
   );
 }
 
-function CreateAccount({ password, confirmPassword }) {
+type CreateAccountProps = {
+  password: string,
+  confirmPassword: string
+}
+
+function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [successStatus, setSuccessStatus] = useState(false);
@@ -219,11 +224,11 @@ function SignUpPage() {
   };
 
   return (
-    <div className="signuppage">
-      <div className="picture">
-        <img src="images/aesthetic-library.png" alt="Aesthetic" />
-      </div>
-      <div className="right-half">
+    <div className="signuppage row">
+      <img className="col-6" 
+        src="images/aesthetic-library.png" 
+        alt="Aesthetic" />
+      <div className="right-half col-6">
         <GetStarted />
         <div className="form-fields">
           <Name />
