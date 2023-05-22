@@ -219,11 +219,12 @@ function SignUpPage() {
   };
 
   return (
-    <div className="signuppage">
-      <div className="picture">
+    <div className="signuppage row">
+      <img className="col-6" src="images/aesthetic-library.png" alt="Aesthetic" />
+      {/* <div className="picture">
         <img src="images/aesthetic-library.png" alt="Aesthetic" />
-      </div>
-      <div className="right-half">
+      </div> */}
+      <div className="right-half col-6">
         <GetStarted />
         <div className="form-fields">
           <Name />
