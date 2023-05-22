@@ -92,7 +92,12 @@ function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
   );
 }
 
-function CreateAccount({ password, confirmPassword }) {
+type CreateAccountProps = {
+  password: string,
+  confirmPassword: string
+}
+
+function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [successStatus, setSuccessStatus] = useState(false);
@@ -220,10 +225,9 @@ function SignUpPage() {
 
   return (
     <div className="signuppage row">
-      <img className="col-6" src="images/aesthetic-library.png" alt="Aesthetic" />
-      {/* <div className="picture">
-        <img src="images/aesthetic-library.png" alt="Aesthetic" />
-      </div> */}
+      <img className="col-6" 
+        src="images/aesthetic-library.png" 
+        alt="Aesthetic" />
       <div className="right-half col-6">
         <GetStarted />
         <div className="form-fields">
@@ -235,6 +239,8 @@ function SignUpPage() {
             onChange={handleConfirmPasswordChange}
           />
         </div>
+        <CreateAccount password={password} confirmPassword={confirmPassword} />
+        <AlreadyHaveAccount />
       </div>
     </div>
   );
