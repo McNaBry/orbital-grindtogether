@@ -22,7 +22,7 @@ function NoAccount() {
   return (
     <p>
       {" "}
-      Don't have an account?{" "}
+      Don&#39;t have an account?{" "}
       <Link className="click-signup" href="sign-up">
         Sign up
       </Link>
