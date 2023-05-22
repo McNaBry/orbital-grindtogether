@@ -23,8 +23,8 @@ function NoAccount() {
     <p>
       {" "}
       Don't have an account?{" "}
-      <Link href="sign-up">
-        <a className="click-signup">Sign up</a>{" "}
+      <Link className="click-signup" href="sign-up">
+        Sign up
       </Link>
     </p>
   );
@@ -38,11 +38,9 @@ function SignInPage() {
   };
 
   return (
-    <div className="signinpage">
-      <div className="picture">
-        <img src="images/study-aesthetic.png" alt="study-aesthetic" />
-      </div>
-      <div className="right-half">
+    <div className="signinpage row">
+      <div className="left-half col-6"/>
+      <div className="right-half col-6">
         <WelcomeBack />
         <Email />
         <Password value={password} onChange={handlePasswordChange} />
