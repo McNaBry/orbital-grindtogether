@@ -3,8 +3,8 @@
 }
 
 .signuppage {
-    display: flex;
-    align-items: stretch;
+    width: 100vw;
+    height: 100vh;
 }
 
 .get-started {
@@ -50,6 +50,7 @@
     padding: 0.6em;
     font-size: 18px;
     margin-top: 20px;
+    width: 160px;
 }
 
 .checkHaveAccount a {
@@ -79,11 +80,9 @@
 }
 
 .right-half {
-    flex: 1;
-    margin-left: 25px;
-    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    overflow: auto;
 }
 
 .error-message, .success-message {
