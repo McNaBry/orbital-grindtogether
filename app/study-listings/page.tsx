@@ -77,10 +77,8 @@ export default function ListingsPage() {
         <h1>Study Listings</h1>
       </div>
       <div className="row">
-        <FilterPanel
-          modifyFilters={modifyFilters}
-        />
         <StudyListings filters={filters} data={data} />
+        <FilterPanel modifyFilters={modifyFilters} />
       </div>
     </div>
   )

@@ -13,7 +13,7 @@
 
 body {
   /* background-color: #DCD7C9; */
-  background: linear-gradient(to bottom, #0F2027, #203A43, #2C5364) fixed;
+  background: radial-gradient(#414345, #232526 ) fixed;
 }
 
 #filter-container {
@@ -23,7 +23,6 @@ body {
   flex-direction: column;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 5px black;
   background-color: #ecf0f1;
 }
 
@@ -41,13 +40,8 @@ body {
 }
 
 .card {
-  background-color: #F6F5F1;
   margin: 5px;
   border: 0px;
-}
-
-.card * {
-  color: black;
 }
 
 .card-img {
@@ -74,4 +68,16 @@ body {
   width: fit-content;
   text-align: center;
   border-radius: 0.5rem;
+}
+
+.modules {
+  background-color: #0052d4;
+}
+
+.locations {
+  background-color: #65c7f7;
+}
+
+.faculties {
+  background-color: #9cecfb;
 }

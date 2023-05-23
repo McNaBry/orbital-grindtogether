@@ -11,7 +11,7 @@ export type StudyListing = {
 function Tags({ tags } : Pick<StudyListing, 'tags'>) {
   let tagBoxes = Object.keys(tags).map((tagType) => {
     return tags[tagType].map(tag => {
-      return <span className="badge" key={tag}>{tag}</span>
+      return <span className={"badge " + tagType} key={tag}>{tag}</span>
     })
   })
 
