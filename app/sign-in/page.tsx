@@ -39,8 +39,8 @@ function SignInPage() {
 
   return (
     <div className="signinpage row">
-      <div className="left-half col-6"/>
-      <div className="right-half col-6">
+      <div className="left-half col-2 col-md-6"/>
+      <div className="right-half col-10 col-md-6">
         <WelcomeBack />
         <Email />
         <Password value={password} onChange={handlePasswordChange} />

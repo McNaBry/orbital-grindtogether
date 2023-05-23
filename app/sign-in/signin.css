@@ -1,5 +1,8 @@
 .signinpage * {
   font-family: "DM Sans", sans-serif;
+}
+
+.signinpage label, p {
   color: white;
 }
 
@@ -16,7 +19,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: 100px;
+  padding-right: 20%;
 }
 
 .welcome-back {
