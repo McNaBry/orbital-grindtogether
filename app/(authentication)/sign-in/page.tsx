@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import Password from "../sign-up/password";
-import Email from "../sign-up/email";
+import Password from "../password";
+import Email from "../email";
 import "./signin.css";
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ function NoAccount() {
     <p>
       {" "}
       Don&#39;t have an account?{" "}
-      <Link className="click-signup" href="sign-up">
+      <Link className="sign-up-link" href="sign-up">
         Sign up
       </Link>
     </p>
@@ -39,14 +39,15 @@ function SignInPage() {
 
   return (
     <div className="signinpage row">
-      <div className="left-half col-2 col-md-6"/>
-      <div className="right-half col-10 col-md-6">
+      <div className="left-half col-1 col-md-6"/>
+      <div className="right-half col-10 col-md-5">
         <WelcomeBack />
         <Email />
         <Password value={password} onChange={handlePasswordChange} />
         <Login />
         <NoAccount />
       </div>
+      <div className="col-1"/>
     </div>
   );
 }
