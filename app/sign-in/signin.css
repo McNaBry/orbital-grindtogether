@@ -1,0 +1,80 @@
+.signinpage * {
+  font-family: "DM Sans", sans-serif;
+}
+
+.signinpage label, p {
+  color: white;
+}
+
+.signinpage {
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0), rgba(35, 32, 32, 0.8), rgba(0, 0, 0, 1)),
+    url("/images/study-aesthetic.png");
+  background-size: cover;
+}
+
+.right-half {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 20%;
+}
+
+.welcome-back {
+  font-size: 40px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+  color: #a37cf0;
+}
+
+.form-label,
+.form-control {
+  font-size: 20px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 50px;
+}
+
+.password-input .eye-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.eye-icon {
+  color: #4169e1;
+}
+
+#login {
+  background-color: #ffc30b;
+  color: white;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 25px;
+  width: 100px;
+}
+
+.check-signup a {
+  color: #4166F5;
+  text-decoration: none;
+}

@@ -2,9 +2,11 @@
 
 import { useState, ChangeEvent } from "react";
 import Password from "./password";
+import Email from "./email";
 import EyeForPassword from "./eyeForPassword";
 import "./signup.css";
 import * as pc from "./passwordChecks.js";
+import Link from "next/link";
 
 function GetStarted() {
   return <h2 className="get-started"> Get Started </h2>;
@@ -21,22 +23,6 @@ function Name() {
         className="form-control"
         id="full-name"
         placeholder="Enter your full name"
-      ></input>
-    </>
-  );
-}
-
-function Email() {
-  return (
-    <>
-      <label htmlFor="email" className="form-label">
-        Email
-      </label>
-      <input
-        type="email"
-        className="form-control"
-        id="email"
-        placeholder="Enter your email"
       ></input>
     </>
   );
@@ -201,10 +187,12 @@ function AlreadyHaveAccount() {
     <p className="checkHaveAccount">
       {" "}
       Already have an account?{" "}
-      <a className="checkHaveAccount" target="blank">
-        {" "}
-        Login{" "}
-      </a>{" "}
+      <Link href="sign-in">
+        <a className="checkHaveAccount" target="blank">
+          {" "}
+          Login{" "}
+        </a>{" "}
+      </Link>
     </p>
   );
 }
