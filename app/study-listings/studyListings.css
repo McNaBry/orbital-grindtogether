@@ -12,13 +12,19 @@
 }
 
 body {
-  background-color: #DCD7C9;
+  /* background-color: #DCD7C9; */
+  background: linear-gradient(to bottom, #0F2027, #203A43, #2C5364) fixed;
 }
 
 #filter-container {
-  background-color: palegreen;
+  /* background-color: palegreen; */
+  height: 80vh;
   display: flex;
   flex-direction: column;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 5px black;
+  background-color: #ecf0f1;
 }
 
 .filter-tags {
@@ -26,9 +32,9 @@ body {
   flex-direction: column;
 }
 
-#listing-container {
+/* #listing-container {
   background-color: red;
-}
+} */
 
 .card-title {
   color: #223030;
@@ -37,6 +43,11 @@ body {
 .card {
   background-color: #F6F5F1;
   margin: 5px;
+  border: 0px;
+}
+
+.card * {
+  color: black;
 }
 
 .card-img {
@@ -60,7 +71,6 @@ body {
 }
 
 .tag {
-  font-family: Montserrat;
   width: fit-content;
   text-align: center;
   border-radius: 0.5rem;

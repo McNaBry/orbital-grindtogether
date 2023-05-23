@@ -1,73 +1,80 @@
 "use client"
 
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, SyntheticEvent, useState } from "react"
+import { Autocomplete, TextField } from "@mui/material"
+import { data } from "./data"
 
-type FilterPanelProps = {
-  filters: string[][],
-  modifyFilters: (filter:string, isAdd:boolean, isMustInclude:boolean) => void,
+// function FilterTags({ filters } : Pick<FilterPanelProps, 'filters'>) {
+//   const mustIncludeFilters = filters[0].map((filter) => {
+//     return <span className="badge" key={filter}>{filter}</span>
+//   })
+
+//   const canIncludeFilters = filters[1].map((filter) => {
+//     return <span className="badge" key={filter}>{filter}</span>
+//   })
+
+//   return (
+//     <div id="filter-tags">
+//       <div className="">
+//         <p style={{ marginBottom : "0rem" }}>Must be included:</p>
+//         {mustIncludeFilters}
+//       </div>
+//       <div className="">
+//       <p style={{ marginBottom : "0rem" }}>Can be included:</p>
+//         {canIncludeFilters}
+//       </div>
+//     </div>
+//   )
+// }
+
+type FilterAutoCompleteProps = {
+  label: string,
+  type: string,
+  options: string[],
+  handleFilterChange: (event:SyntheticEvent<Element, Event>, value:string[], type:string) => void
 }
 
-function FilterTags({ filters } : Pick<FilterPanelProps, 'filters'>) {
-  const mustIncludeFilters = filters[0].map((filter) => {
-    return <span className="badge" key={filter}>{filter}</span>
-  })
-
-  const canIncludeFilters = filters[1].map((filter) => {
-    return <span className="badge" key={filter}>{filter}</span>
-  })
-
+function FilterAutoComplete({ label, type, options, handleFilterChange } : FilterAutoCompleteProps) {
   return (
-    <div id="filter-tags">
-      <div className="">
-        <p style={{ marginBottom : "0rem" }}>Must be included:</p>
-        {mustIncludeFilters}
-      </div>
-      <div className="">
-      <p style={{ marginBottom : "0rem" }}>Can be included:</p>
-        {canIncludeFilters}
-      </div>
-    </div>
+    <label style={{marginBottom: "5px"}}>{label}
+      <Autocomplete
+        multiple
+        id="multiple-limit-tags"
+        options={options}
+        sx={{ width: "100%", marginTop: "8px"  }}
+        renderInput={(params) => <TextField {...params} label={label} />}
+        onChange={(event, value) => handleFilterChange(event, value, type)}
+      /> </label>
   )
 }
 
-export default function FilterPanel({ filters, modifyFilters } : FilterPanelProps) {
-  const [inputFilter, setInputFilter] = useState('')
-  const [isAddFilter, setIsAddFilter] = useState<boolean>(true)
-  const [isMustInclude, setIsMustInclude] = useState<boolean>(false)
+type FilterPanelProps = {
+  modifyFilters: (filterArray:string[], type:string) => void,
+}
 
-  const toggleIsAddFilter = () => setIsAddFilter(!isAddFilter)
-  
-  const handleChange = (event:ChangeEvent<HTMLInputElement>) => {
-    setInputFilter(event.target.value);
-  };
+export default function FilterPanel({ modifyFilters } : FilterPanelProps) {
 
-  const handleClick = () => {
-    modifyFilters(inputFilter, isAddFilter, isMustInclude)
-    setInputFilter('')
+  function handleFilterChange(event: SyntheticEvent<Element, Event>, value: string[], type: string) {
+    modifyFilters(value, type)
   }
 
   return (
     <div className="container col-4" id="filter-container">
-      <h3>Filter Panel</h3>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Enter desired filter"
-        value={inputFilter}
-        onChange={handleChange}
-      />
-      <button 
-        className="btn btn-primary" 
-        type="submit" 
-        onClick={handleClick}
-      > Add filter </button>
-      <div className="form-check form-switch">
-        <input className="form-check-input" type="checkbox" role="switch" id="includeFilterSwitch"
-          onChange={() => setIsMustInclude(!isMustInclude)}/>
-        <label className="form-check-label" htmlFor="includeFilterSwitch">Must include filter</label>
-      </div>
-      <FilterTags filters={...filters} />
-
+      <FilterAutoComplete 
+        label="Module"   
+        type="modules"
+        options={Array.from(data["modules"])}
+        handleFilterChange={handleFilterChange} />
+      <FilterAutoComplete 
+        label="Location" 
+        type="locations"
+        options={Array.from(data["locations"])}
+        handleFilterChange={handleFilterChange} />
+      <FilterAutoComplete 
+        label="Faculty"  
+        type="faculties"
+        options={Array.from(data["faculties"])}
+        handleFilterChange={handleFilterChange} />
     </div>
   )
 }

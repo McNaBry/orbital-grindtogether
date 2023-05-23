@@ -9,7 +9,7 @@ const data : { [id: string] : StudyListing } = {
   invite_1: {
     title:    "Study @ Terrace",
     desc:     "Let's have some fun grinding together!",
-    tags:     ["CS2040S", "COM3", "SOC"],
+    tags:     {"modules": ["CS2040S"], "locations": ["COM3"], "faculties": ["SOC"]},
     date:     "24/10/2023",
     freq:     "Every Week",
     interest: "20",
@@ -19,7 +19,7 @@ const data : { [id: string] : StudyListing } = {
   invite_2: {
     title:    "Study @ Basement1",
     desc:     "Seeking for people willing to carry my assignment",
-    tags:     ["CS1231S", "COM3", "SOC"],
+    tags:     {"modules": ["CS1231S"], "locations": ["COM3"], "faculties": ["SOC"]},
     date:     "24/10/2023",
     freq:     "Every Week",
     interest: "0",
@@ -29,7 +29,27 @@ const data : { [id: string] : StudyListing } = {
   invite_3: {
     title:    "Study @ ASL2",
     desc:     "Anyone wants to be my study date?",
-    tags:     ["CS3230", "COM3", "Study-Date", "SOC"],
+    tags:     {"modules": ["HSI1000"], "locations": ["COM3"], "faculties": ["CHS"]},
+    date:     "25/10/2023",
+    freq:     "Once",
+    interest: "2",
+    id: 1003
+  },
+
+  invite_4: {
+    title:    "Grind Sesh",
+    desc:     "NUS Grind Sesh by your favourite boi",
+    tags:     {"modules": ["CS2040S", "CS2030S", "CS2100"], "locations": ["COM3"], "faculties": ["SOC"]},
+    date:     "25/10/2023",
+    freq:     "Every Week",
+    interest: "50",
+    id: 1003
+  },
+
+  invite_5: {
+    title:    "Chill study",
+    desc:     "Talk, study and chill",
+    tags:     {"modules": ["IS2218"], "locations": ["Terrace"], "faculties": ["SOC"]},
     date:     "25/10/2023",
     freq:     "Once",
     interest: "2",
@@ -38,34 +58,26 @@ const data : { [id: string] : StudyListing } = {
 }
 
 export default function ListingsPage() {
-  const [filters, setFilters] = useState(Array.from({ length : 2 }, () => new Array<string>()))
+  const [filters, setFilters] = useState<{ [key:string] : Array<string>}>({
+    "modules"   : [],
+    "locations" : [],
+    "faculties" : []
+  })
 
-  function modifyFilters(filter:string, isAddFilter:boolean, isMustInclude:boolean) {
-    if (filter == '') return
-
-    const newFilters = filters.slice()
-    const filterArray = isMustInclude ? newFilters[0] : newFilters[1]
-    if (isAddFilter) {
-      if (filterArray.includes(filter)) return
-      filterArray.push(filter)
-    } else {
-      if (!filterArray.includes(filter)) return
-      delete filterArray[filterArray.indexOf(filter)]
-    }
-
-    setFilters(newFilters)
-    console.log("New filter: " + newFilters)
+  function modifyFilters(filterArray:string[], type:string) {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [type]: filterArray
+    }))
   }
 
   return (
     <div className="container">
-      <div className="" style={{backgroundColor: "orange"}}>
+      <div style={{ display:"flex", width:"auto", justifyContent:"center", padding:"10px", color:"white"}}>
         <h1>Study Listings</h1>
-        <h5>Showing 1 result</h5>
       </div>
       <div className="row">
-        <FilterPanel 
-          filters={filters} 
+        <FilterPanel
           modifyFilters={modifyFilters}
         />
         <StudyListings filters={filters} data={data} />
