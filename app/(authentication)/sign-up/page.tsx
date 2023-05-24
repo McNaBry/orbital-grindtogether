@@ -1,21 +1,23 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import Password from "./password";
-import Email from "./email";
-import EyeForPassword from "./eyeForPassword";
-import "./signup.css";
-import * as pc from "./passwordChecks.js";
+import styles from "../auth.module.css";
 import Link from "next/link";
 
+import Password from "../password";
+import Email from "../email";
+import EyeForPassword from "../eyeForPassword";
+
+import * as pc from "./passwordChecks.js";
+
 function GetStarted() {
-  return <h2 className="get-started"> Get Started </h2>;
+  return <h2 className={styles["get-started"]}> Get Started </h2>;
 }
 
 function Name() {
   return (
     <>
-      <label htmlFor="full-name" className="form-label">
+      <label htmlFor="full-name" className={styles["form-label"]}>
         Full Name
       </label>
       <input
@@ -60,10 +62,10 @@ function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
 
   return (
     <>
-      <label htmlFor="confirm-password" className="form-label">
+      <label htmlFor="confirm-password" className={styles["form-label"]}>
         Confirm Password
       </label>
-      <div className="password-input">
+      <div className={styles["password-input"]}>
         <ConfirmPasswordInput
           value={value}
           onChange={onChange}
@@ -133,20 +135,20 @@ function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
       <button
         type="submit"
         className="btn mb-3"
-        id="create-account"
+        id={styles["create-account"]}
         onClick={handleCreateAccount}
       >
         Create Account
       </button>
       {failureStatus && errorMsg && (
         <div
-          className="alert alert-danger alert-dismissible fade show"
+          className={"alert alert-dismissible fade show " + styles["alert-danger"]}
           role="alert"
         >
           <img
             src={"images/danger.svg"}
             className="bi flex-shrink-0 me-2"
-            id="danger-icon"
+            id={styles["danger-icon"]}
           />
           {errorMsg}
           <button
@@ -160,13 +162,13 @@ function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
       )}
       {successStatus && successMsg && (
         <div
-          className="alert alert-success alert-dismissible fade show"
+          className={"alert alert-dismissible fade show " + styles["alert-success"]}
           role="alert"
         >
           <img
             src="images/success.svg"
             className="bi flex-shrink-0 me-2"
-            id="success-icon"
+            id={styles["success-icon"]}
           />
           {successMsg}
           <button
@@ -184,16 +186,10 @@ function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
 
 function AlreadyHaveAccount() {
   return (
-    <p className="checkHaveAccount">
-      {" "}
-      Already have an account?{" "}
-      <Link href="sign-in">
-        <a className="checkHaveAccount" target="blank">
-          {" "}
-          Login{" "}
-        </a>{" "}
-      </Link>
-    </p>
+    <div className={styles["check-have-account"]}>
+      <p> Already have an account? </p>
+      <Link href="sign-in" id={styles["login-link"]}> Login </Link>
+    </div>
   );
 }
 
@@ -212,13 +208,11 @@ function SignUpPage() {
   };
 
   return (
-    <div className="signuppage row">
-      <img className="col-6" 
-        src="images/aesthetic-library.png" 
-        alt="Aesthetic" />
-      <div className="right-half col-6">
+    <div className={"row " + styles["sign-up-page"]}>
+      <div className="col-1 col-md-6" />
+      <div className={"col-10 col-md-5 " + styles["right-half"]}>
         <GetStarted />
-        <div className="form-fields">
+        <div className={styles["form-fields"]}>
           <Name />
           <Email />
           <Password value={password} onChange={handlePasswordChange} />
@@ -230,6 +224,7 @@ function SignUpPage() {
         <CreateAccount password={password} confirmPassword={confirmPassword} />
         <AlreadyHaveAccount />
       </div>
+      <div className="col-1 col-md-1"></div>
     </div>
   );
 }

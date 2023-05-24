@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import styles from "./auth.module.css"
 
 interface EyeForPasswordProps {
   isVisible: boolean;
@@ -8,10 +9,10 @@ interface EyeForPasswordProps {
 
 function EyeForPassword({ isVisible, setVisible }: EyeForPasswordProps) {
     return (
-      <div className="eye-password" onClick={setVisible}>
+      <div className={styles["eye-password"]} onClick={setVisible}>
         <FontAwesomeIcon
           icon={isVisible ? faEye : faEyeSlash}
-          className="eye-icon"
+          className={styles["eye-icon"]}
         />
       </div>
     );
