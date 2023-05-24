@@ -1,0 +1,56 @@
+* {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.edit-profile {
+    font-size: 40px;
+    margin-right: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.upload-profile-pic {
+    padding: 0.6em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: #4166f5;
+    color: white;
+}
+
+.upload-profile-pic input {
+    display: none;
+}
+
+.card h5 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 21px;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profile-pic {
+    height: 200px;
+    width: 200px;
+    background-color: black;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.save-changes {
+    background-color: #03c04a;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 0.6em;
+    font-size: 18px;
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
