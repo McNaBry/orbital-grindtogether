@@ -31,14 +31,14 @@ function ProfilePic() {
   return <div className="profile-pic"></div>;
 }
 
-function NameCard({ name }: string) {
+function NameCard({ name }: {name: string}) {
   return (
     <NonEditableCard title="Full Name">
       <p className="card-text"> {name} </p>
     </NonEditableCard>
   );
 }
-function EmailCard({ email }: string) {
+function EmailCard({ email }: {email: string}) {
   return (
     <NonEditableCard title="Email">
       <p className="card-text"> {email} </p>
