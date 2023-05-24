@@ -1,0 +1,51 @@
+/*!*********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[3]!./app/start.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************/
+#start-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: black;
+}
+
+#header {
+    /* font-weight: bold; */
+    font-size: 80px;
+    text-align: center;
+}
+
+#sub-header {
+    text-align: center;
+}
+
+#sign-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.sign-link {
+    width: 100px;
+    text-align: center;
+    border-radius: 0.3rem;
+    outline: solid 1px white;
+    margin: 0px 5px 0px 5px;
+    padding: 5px;
+}
+
+.sign-link:hover {
+    background-color: #6c5ce7;
+    outline: solid 1px #6c5ce7;
+}
+
+.sign-link:hover * {
+    color: white;
+}
+
+.sign-link * {
+    color: white;
+}
