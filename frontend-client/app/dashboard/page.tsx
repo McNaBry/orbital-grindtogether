@@ -13,7 +13,7 @@ function DashboardActionBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#">Create Listing</Nav.Link>
+            <Nav.Link href="create-listing">Create Listing</Nav.Link>
             <Nav.Link href="study-listings">View Listings</Nav.Link>
           </Nav>
         </Navbar.Collapse>
