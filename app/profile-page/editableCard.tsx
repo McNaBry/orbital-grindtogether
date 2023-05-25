@@ -32,7 +32,7 @@ function EditableCard({ field, value, maxChars, onSave }: EditableCardProps) {
               <div className = "card-content">
                 <textarea
                   value={editedValue}
-                  maxlength = {maxChars}
+                  maxLength = {maxChars}
                   rows = {2}
                   cols = {75}
                   onChange={(event) => setEditedValue(event.target.value)}

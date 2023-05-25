@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-function SaveChanges({ onClick }: MouseEvent) {
+function SaveChanges({ onClick }: {onClick: () => void}) {
   return (
     <button type="button" className="btn save-changes" onClick={onClick}>
       {" "}
