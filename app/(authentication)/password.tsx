@@ -1,6 +1,7 @@
 "use client"
 import { useState, ChangeEvent } from "react";
 import EyeForPassword from "./eyeForPassword";
+import styles from "./auth.module.css"
 
 interface PasswordInputProps {
   value: string;
@@ -29,11 +30,11 @@ function Password({ value, onChange}: PasswordInputProps) {
   };
 
   return (
-    <div>
-      <label htmlFor="password" className="form-label">
+    <>
+      <label htmlFor="password" className={styles["form-label"]}>
         Password
       </label>
-      <div className="password-input">
+      <div className={styles["password-input"]}>
         <PasswordInput
           value={value}
           onChange={onChange}
@@ -44,7 +45,7 @@ function Password({ value, onChange}: PasswordInputProps) {
           setVisible={togglePasswordVisibility}
         />
       </div>
-    </div>
+    </>
   );
 }
 

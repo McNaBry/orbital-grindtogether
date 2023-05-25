@@ -19,7 +19,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: 20%;
 }
 
 .welcome-back {
@@ -40,26 +39,6 @@
   margin-bottom: 20px;
 }
 
-.password-input {
-  position: relative;
-}
-
-.password-input input {
-  padding-right: 50px;
-}
-
-.password-input .eye-password {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.eye-icon {
-  color: #4169e1;
-}
-
 #login {
   background-color: #ffc30b;
   color: white;
@@ -72,6 +51,11 @@
   cursor: pointer;
   margin-top: 25px;
   width: 100px;
+}
+
+.sign-up-link {
+  text-decoration: none;
+  color: #4166F5;
 }
 
 .check-signup a {

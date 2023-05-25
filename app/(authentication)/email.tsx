@@ -1,7 +1,9 @@
+import styles from "./auth.module.css"
+
 function Email() {
     return (
       <>
-        <label htmlFor="email" className="form-label">
+        <label htmlFor="email" className={styles["form-label"]}>
           Email
         </label>
         <input
