@@ -1,0 +1,19 @@
+{
+  "name": "orbital-grindtogether",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "updateFrontend": "cd frontend-client && npm install",
+    "updateBackend": "cd backend && npm install",
+    "updateAll": "concurrently \"npm install\" \"npm run updateFrontend\" \"npm run updateBackend\"",
+    "frontend": "cd frontend-client && npm run dev",
+    "backend": "cd backend && npm run start",
+    "deploy": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

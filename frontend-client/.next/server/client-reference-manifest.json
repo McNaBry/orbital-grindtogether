@@ -1,924 +1,9 @@
 {
-  "ssrModuleMapping": {
-    "(app-client)/./node_modules/next/dist/client/components/app-router.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "*",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "default",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "getServerActionDispatcher": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "getServerActionDispatcher",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "urlToUrlWithoutFlightMarker": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "urlToUrlWithoutFlightMarker",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "TODO-APP": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "TODO-APP",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "__NA": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "__NA",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "location": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "location",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "\"http": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "\"http",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "searchParams": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "searchParams",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "pathname": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "pathname",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "type": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "type",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "cache": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "cache",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "status": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "status",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "data": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "data",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "subTreeData": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "subTreeData",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "parallelRoutes": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "parallelRoutes",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "mutable": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "mutable",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "isExternalUrl": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "isExternalUrl",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "locationSearch": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "locationSearch",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "back": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "back",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "forward": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "forward",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "prefetch": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "prefetch",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "kind": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "kind",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "replace": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "replace",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "push": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "push",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "refresh": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "refresh",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "origin": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "origin",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "fastRefresh": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "fastRefresh",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "router": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "router",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "(eg": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "(eg",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "url": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "url",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "tree": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "tree",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "notFound": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "notFound",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "notFoundStyles": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "notFoundStyles",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "asNotFound": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "asNotFound",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "pushRef": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "pushRef",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "canonicalUrl": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "canonicalUrl",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "sync": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "sync",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "value": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "value",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "childNodes": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "childNodes",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "assetPrefix": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "assetPrefix",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "errorComponent": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/app-router.js",
-        "name": "errorComponent",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/components/error-boundary.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "*",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "default",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "ErrorBoundaryHandler": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "ErrorBoundaryHandler",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "ErrorBoundary": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "ErrorBoundary",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "error": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "error",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "https": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "https",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "fontFamily": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "fontFamily",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "height": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "height",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "textAlign": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "textAlign",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "display": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "display",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "flexDirection": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "flexDirection",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "alignItems": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "alignItems",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "justifyContent": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "justifyContent",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "desc": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "desc",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "text": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "text",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "fontSize": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "fontSize",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "fontWeight": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "fontWeight",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "lineHeight": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "lineHeight",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "margin": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "margin",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "reset": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "reset",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "style": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "style",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "\"Digest": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "\"Digest",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "errorComponent": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "errorComponent",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "errorStyles": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "errorStyles",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "value": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/error-boundary.js",
-        "name": "value",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "*",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "default",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "RedirectErrorBoundary": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "RedirectErrorBoundary",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "RedirectBoundary": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "RedirectBoundary",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "redirect": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "redirect",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "redirectType": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "redirectType",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "reset": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "reset",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "router": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "router",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "value": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-        "name": "value",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
-        "name": "*",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
-        "name": "",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
-        "name": "default",
-        "chunks": [
-          "webpack:static/chunks/webpack.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/components/layout-router.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/layout-router.js",
-        "name": "*",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/layout-router.js",
-        "name": "",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/layout-router.js",
-        "name": "default",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-        "name": "*",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-        "name": "",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-        "name": "default",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-        "name": "*",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-        "name": "",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-        "name": "default",
-        "chunks": [
-          "app-client-internals:static/chunks/app-client-internals.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./node_modules/next/dist/client/link.js": {
-      "*": {
-        "id": "(sc_client)/./node_modules/next/dist/client/link.js",
-        "name": "*",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./node_modules/next/dist/client/link.js",
-        "name": "",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./node_modules/next/dist/client/link.js",
-        "name": "default",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./app/(authentication)/password.tsx": {
-      "*": {
-        "id": "(sc_client)/./app/(authentication)/password.tsx",
-        "name": "*",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./app/(authentication)/password.tsx",
-        "name": "",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./app/(authentication)/password.tsx",
-        "name": "default",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./app/(authentication)/sign-in/page.tsx": {
-      "*": {
-        "id": "(sc_client)/./app/(authentication)/sign-in/page.tsx",
-        "name": "*",
-        "chunks": [
-          "app/(authentication)/sign-in/page:static/chunks/app/(authentication)/sign-in/page.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./app/(authentication)/sign-in/page.tsx",
-        "name": "",
-        "chunks": [
-          "app/(authentication)/sign-in/page:static/chunks/app/(authentication)/sign-in/page.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./app/(authentication)/sign-in/page.tsx",
-        "name": "default",
-        "chunks": [
-          "app/(authentication)/sign-in/page:static/chunks/app/(authentication)/sign-in/page.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./app/(authentication)/sign-up/page.tsx": {
-      "*": {
-        "id": "(sc_client)/./app/(authentication)/sign-up/page.tsx",
-        "name": "*",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./app/(authentication)/sign-up/page.tsx",
-        "name": "",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./app/(authentication)/sign-up/page.tsx",
-        "name": "default",
-        "chunks": [
-          "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./app/study-listings/filterPanel.tsx": {
-      "*": {
-        "id": "(sc_client)/./app/study-listings/filterPanel.tsx",
-        "name": "*",
-        "chunks": [
-          "app/study-listings/page:static/chunks/app/study-listings/page.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./app/study-listings/filterPanel.tsx",
-        "name": "",
-        "chunks": [
-          "app/study-listings/page:static/chunks/app/study-listings/page.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./app/study-listings/filterPanel.tsx",
-        "name": "default",
-        "chunks": [
-          "app/study-listings/page:static/chunks/app/study-listings/page.js"
-        ],
-        "async": false
-      }
-    },
-    "(app-client)/./app/study-listings/page.tsx": {
-      "*": {
-        "id": "(sc_client)/./app/study-listings/page.tsx",
-        "name": "*",
-        "chunks": [
-          "app/study-listings/page:static/chunks/app/study-listings/page.js"
-        ],
-        "async": false
-      },
-      "": {
-        "id": "(sc_client)/./app/study-listings/page.tsx",
-        "name": "",
-        "chunks": [
-          "app/study-listings/page:static/chunks/app/study-listings/page.js"
-        ],
-        "async": false
-      },
-      "default": {
-        "id": "(sc_client)/./app/study-listings/page.tsx",
-        "name": "default",
-        "chunks": [
-          "app/study-listings/page:static/chunks/app/study-listings/page.js"
-        ],
-        "async": false
-      }
-    }
-  },
+  "ssrModuleMapping": {},
   "edgeSSRModuleMapping": {},
-  "cssFiles": {
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\page": [
-      "static/css/app/page.css"
-    ],
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-in\\page": [
-      "static/css/app/(authentication)/sign-in/page.css"
-    ],
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\layout": [
-      "static/css/app/layout.css"
-    ],
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-up\\page": [
-      "static/css/app/(authentication)/sign-up/page.css"
-    ],
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\page": [
-      "static/css/app/study-listings/page.css"
-    ]
-  },
+  "cssFiles": {},
   "clientModules": {
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "*",
       "chunks": [
@@ -926,7 +11,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "*",
       "chunks": [
@@ -934,7 +19,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "",
       "chunks": [
@@ -942,7 +27,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "",
       "chunks": [
@@ -950,7 +35,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "default",
       "chunks": [
@@ -958,7 +43,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "default",
       "chunks": [
@@ -966,7 +51,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#getServerActionDispatcher": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#getServerActionDispatcher": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "getServerActionDispatcher",
       "chunks": [
@@ -974,7 +59,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#getServerActionDispatcher": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#getServerActionDispatcher": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "getServerActionDispatcher",
       "chunks": [
@@ -982,7 +67,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#urlToUrlWithoutFlightMarker": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#urlToUrlWithoutFlightMarker": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "urlToUrlWithoutFlightMarker",
       "chunks": [
@@ -990,7 +75,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#urlToUrlWithoutFlightMarker": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#urlToUrlWithoutFlightMarker": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "urlToUrlWithoutFlightMarker",
       "chunks": [
@@ -998,7 +83,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#TODO-APP": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#TODO-APP": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "TODO-APP",
       "chunks": [
@@ -1006,7 +91,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#TODO-APP": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#TODO-APP": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "TODO-APP",
       "chunks": [
@@ -1014,7 +99,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#__NA": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#__NA": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "__NA",
       "chunks": [
@@ -1022,7 +107,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#__NA": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#__NA": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "__NA",
       "chunks": [
@@ -1030,7 +115,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#location": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#location": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "location",
       "chunks": [
@@ -1038,7 +123,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#location": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#location": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "location",
       "chunks": [
@@ -1046,7 +131,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#\"http": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#\"http": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "\"http",
       "chunks": [
@@ -1054,7 +139,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#\"http": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#\"http": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "\"http",
       "chunks": [
@@ -1062,7 +147,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#searchParams": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#searchParams": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "searchParams",
       "chunks": [
@@ -1070,7 +155,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#searchParams": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#searchParams": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "searchParams",
       "chunks": [
@@ -1078,7 +163,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#pathname": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#pathname": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "pathname",
       "chunks": [
@@ -1086,7 +171,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#pathname": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#pathname": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "pathname",
       "chunks": [
@@ -1094,7 +179,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#type": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#type": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "type",
       "chunks": [
@@ -1102,7 +187,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#type": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#type": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "type",
       "chunks": [
@@ -1110,7 +195,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#cache": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#cache": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "cache",
       "chunks": [
@@ -1118,7 +203,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#cache": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#cache": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "cache",
       "chunks": [
@@ -1126,7 +211,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#status": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#status": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "status",
       "chunks": [
@@ -1134,7 +219,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#status": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#status": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "status",
       "chunks": [
@@ -1142,7 +227,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#data": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#data": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "data",
       "chunks": [
@@ -1150,7 +235,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#data": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#data": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "data",
       "chunks": [
@@ -1158,7 +243,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#subTreeData": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#subTreeData": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "subTreeData",
       "chunks": [
@@ -1166,7 +251,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#subTreeData": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#subTreeData": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "subTreeData",
       "chunks": [
@@ -1174,7 +259,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#parallelRoutes": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#parallelRoutes": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "parallelRoutes",
       "chunks": [
@@ -1182,7 +267,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#parallelRoutes": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#parallelRoutes": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "parallelRoutes",
       "chunks": [
@@ -1190,7 +275,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#mutable": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#mutable": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "mutable",
       "chunks": [
@@ -1198,7 +283,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#mutable": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#mutable": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "mutable",
       "chunks": [
@@ -1206,7 +291,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#isExternalUrl": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#isExternalUrl": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "isExternalUrl",
       "chunks": [
@@ -1214,7 +299,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#isExternalUrl": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#isExternalUrl": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "isExternalUrl",
       "chunks": [
@@ -1222,7 +307,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#locationSearch": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#locationSearch": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "locationSearch",
       "chunks": [
@@ -1230,7 +315,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#locationSearch": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#locationSearch": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "locationSearch",
       "chunks": [
@@ -1238,7 +323,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#back": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#back": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "back",
       "chunks": [
@@ -1246,7 +331,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#back": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#back": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "back",
       "chunks": [
@@ -1254,7 +339,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#forward": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#forward": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "forward",
       "chunks": [
@@ -1262,7 +347,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#forward": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#forward": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "forward",
       "chunks": [
@@ -1270,7 +355,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#prefetch": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#prefetch": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "prefetch",
       "chunks": [
@@ -1278,7 +363,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#prefetch": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#prefetch": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "prefetch",
       "chunks": [
@@ -1286,7 +371,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#kind": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#kind": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "kind",
       "chunks": [
@@ -1294,7 +379,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#kind": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#kind": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "kind",
       "chunks": [
@@ -1302,7 +387,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#replace": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#replace": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "replace",
       "chunks": [
@@ -1310,7 +395,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#replace": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#replace": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "replace",
       "chunks": [
@@ -1318,7 +403,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#push": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#push": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "push",
       "chunks": [
@@ -1326,7 +411,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#push": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#push": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "push",
       "chunks": [
@@ -1334,7 +419,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#refresh": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#refresh": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "refresh",
       "chunks": [
@@ -1342,7 +427,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#refresh": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#refresh": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "refresh",
       "chunks": [
@@ -1350,7 +435,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#origin": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#origin": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "origin",
       "chunks": [
@@ -1358,7 +443,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#origin": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#origin": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "origin",
       "chunks": [
@@ -1366,7 +451,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#fastRefresh": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#fastRefresh": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "fastRefresh",
       "chunks": [
@@ -1374,7 +459,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#fastRefresh": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#fastRefresh": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "fastRefresh",
       "chunks": [
@@ -1382,7 +467,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#router": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#router": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "router",
       "chunks": [
@@ -1390,7 +475,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#router": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#router": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "router",
       "chunks": [
@@ -1398,7 +483,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#(eg": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#(eg": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "(eg",
       "chunks": [
@@ -1406,7 +491,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#(eg": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#(eg": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "(eg",
       "chunks": [
@@ -1414,7 +499,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#url": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#url": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "url",
       "chunks": [
@@ -1422,7 +507,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#url": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#url": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "url",
       "chunks": [
@@ -1430,7 +515,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#tree": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#tree": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "tree",
       "chunks": [
@@ -1438,7 +523,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#tree": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#tree": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "tree",
       "chunks": [
@@ -1446,7 +531,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#notFound": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#notFound": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "notFound",
       "chunks": [
@@ -1454,7 +539,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#notFound": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#notFound": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "notFound",
       "chunks": [
@@ -1462,7 +547,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#notFoundStyles": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#notFoundStyles": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "notFoundStyles",
       "chunks": [
@@ -1470,7 +555,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#notFoundStyles": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#notFoundStyles": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "notFoundStyles",
       "chunks": [
@@ -1478,7 +563,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#asNotFound": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#asNotFound": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "asNotFound",
       "chunks": [
@@ -1486,7 +571,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#asNotFound": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#asNotFound": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "asNotFound",
       "chunks": [
@@ -1494,7 +579,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#pushRef": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#pushRef": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "pushRef",
       "chunks": [
@@ -1502,7 +587,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#pushRef": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#pushRef": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "pushRef",
       "chunks": [
@@ -1510,7 +595,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#canonicalUrl": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#canonicalUrl": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "canonicalUrl",
       "chunks": [
@@ -1518,7 +603,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#canonicalUrl": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#canonicalUrl": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "canonicalUrl",
       "chunks": [
@@ -1526,7 +611,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#sync": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#sync": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "sync",
       "chunks": [
@@ -1534,7 +619,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#sync": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#sync": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "sync",
       "chunks": [
@@ -1542,7 +627,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#value": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#value": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "value",
       "chunks": [
@@ -1550,7 +635,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#value": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#value": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "value",
       "chunks": [
@@ -1558,7 +643,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#childNodes": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#childNodes": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "childNodes",
       "chunks": [
@@ -1566,7 +651,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#childNodes": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#childNodes": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "childNodes",
       "chunks": [
@@ -1574,7 +659,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#assetPrefix": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#assetPrefix": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "assetPrefix",
       "chunks": [
@@ -1582,7 +667,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#assetPrefix": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#assetPrefix": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "assetPrefix",
       "chunks": [
@@ -1590,7 +675,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#errorComponent": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\app-router.js#errorComponent": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "errorComponent",
       "chunks": [
@@ -1598,7 +683,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#errorComponent": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\app-router.js#errorComponent": {
       "id": "(app-client)/./node_modules/next/dist/client/components/app-router.js",
       "name": "errorComponent",
       "chunks": [
@@ -1606,7 +691,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "*",
       "chunks": [
@@ -1614,7 +699,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "*",
       "chunks": [
@@ -1622,7 +707,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "",
       "chunks": [
@@ -1630,7 +715,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "",
       "chunks": [
@@ -1638,7 +723,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "default",
       "chunks": [
@@ -1646,7 +731,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "default",
       "chunks": [
@@ -1654,7 +739,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#ErrorBoundaryHandler": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#ErrorBoundaryHandler": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "ErrorBoundaryHandler",
       "chunks": [
@@ -1662,7 +747,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#ErrorBoundaryHandler": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#ErrorBoundaryHandler": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "ErrorBoundaryHandler",
       "chunks": [
@@ -1670,7 +755,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#ErrorBoundary": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#ErrorBoundary": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "ErrorBoundary",
       "chunks": [
@@ -1678,7 +763,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#ErrorBoundary": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#ErrorBoundary": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "ErrorBoundary",
       "chunks": [
@@ -1686,7 +771,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#error": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#error": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "error",
       "chunks": [
@@ -1694,7 +779,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#error": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#error": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "error",
       "chunks": [
@@ -1702,7 +787,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#https": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#https": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "https",
       "chunks": [
@@ -1710,7 +795,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#https": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#https": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "https",
       "chunks": [
@@ -1718,7 +803,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#fontFamily": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#fontFamily": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "fontFamily",
       "chunks": [
@@ -1726,7 +811,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#fontFamily": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#fontFamily": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "fontFamily",
       "chunks": [
@@ -1734,7 +819,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#height": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#height": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "height",
       "chunks": [
@@ -1742,7 +827,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#height": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#height": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "height",
       "chunks": [
@@ -1750,7 +835,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#textAlign": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#textAlign": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "textAlign",
       "chunks": [
@@ -1758,7 +843,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#textAlign": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#textAlign": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "textAlign",
       "chunks": [
@@ -1766,7 +851,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#display": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#display": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "display",
       "chunks": [
@@ -1774,7 +859,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#display": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#display": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "display",
       "chunks": [
@@ -1782,7 +867,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#flexDirection": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#flexDirection": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "flexDirection",
       "chunks": [
@@ -1790,7 +875,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#flexDirection": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#flexDirection": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "flexDirection",
       "chunks": [
@@ -1798,7 +883,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#alignItems": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#alignItems": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "alignItems",
       "chunks": [
@@ -1806,7 +891,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#alignItems": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#alignItems": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "alignItems",
       "chunks": [
@@ -1814,7 +899,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#justifyContent": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#justifyContent": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "justifyContent",
       "chunks": [
@@ -1822,7 +907,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#justifyContent": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#justifyContent": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "justifyContent",
       "chunks": [
@@ -1830,7 +915,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#desc": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#desc": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "desc",
       "chunks": [
@@ -1838,7 +923,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#desc": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#desc": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "desc",
       "chunks": [
@@ -1846,7 +931,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#text": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#text": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "text",
       "chunks": [
@@ -1854,7 +939,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#text": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#text": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "text",
       "chunks": [
@@ -1862,7 +947,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#fontSize": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#fontSize": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "fontSize",
       "chunks": [
@@ -1870,7 +955,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#fontSize": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#fontSize": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "fontSize",
       "chunks": [
@@ -1878,7 +963,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#fontWeight": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#fontWeight": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "fontWeight",
       "chunks": [
@@ -1886,7 +971,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#fontWeight": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#fontWeight": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "fontWeight",
       "chunks": [
@@ -1894,7 +979,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#lineHeight": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#lineHeight": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "lineHeight",
       "chunks": [
@@ -1902,7 +987,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#lineHeight": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#lineHeight": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "lineHeight",
       "chunks": [
@@ -1910,7 +995,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#margin": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#margin": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "margin",
       "chunks": [
@@ -1918,7 +1003,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#margin": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#margin": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "margin",
       "chunks": [
@@ -1926,7 +1011,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#reset": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#reset": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "reset",
       "chunks": [
@@ -1934,7 +1019,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#reset": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#reset": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "reset",
       "chunks": [
@@ -1942,7 +1027,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#style": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#style": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "style",
       "chunks": [
@@ -1950,7 +1035,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#style": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#style": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "style",
       "chunks": [
@@ -1958,7 +1043,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#\"Digest": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#\"Digest": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "\"Digest",
       "chunks": [
@@ -1966,7 +1051,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#\"Digest": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#\"Digest": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "\"Digest",
       "chunks": [
@@ -1974,7 +1059,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#errorComponent": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#errorComponent": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "errorComponent",
       "chunks": [
@@ -1982,7 +1067,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#errorComponent": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#errorComponent": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "errorComponent",
       "chunks": [
@@ -1990,7 +1075,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#errorStyles": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#errorStyles": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "errorStyles",
       "chunks": [
@@ -1998,7 +1083,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#errorStyles": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#errorStyles": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "errorStyles",
       "chunks": [
@@ -2006,7 +1091,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#value": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\error-boundary.js#value": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "value",
       "chunks": [
@@ -2014,7 +1099,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#value": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\error-boundary.js#value": {
       "id": "(app-client)/./node_modules/next/dist/client/components/error-boundary.js",
       "name": "value",
       "chunks": [
@@ -2022,7 +1107,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "*",
       "chunks": [
@@ -2030,7 +1115,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "*",
       "chunks": [
@@ -2038,7 +1123,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "",
       "chunks": [
@@ -2046,7 +1131,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "",
       "chunks": [
@@ -2054,7 +1139,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "default",
       "chunks": [
@@ -2062,7 +1147,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "default",
       "chunks": [
@@ -2070,15 +1155,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#RedirectErrorBoundary": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
-      "name": "RedirectErrorBoundary",
-      "chunks": [
-        "webpack:static/chunks/webpack.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#RedirectErrorBoundary": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#RedirectErrorBoundary": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "RedirectErrorBoundary",
       "chunks": [
@@ -2086,7 +1163,15 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#RedirectBoundary": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#RedirectErrorBoundary": {
+      "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
+      "name": "RedirectErrorBoundary",
+      "chunks": [
+        "webpack:static/chunks/webpack.js"
+      ],
+      "async": false
+    },
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#RedirectBoundary": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "RedirectBoundary",
       "chunks": [
@@ -2094,7 +1179,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#RedirectBoundary": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#RedirectBoundary": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "RedirectBoundary",
       "chunks": [
@@ -2102,7 +1187,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#redirect": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#redirect": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "redirect",
       "chunks": [
@@ -2110,7 +1195,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#redirect": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#redirect": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "redirect",
       "chunks": [
@@ -2118,7 +1203,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#redirectType": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#redirectType": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "redirectType",
       "chunks": [
@@ -2126,7 +1211,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#redirectType": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#redirectType": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "redirectType",
       "chunks": [
@@ -2134,7 +1219,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#reset": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#reset": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "reset",
       "chunks": [
@@ -2142,7 +1227,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#reset": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#reset": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "reset",
       "chunks": [
@@ -2150,7 +1235,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#router": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#router": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "router",
       "chunks": [
@@ -2158,7 +1243,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#router": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#router": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "router",
       "chunks": [
@@ -2166,7 +1251,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#value": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\redirect-boundary.js#value": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "value",
       "chunks": [
@@ -2174,7 +1259,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#value": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\redirect-boundary.js#value": {
       "id": "(app-client)/./node_modules/next/dist/client/components/redirect-boundary.js",
       "name": "value",
       "chunks": [
@@ -2182,7 +1267,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\router-reducer\\fetch-server-response.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\router-reducer\\fetch-server-response.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
       "name": "*",
       "chunks": [
@@ -2190,7 +1275,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\router-reducer\\fetch-server-response.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\router-reducer\\fetch-server-response.js": {
       "id": "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
       "name": "*",
       "chunks": [
@@ -2198,7 +1283,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\router-reducer\\fetch-server-response.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\router-reducer\\fetch-server-response.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
       "name": "",
       "chunks": [
@@ -2206,7 +1291,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\router-reducer\\fetch-server-response.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\router-reducer\\fetch-server-response.js#": {
       "id": "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
       "name": "",
       "chunks": [
@@ -2214,7 +1299,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\router-reducer\\fetch-server-response.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\router-reducer\\fetch-server-response.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
       "name": "default",
       "chunks": [
@@ -2222,7 +1307,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\router-reducer\\fetch-server-response.js#default": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\router-reducer\\fetch-server-response.js#default": {
       "id": "(app-client)/./node_modules/next/dist/client/components/router-reducer/fetch-server-response.js",
       "name": "default",
       "chunks": [
@@ -2230,7 +1315,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "*",
       "chunks": [
@@ -2238,7 +1323,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "*",
       "chunks": [
@@ -2246,7 +1331,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "",
       "chunks": [
@@ -2254,7 +1339,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "",
       "chunks": [
@@ -2262,7 +1347,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#CacheStates": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#CacheStates": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "CacheStates",
       "chunks": [
@@ -2270,7 +1355,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#CacheStates": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#CacheStates": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "CacheStates",
       "chunks": [
@@ -2278,7 +1363,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#AppRouterContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#AppRouterContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "AppRouterContext",
       "chunks": [
@@ -2286,7 +1371,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#AppRouterContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#AppRouterContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "AppRouterContext",
       "chunks": [
@@ -2294,7 +1379,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#LayoutRouterContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#LayoutRouterContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "LayoutRouterContext",
       "chunks": [
@@ -2302,7 +1387,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#LayoutRouterContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#LayoutRouterContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "LayoutRouterContext",
       "chunks": [
@@ -2310,7 +1395,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#GlobalLayoutRouterContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#GlobalLayoutRouterContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "GlobalLayoutRouterContext",
       "chunks": [
@@ -2318,7 +1403,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#GlobalLayoutRouterContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#GlobalLayoutRouterContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "GlobalLayoutRouterContext",
       "chunks": [
@@ -2326,7 +1411,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#TemplateContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\app-router-context.js#TemplateContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "TemplateContext",
       "chunks": [
@@ -2334,7 +1419,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#TemplateContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\app-router-context.js#TemplateContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/app-router-context.js",
       "name": "TemplateContext",
       "chunks": [
@@ -2342,7 +1427,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "*",
       "chunks": [
@@ -2350,7 +1435,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "*",
       "chunks": [
@@ -2358,7 +1443,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js#": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "",
       "chunks": [
@@ -2366,7 +1451,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js#": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "",
       "chunks": [
@@ -2374,15 +1459,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js#SearchParamsContext": {
-      "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
-      "name": "SearchParamsContext",
-      "chunks": [
-        "webpack:static/chunks/webpack.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js#SearchParamsContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js#SearchParamsContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "SearchParamsContext",
       "chunks": [
@@ -2390,7 +1467,15 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js#PathnameContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js#SearchParamsContext": {
+      "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
+      "name": "SearchParamsContext",
+      "chunks": [
+        "webpack:static/chunks/webpack.js"
+      ],
+      "async": false
+    },
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\hooks-client-context.js#PathnameContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "PathnameContext",
       "chunks": [
@@ -2398,7 +1483,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js#PathnameContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\hooks-client-context.js#PathnameContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/hooks-client-context.js",
       "name": "PathnameContext",
       "chunks": [
@@ -2406,7 +1491,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "*",
       "chunks": [
@@ -2414,7 +1499,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "*",
       "chunks": [
@@ -2422,7 +1507,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js#": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "",
       "chunks": [
@@ -2430,7 +1515,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js#": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js#": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "",
       "chunks": [
@@ -2438,15 +1523,7 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js#ServerInsertedHTMLContext": {
-      "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
-      "name": "ServerInsertedHTMLContext",
-      "chunks": [
-        "webpack:static/chunks/webpack.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js#ServerInsertedHTMLContext": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js#ServerInsertedHTMLContext": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "ServerInsertedHTMLContext",
       "chunks": [
@@ -2454,7 +1531,15 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js#useServerInsertedHTML": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js#ServerInsertedHTMLContext": {
+      "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
+      "name": "ServerInsertedHTMLContext",
+      "chunks": [
+        "webpack:static/chunks/webpack.js"
+      ],
+      "async": false
+    },
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\shared\\lib\\server-inserted-html.js#useServerInsertedHTML": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "useServerInsertedHTML",
       "chunks": [
@@ -2462,373 +1547,11 @@
       ],
       "async": false
     },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js#useServerInsertedHTML": {
+    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\shared\\lib\\server-inserted-html.js#useServerInsertedHTML": {
       "id": "(app-client)/./node_modules/next/dist/shared/lib/server-inserted-html.js",
       "name": "useServerInsertedHTML",
       "chunks": [
         "webpack:static/chunks/webpack.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\layout-router.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/layout-router.js",
-      "name": "*",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\layout-router.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/layout-router.js",
-      "name": "*",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\layout-router.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/layout-router.js",
-      "name": "",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\layout-router.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/layout-router.js",
-      "name": "",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\layout-router.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/layout-router.js",
-      "name": "default",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\layout-router.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/layout-router.js",
-      "name": "default",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\render-from-template-context.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-      "name": "*",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\render-from-template-context.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-      "name": "*",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\render-from-template-context.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-      "name": "",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\render-from-template-context.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-      "name": "",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\render-from-template-context.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-      "name": "default",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\render-from-template-context.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/render-from-template-context.js",
-      "name": "default",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\static-generation-searchparams-bailout-provider.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-      "name": "*",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\static-generation-searchparams-bailout-provider.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-      "name": "*",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\static-generation-searchparams-bailout-provider.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-      "name": "",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\static-generation-searchparams-bailout-provider.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-      "name": "",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\components\\static-generation-searchparams-bailout-provider.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-      "name": "default",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\components\\static-generation-searchparams-bailout-provider.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/components/static-generation-searchparams-bailout-provider.js",
-      "name": "default",
-      "chunks": [
-        "app-client-internals:static/chunks/app-client-internals.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\start.css#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/page.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\link.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/link.js",
-      "name": "*",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\link.js": {
-      "id": "(app-client)/./node_modules/next/dist/client/link.js",
-      "name": "*",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\link.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/link.js",
-      "name": "",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\link.js#": {
-      "id": "(app-client)/./node_modules/next/dist/client/link.js",
-      "name": "",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\client\\link.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/link.js",
-      "name": "default",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\dist\\esm\\client\\link.js#default": {
-      "id": "(app-client)/./node_modules/next/dist/client/link.js",
-      "name": "default",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-in\\signin.css#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/(authentication)/sign-in/page.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\auth.module.css#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/(authentication)/sign-in/page.css",
-        "static/css/app/(authentication)/sign-up/page.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\password.tsx": {
-      "id": "(app-client)/./app/(authentication)/password.tsx",
-      "name": "*",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\password.tsx#": {
-      "id": "(app-client)/./app/(authentication)/password.tsx",
-      "name": "",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\password.tsx#default": {
-      "id": "(app-client)/./app/(authentication)/password.tsx",
-      "name": "default",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-in\\page.tsx": {
-      "id": "(app-client)/./app/(authentication)/sign-in/page.tsx",
-      "name": "*",
-      "chunks": [
-        "app/(authentication)/sign-in/page:static/chunks/app/(authentication)/sign-in/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-in\\page.tsx#": {
-      "id": "(app-client)/./app/(authentication)/sign-in/page.tsx",
-      "name": "",
-      "chunks": [
-        "app/(authentication)/sign-in/page:static/chunks/app/(authentication)/sign-in/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-in\\page.tsx#default": {
-      "id": "(app-client)/./app/(authentication)/sign-in/page.tsx",
-      "name": "default",
-      "chunks": [
-        "app/(authentication)/sign-in/page:static/chunks/app/(authentication)/sign-in/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\globals.css#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/layout.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\bootstrap\\dist\\css\\bootstrap.css#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/layout.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\node_modules\\next\\font\\google\\target.css?{\"path\":\"app\\\\layout.tsx\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/layout.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-up\\page.tsx": {
-      "id": "(app-client)/./app/(authentication)/sign-up/page.tsx",
-      "name": "*",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-up\\page.tsx#": {
-      "id": "(app-client)/./app/(authentication)/sign-up/page.tsx",
-      "name": "",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\(authentication)\\sign-up\\page.tsx#default": {
-      "id": "(app-client)/./app/(authentication)/sign-up/page.tsx",
-      "name": "default",
-      "chunks": [
-        "app/(authentication)/sign-up/page:static/chunks/app/(authentication)/sign-up/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\studyListings.css#": {
-      "id": "null",
-      "name": "default",
-      "chunks": [
-        "static/css/app/study-listings/page.css"
-      ]
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\filterPanel.tsx": {
-      "id": "(app-client)/./app/study-listings/filterPanel.tsx",
-      "name": "*",
-      "chunks": [
-        "app/study-listings/page:static/chunks/app/study-listings/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\filterPanel.tsx#": {
-      "id": "(app-client)/./app/study-listings/filterPanel.tsx",
-      "name": "",
-      "chunks": [
-        "app/study-listings/page:static/chunks/app/study-listings/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\filterPanel.tsx#default": {
-      "id": "(app-client)/./app/study-listings/filterPanel.tsx",
-      "name": "default",
-      "chunks": [
-        "app/study-listings/page:static/chunks/app/study-listings/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\page.tsx": {
-      "id": "(app-client)/./app/study-listings/page.tsx",
-      "name": "*",
-      "chunks": [
-        "app/study-listings/page:static/chunks/app/study-listings/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\page.tsx#": {
-      "id": "(app-client)/./app/study-listings/page.tsx",
-      "name": "",
-      "chunks": [
-        "app/study-listings/page:static/chunks/app/study-listings/page.js"
-      ],
-      "async": false
-    },
-    "C:\\Users\\mcnab\\OneDrive\\Desktop\\School\\Orbital\\orbital-grindtogether\\frontend-client\\app\\study-listings\\page.tsx#default": {
-      "id": "(app-client)/./app/study-listings/page.tsx",
-      "name": "default",
-      "chunks": [
-        "app/study-listings/page:static/chunks/app/study-listings/page.js"
       ],
       "async": false
     }
