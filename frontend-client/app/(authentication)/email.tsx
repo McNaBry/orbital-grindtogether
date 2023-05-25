@@ -8,6 +8,7 @@ function Email() {
         </label>
         <input
           type="email"
+          name="email"
           className="form-control"
           id="email"
           placeholder="Enter your email"

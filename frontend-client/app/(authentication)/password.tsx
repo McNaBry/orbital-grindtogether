@@ -13,6 +13,7 @@ function PasswordInput({ value, onChange, type }: PasswordInputProps) {
   return (
     <input
       type={type}
+      name="password"
       className="form-control"
       id="password"
       placeholder="Enter your password"

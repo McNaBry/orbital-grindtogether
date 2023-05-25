@@ -41,11 +41,13 @@ function SignInPage() {
     <div className="signinpage row">
       <div className="left-half col-1 col-md-6"/>
       <div className="right-half col-10 col-md-5">
-        <WelcomeBack />
-        <Email />
-        <Password value={password} onChange={handlePasswordChange} />
-        <Login />
-        <NoAccount />
+        <form action="http://localhost:5000/auth" method="post">
+          <WelcomeBack />
+          <Email />
+          <Password value={password} onChange={handlePasswordChange} />
+          <Login />
+          <NoAccount />
+        </form>
       </div>
       <div className="col-1"/>
     </div>
