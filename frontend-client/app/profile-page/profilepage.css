@@ -49,8 +49,16 @@
     font-size: 18px;
 }
 
-.card-content {
+#card-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.full-star-icon  {
+    color: #007fff;
+}
+
+.half-star-icon {
+    color: #007fff;
 }

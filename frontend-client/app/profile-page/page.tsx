@@ -4,6 +4,7 @@ import "./profilepage.css";
 import "./nonEditableCard";
 import NonEditableCard from "./nonEditableCard";
 import EditableCard from "./editableCard";
+import RatingCard from "./ratingCard";
 
 function EditProfile() {
   return <h2> Edit Profile </h2>;
@@ -101,6 +102,7 @@ function ProfilePage() {
           handleFieldChange({ fieldToUpdate: "telegramHandle", value })
         }
       />
+      <RatingCard rating = {4.5}/>
     </div>
   );
 }
