@@ -22,6 +22,7 @@ function Name() {
       </label>
       <input
         type="text"
+        name = "fullName"
         className="form-control"
         id="full-name"
         placeholder="Enter your full name"
@@ -212,6 +213,7 @@ function SignUpPage() {
       <div className="col-1 col-md-6" />
       <div className={"col-10 col-md-5 " + styles["right-half"]}>
         <GetStarted />
+        <form action="http://localhost:5000/sign-up" method = "post">
         <div className={styles["form-fields"]}>
           <Name />
           <Email />
@@ -222,6 +224,7 @@ function SignUpPage() {
           />
         </div>
         <CreateAccount password={password} confirmPassword={confirmPassword} />
+        </form>
         <AlreadyHaveAccount />
       </div>
       <div className="col-1 col-md-1"></div>
