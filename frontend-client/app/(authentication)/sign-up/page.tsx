@@ -83,106 +83,8 @@ function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
 
 type CreateAccountProps = {
   password: string,
-  confirmPassword: string
-}
-
-function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const [successStatus, setSuccessStatus] = useState(false);
-  const [failureStatus, setFailureStatus] = useState(false);
-
-  const handleCreateAccount = () => {
-    if (!pc.checkPassword(password, confirmPassword)) {
-      setErrorMsg("Passwords entered do not match");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeast8Char(password)) {
-      setErrorMsg("Password should be at least 8 characters long");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneCap(password)) {
-      setErrorMsg("Password should at least have one capital letter");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneLower(password)) {
-      setErrorMsg("Password should at least have one lowercase letter");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneNumber(password)) {
-      setErrorMsg("Password should at least have one number");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneSpecial(password)) {
-      setErrorMsg("Password should at least have one special character");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else {
-      setSuccessMsg("Account has been successfully created!");
-      setSuccessStatus(true);
-      setFailureStatus(false);
-    }
-  };
-
-  const dismissAlert = () => {
-    setErrorMsg("");
-    setSuccessMsg("");
-    setSuccessStatus(false);
-    setFailureStatus(false);
-  };
-
-  return (
-    <>
-      <button
-        type="submit"
-        className="btn mb-3"
-        id={styles["create-account"]}
-        onClick={handleCreateAccount}
-      >
-        Create Account
-      </button>
-      {failureStatus && errorMsg && (
-        <div
-          className={"alert alert-dismissible fade show " + styles["alert-danger"]}
-          role="alert"
-        >
-          <img
-            src={"images/danger.svg"}
-            className="bi flex-shrink-0 me-2"
-            id={styles["danger-icon"]}
-          />
-          {errorMsg}
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            onClick={dismissAlert}
-          ></button>
-        </div>
-      )}
-      {successStatus && successMsg && (
-        <div
-          className={"alert alert-dismissible fade show " + styles["alert-success"]}
-          role="alert"
-        >
-          <img
-            src="images/success.svg"
-            className="bi flex-shrink-0 me-2"
-            id={styles["success-icon"]}
-          />
-          {successMsg}
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            onClick={dismissAlert}
-          ></button>
-        </div>
-      )}
-    </>
-  );
+  confirmPassword: string,
+  email: string
 }
 
 function AlreadyHaveAccount() {
@@ -197,6 +99,7 @@ function AlreadyHaveAccount() {
 function SignUpPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -208,6 +111,113 @@ function SignUpPage() {
     setConfirmPassword(event.target.value);
   };
 
+  const handleEmailChange = (newEmail: string) => {
+    setEmail(newEmail);
+  }
+
+  function CreateAccount({ password, confirmPassword, email } : CreateAccountProps) {
+    const [errorMsg, setErrorMsg] = useState("");
+    const [successMsg, setSuccessMsg] = useState("");
+    const [successStatus, setSuccessStatus] = useState(false);
+    const [failureStatus, setFailureStatus] = useState(false);
+  
+    const handleCreateAccount = () => {
+      if (!pc.checkValidEmailFormat(email)) {
+        setErrorMsg("Invalid email format");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else if (!pc.checkPassword(password, confirmPassword)) {
+        setErrorMsg("Passwords entered do not match");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else if (!pc.atLeast8Char(password)) {
+        setErrorMsg("Password should be at least 8 characters long");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else if (!pc.atLeastOneCap(password)) {
+        setErrorMsg("Password should at least have one capital letter");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else if (!pc.atLeastOneLower(password)) {
+        setErrorMsg("Password should at least have one lowercase letter");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else if (!pc.atLeastOneNumber(password)) {
+        setErrorMsg("Password should at least have one number");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else if (!pc.atLeastOneSpecial(password)) {
+        setErrorMsg("Password should at least have one special character");
+        setSuccessStatus(false);
+        setFailureStatus(true);
+      } else {
+        setSuccessMsg("Account has been successfully created!");
+        setSuccessStatus(true);
+        setFailureStatus(false);
+      }
+    };
+  
+    const dismissAlert = () => {
+      setErrorMsg("");
+      setSuccessMsg("");
+      setSuccessStatus(false);
+      setFailureStatus(false);
+    };
+  
+    return (
+      <>
+        <button
+          type="submit"
+          className="btn mb-3"
+          id={styles["create-account"]}
+          onClick={handleCreateAccount}
+        >
+          Create Account
+        </button>
+        {failureStatus && errorMsg && (
+          <div
+            className={"alert alert-dismissible fade show " + styles["alert-danger"]}
+            role="alert"
+          >
+            <img
+              src={"images/danger.svg"}
+              className="bi flex-shrink-0 me-2"
+              id={styles["danger-icon"]}
+            />
+            {errorMsg}
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={dismissAlert}
+            ></button>
+          </div>
+        )}
+        {successStatus && successMsg && (
+          <div
+            className={"alert alert-dismissible fade show " + styles["alert-success"]}
+            role="alert"
+          >
+            <img
+              src="images/success.svg"
+              className="bi flex-shrink-0 me-2"
+              id={styles["success-icon"]}
+            />
+            {successMsg}
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={dismissAlert}
+            ></button>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className={"row " + styles["sign-up-page"]}>
       <div className="col-1 col-md-6" />
@@ -216,14 +226,14 @@ function SignUpPage() {
         <form action="http://localhost:5000/sign-up" method = "post">
         <div className={styles["form-fields"]}>
           <Name />
-          <Email />
+          <Email onChange ={handleEmailChange}/>
           <Password value={password} onChange={handlePasswordChange} />
           <ConfirmPassword
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
           />
         </div>
-        <CreateAccount password={password} confirmPassword={confirmPassword} />
+        <CreateAccount password={password} confirmPassword={confirmPassword} email = {email}/>
         </form>
         <AlreadyHaveAccount />
       </div>
