@@ -22,16 +22,11 @@ function atLeastOneSpecial(password) {
     return /(?=[^!@#$%^&*]*[!@#$%^&*])/.test(password);
 }
 
-function checkValidEmailFormat(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 module.exports = {
     checkPassword,
     atLeast8Char,
     atLeastOneCap,
     atLeastOneLower,
     atLeastOneNumber,
-    atLeastOneSpecial,
-    checkValidEmailFormat
+    atLeastOneSpecial
 };

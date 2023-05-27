@@ -31,12 +31,7 @@ function NoAccount() {
 }
 
 function SignInPage() {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleEmailChange = (newEmail: string) => {
-    setEmail(newEmail);
-  }
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -48,7 +43,7 @@ function SignInPage() {
       <div className="right-half col-10 col-md-5">
         <form action="http://localhost:5000/auth" method="post">
           <WelcomeBack />
-          <Email onChange = {handleEmailChange}/>
+          <Email />
           <Password value={password} onChange={handlePasswordChange} />
           <Login />
           <NoAccount />
