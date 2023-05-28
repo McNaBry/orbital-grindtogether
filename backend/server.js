@@ -2,9 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const db = require("./firebase");
-
-const pc = require("../frontend-client/app/(authentication)/sign-up/passwordChecks.js");
+const { db, fireAuth } = require("./firebase");
 
 app.use(cors());
 app.use(express.json());
@@ -27,48 +25,32 @@ app.get("/firebase", async (req, res) => {
 });
 
 app.post("/sign-up", async (req, res) => {
-  const formData = {
-    "Full Name": req.body.fullName,
-    "Email": req.body.email,
-    "Password": req.body.password,
+  const user = {
+    "fullName": req.body.fullName,
+    "email": req.body.email,
+    "password": req.body.password,
+    "bio": "Hello!",
+    "rating": 0
   };
 
-  // this code works but im tryna implement conditional below and it doesnt work
   try {
-    await db.collection("users").add(formData);
-    console.log("Account successfully created!");
-    res.redirect("http://localhost:3000/study-listings");
+    await fireAuth.createUser({
+      email: user.email,
+      emailVerified: true,
+      password: user.password,
+      displayName: user.fullName,
+      disabled: false,
+    }).then(async () => {
+      await db.collection("users").add(user).then(() => {
+        console.log("Account successfully created")
+        res.send(200)
+      })
+    })
   } catch (error) {
     console.error("Error occurred while saving data to Firebase: ", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while saving the form data" });
+    res.status(500)
+    return
   }
-
-  // try {
-  //   if (!pc.checkPassword(formData.password, req.body.confirmPassword)) {
-  //     // res.status(400).json({ success: false, error: "Passwords entered do not match" });
-  //   } else if (!pc.atLeast8Char(formData.password)) {
-  //     // res.status(400).json({ success: false, error: "Password should be at least 8 characters long"});
-  //   } else if (!pc.atLeastOneCap(formData.password)) {
-  //     // res.status(400).json({ success: false, error: "Password should have at least one capital letter"});
-  //   } else if (!pc.atLeastOneLower(formData.password)) {
-  //     // res.status(400).json({ success: false, error: "Password should at least have one lowercase letter"});
-  //   } else if (!pc.atLeastOneNumber(formData.password)) {
-  //     // res.status(400).json({ success: false, error: "Password should at least have one number"});
-  //   } else if (!pc.atLeastOneSpecial(formData.password)) {
-  //     // res.status(400).json({ success: false, error: "Password should at least have one special character"});
-  //   } else {
-  //     await db.collection("users").add(formData);
-  //     console.log("Account successfully created!");
-  //     res.redirect("http://localhost:3000/study-listings");
-  //   } 
-  // } catch (error) {
-  //   // console.error("Error occurred while saving data to Firebase: ", error);
-  //   // res
-  //   //   .status(500)
-  //   //   .json({ error: "An error occurred while saving the form data" });
-  // }
 });
 
 const port = 5000;
