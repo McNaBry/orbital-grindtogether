@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent, MouseEventHandler } from "react";
 import styles from "../auth.module.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation"
 
 import Password from "../password";
 import Email from "../email";
@@ -22,7 +23,7 @@ function Name() {
       </label>
       <input
         type="text"
-        name = "fullName"
+        name="fullName"
         className="form-control"
         id="full-name"
         placeholder="Enter your full name"
@@ -45,6 +46,7 @@ function ConfirmPasswordInput({
   return (
     <input
       type={type}
+      name="confirmPw"
       className="form-control"
       id="confirm-password"
       placeholder="Confirm your password"
@@ -81,107 +83,94 @@ function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
   );
 }
 
-type CreateAccountProps = {
-  password: string,
-  confirmPassword: string
+type CreateStatusProps = {
+  msg: string,
+  success: boolean,
+  dismissAlert: MouseEventHandler<HTMLButtonElement>
 }
-
-function CreateAccount({ password, confirmPassword } : CreateAccountProps) {
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const [successStatus, setSuccessStatus] = useState(false);
-  const [failureStatus, setFailureStatus] = useState(false);
-
-  const handleCreateAccount = () => {
-    if (!pc.checkPassword(password, confirmPassword)) {
-      setErrorMsg("Passwords entered do not match");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeast8Char(password)) {
-      setErrorMsg("Password should be at least 8 characters long");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneCap(password)) {
-      setErrorMsg("Password should at least have one capital letter");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneLower(password)) {
-      setErrorMsg("Password should at least have one lowercase letter");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneNumber(password)) {
-      setErrorMsg("Password should at least have one number");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else if (!pc.atLeastOneSpecial(password)) {
-      setErrorMsg("Password should at least have one special character");
-      setSuccessStatus(false);
-      setFailureStatus(true);
-    } else {
-      setSuccessMsg("Account has been successfully created!");
-      setSuccessStatus(true);
-      setFailureStatus(false);
-    }
-  };
-
-  const dismissAlert = () => {
-    setErrorMsg("");
-    setSuccessMsg("");
-    setSuccessStatus(false);
-    setFailureStatus(false);
-  };
-
+function CreateStatus({ msg, success, dismissAlert }: CreateStatusProps) {
   return (
     <>
-      <button
-        type="submit"
-        className="btn mb-3"
-        id={styles["create-account"]}
-        onClick={handleCreateAccount}
+    {!success && msg && (
+      <div
+        className={"alert alert-dismissible fade show " + styles["alert-danger"]}
+        role="alert"
       >
-        Create Account
-      </button>
-      {failureStatus && errorMsg && (
-        <div
-          className={"alert alert-dismissible fade show " + styles["alert-danger"]}
-          role="alert"
-        >
-          <img
-            src={"images/danger.svg"}
-            className="bi flex-shrink-0 me-2"
-            id={styles["danger-icon"]}
-          />
-          {errorMsg}
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            onClick={dismissAlert}
-          ></button>
-        </div>
-      )}
-      {successStatus && successMsg && (
-        <div
-          className={"alert alert-dismissible fade show " + styles["alert-success"]}
-          role="alert"
-        >
-          <img
-            src="images/success.svg"
-            className="bi flex-shrink-0 me-2"
-            id={styles["success-icon"]}
-          />
-          {successMsg}
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            onClick={dismissAlert}
-          ></button>
-        </div>
-      )}
+        <img
+          src={"images/danger.svg"}
+          className="bi flex-shrink-0 me-2"
+          id={styles["danger-icon"]}
+        />
+        {msg}
+        <button
+          type="button"
+          className="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+          onClick={dismissAlert}
+        ></button>
+      </div>
+    )}
+    {success && msg && (
+      <div
+        className={"alert alert-dismissible fade show " + styles["alert-success"]}
+        role="alert"
+      >
+        <img
+          src="images/success.svg"
+          className="bi flex-shrink-0 me-2"
+          id={styles["success-icon"]}
+        />
+        {msg}
+        <button
+          type="button"
+          className="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+          onClick={dismissAlert}
+        ></button>
+      </div>
+    )}
     </>
+  )
+}
+
+type ValidatePasswordParams = {
+  pw: FormDataEntryValue | null,
+  confirmPw: FormDataEntryValue | null,
+  setMsg: (msg: string) => void,
+  setSuccess: (success: boolean) => void
+}
+function ValidatePassword(details: ValidatePasswordParams) {
+  const {pw, confirmPw, setMsg, setSuccess} = details
+  if(!pw || !confirmPw) return false
+
+  if (!pc.checkPassword(pw, confirmPw)) {
+    setMsg("Passwords entered do not match")
+  } else if (!pc.atLeast8Char(pw)) {
+    setMsg("Password should be at least 8 characters long")
+  } else if (!pc.atLeastOneCap(pw)) {
+    setMsg("Password should at least have one capital letter")
+  } else if (!pc.atLeastOneLower(pw)) {
+    setMsg("Password should at least have one lowercase letter")
+  } else if (!pc.atLeastOneNumber(pw)) {
+    setMsg("Password should at least have one number")
+  } else if (!pc.atLeastOneSpecial(pw)) {
+    setMsg("Password should at least have one special character")
+  } else {
+    return true
+  }
+  setSuccess(false)
+  return false
+}
+
+function CreateAccount() {
+  return (
+    <button
+      type="submit"
+      className="btn mb-3"
+      id={styles["create-account"]}
+    > Create Account </button>
   );
 }
 
@@ -195,8 +184,12 @@ function AlreadyHaveAccount() {
 }
 
 function SignUpPage() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const router = useRouter()
+
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [msg, setMsg] = useState<string>("")
+  const [success, setSuccess] = useState<boolean>(false)
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -208,12 +201,56 @@ function SignUpPage() {
     setConfirmPassword(event.target.value);
   };
 
+  const dismissAlert = () => {
+    setMsg("");
+    setSuccess(false);
+  };
+
+  const submitForm = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    if (!ValidatePassword({
+      pw: formData.get('password'), 
+      confirmPw: formData.get('confirmPw'), 
+      setMsg: setMsg, 
+      setSuccess: setSuccess})
+    ) return
+    let res: Response;
+    try {
+      res = await fetch('http://localhost:5000/sign-up', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: formData.get('fullName'),
+          email: formData.get('email'),
+          password: formData.get('password')
+        })
+      })
+    } catch (error) {
+      setMsg("Account not created. Issue with server connection")
+      setSuccess(false)
+      return
+    }
+
+    if (res.ok) {
+      setMsg("Account has been successfully created!")
+      setSuccess(true)
+      router.push("/study-listings")
+    } else {
+      setMsg("Account not created. Issue with server")
+      setSuccess(false)
+      router.push("/sign-up")
+    }
+  }
+
   return (
     <div className={"row " + styles["sign-up-page"]}>
       <div className="col-1 col-md-6" />
       <div className={"col-10 col-md-5 " + styles["right-half"]}>
         <GetStarted />
-        <form action="http://localhost:5000/sign-up" method = "post">
+        <form onSubmit={submitForm}>
         <div className={styles["form-fields"]}>
           <Name />
           <Email />
@@ -223,7 +260,11 @@ function SignUpPage() {
             onChange={handleConfirmPasswordChange}
           />
         </div>
-        <CreateAccount password={password} confirmPassword={confirmPassword} />
+        <CreateAccount />
+        <CreateStatus 
+          msg={msg} 
+          success={success} 
+          dismissAlert={dismissAlert} />
         </form>
         <AlreadyHaveAccount />
       </div>
