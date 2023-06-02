@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import Password from "../password";
 import Email from "../email";
 import EyeForPassword from "../eyeForPassword";
+import CreateStatus from "../createStatus";
 
 import * as pc from "./passwordChecks.js";
 
@@ -83,58 +84,6 @@ function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
   );
 }
 
-type CreateStatusProps = {
-  msg: string,
-  success: boolean,
-  dismissAlert: MouseEventHandler<HTMLButtonElement>
-}
-function CreateStatus({ msg, success, dismissAlert }: CreateStatusProps) {
-  return (
-    <>
-    {!success && msg && (
-      <div
-        className={"alert alert-dismissible fade show " + styles["alert-danger"]}
-        role="alert"
-      >
-        <img
-          src={"images/danger.svg"}
-          className="bi flex-shrink-0 me-2"
-          id={styles["danger-icon"]}
-        />
-        {msg}
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          onClick={dismissAlert}
-        ></button>
-      </div>
-    )}
-    {success && msg && (
-      <div
-        className={"alert alert-dismissible fade show " + styles["alert-success"]}
-        role="alert"
-      >
-        <img
-          src="images/success.svg"
-          className="bi flex-shrink-0 me-2"
-          id={styles["success-icon"]}
-        />
-        {msg}
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          onClick={dismissAlert}
-        ></button>
-      </div>
-    )}
-    </>
-  )
-}
-
 type ValidatePasswordParams = {
   pw: FormDataEntryValue | null,
   confirmPw: FormDataEntryValue | null,
@@ -146,17 +95,17 @@ function ValidatePassword(details: ValidatePasswordParams) {
   if(!pw || !confirmPw) return false
 
   if (!pc.checkPassword(pw, confirmPw)) {
-    setMsg("Passwords entered do not match")
+    setMsg("Passwords entered do not match.")
   } else if (!pc.atLeast8Char(pw)) {
-    setMsg("Password should be at least 8 characters long")
+    setMsg("Password should be at least 8 characters long.")
   } else if (!pc.atLeastOneCap(pw)) {
-    setMsg("Password should at least have one capital letter")
+    setMsg("Password should at least have one capital letter.")
   } else if (!pc.atLeastOneLower(pw)) {
-    setMsg("Password should at least have one lowercase letter")
+    setMsg("Password should at least have one lowercase letter.")
   } else if (!pc.atLeastOneNumber(pw)) {
     setMsg("Password should at least have one number")
   } else if (!pc.atLeastOneSpecial(pw)) {
-    setMsg("Password should at least have one special character")
+    setMsg("Password should at least have one special character.")
   } else {
     return true
   }
@@ -229,7 +178,7 @@ function SignUpPage() {
         })
       })
     } catch (error) {
-      setMsg("Account not created. Issue with server connection")
+      setMsg("Account not created. Issue with server connection.")
       setSuccess(false)
       return
     }
