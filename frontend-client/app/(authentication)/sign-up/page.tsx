@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"
 
 import Password from "../password";
+import ConfirmPassword from "../confirmPassword"
 import Email from "../email";
 import EyeForPassword from "../eyeForPassword";
 import CreateStatus from "../createStatus";
+import ValidatePassword from "../validatePassword"
 
 import * as pc from "./passwordChecks.js";
 
@@ -31,86 +33,6 @@ function Name() {
       ></input>
     </>
   );
-}
-
-interface ConfirmPasswordInputProps {
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  type?: "text" | "password";
-}
-
-function ConfirmPasswordInput({
-  value,
-  onChange,
-  type,
-}: ConfirmPasswordInputProps) {
-  return (
-    <input
-      type={type}
-      name="confirmPw"
-      className="form-control"
-      id="confirm-password"
-      placeholder="Confirm your password"
-      value={value}
-      onChange={onChange}
-    />
-  );
-}
-
-function ConfirmPassword({ value, onChange }: ConfirmPasswordInputProps) {
-  const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setConfirmPasswordVisible(!isConfirmPasswordVisible);
-  };
-
-  return (
-    <>
-      <label htmlFor="confirm-password" className={styles["form-label"]}>
-        Confirm Password
-      </label>
-      <div className={styles["password-input"]}>
-        <ConfirmPasswordInput
-          value={value}
-          onChange={onChange}
-          type={isConfirmPasswordVisible ? "text" : "password"}
-        />
-        <EyeForPassword
-          isVisible={isConfirmPasswordVisible}
-          setVisible={togglePasswordVisibility}
-        />
-      </div>
-    </>
-  );
-}
-
-type ValidatePasswordParams = {
-  pw: FormDataEntryValue | null,
-  confirmPw: FormDataEntryValue | null,
-  setMsg: (msg: string) => void,
-  setSuccess: (success: boolean) => void
-}
-function ValidatePassword(details: ValidatePasswordParams) {
-  const {pw, confirmPw, setMsg, setSuccess} = details
-  if(!pw || !confirmPw) return false
-
-  if (!pc.checkPassword(pw, confirmPw)) {
-    setMsg("Passwords entered do not match.")
-  } else if (!pc.atLeast8Char(pw)) {
-    setMsg("Password should be at least 8 characters long.")
-  } else if (!pc.atLeastOneCap(pw)) {
-    setMsg("Password should at least have one capital letter.")
-  } else if (!pc.atLeastOneLower(pw)) {
-    setMsg("Password should at least have one lowercase letter.")
-  } else if (!pc.atLeastOneNumber(pw)) {
-    setMsg("Password should at least have one number")
-  } else if (!pc.atLeastOneSpecial(pw)) {
-    setMsg("Password should at least have one special character.")
-  } else {
-    return true
-  }
-  setSuccess(false)
-  return false
 }
 
 function CreateAccount() {

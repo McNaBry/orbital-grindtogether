@@ -32,6 +32,14 @@ function NoAccount() {
   );
 }
 
+function ForgetPassword() {
+  return (
+    <p>
+      Forgot your password? <Link className = "reset-password-link" href = "reset-password"> Reset </Link>
+    </p>
+  )
+}
+
 function SignInPage() {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
@@ -72,7 +80,7 @@ function SignInPage() {
       } else if (res.status === 404) {
         setMsg("Email cannot be found in the database. Please create an account.");
       } else if (res.status === 401) {
-        setMsg("Passwords do not match.");
+        setMsg("Passwords is incorrect.");
       } else {
         setMsg("Cannot login due to unforeseen circumstances. Please try again later.");
       }
@@ -98,6 +106,7 @@ function SignInPage() {
           success={success} 
           dismissAlert={dismissAlert}/>
           <NoAccount />
+          <ForgetPassword />
         </form>
       </div>
       <div className="col-1"/>
