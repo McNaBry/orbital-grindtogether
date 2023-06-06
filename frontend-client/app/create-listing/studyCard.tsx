@@ -1,4 +1,6 @@
 import styles from "./create-listing.module.css"
+import personIcon from "../images/person-interested.svg"
+import dateIcon from "../images/date.svg"
 
 export type StudyListing = {
   title:    string,
@@ -38,9 +40,9 @@ export default function StudyCard(listingData : StudyListing) {
             <Tags tags={tags}/>
             <p className="card-text">{desc}</p>
             <p className="card-text row" style={{marginTop: "auto"}}>
-              <small className="text-body-secondary">{date}</small>
+              <small className="text-body-secondary"> <img src = {dateIcon} />{date}</small>
               <small className="text-body-secondary">{freq}</small>
-              <small className="text-body-secondary">{interest} people interested</small>
+              <small className="text-body-secondary">{interest} <img src = {personIcon} /> interested</small>
             </p>
           </div>
         </div>

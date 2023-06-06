@@ -1,0 +1,24 @@
+.like-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.like-button .heart-icon {
+  color: red; 
+  font-size: 40px;
+}
+
+.like-button.active .heart-icon {
+  color: red; 
+}
+
+.like-button .heart-icon path {
+  fill: white; 
+  stroke: red; 
+  stroke-width: 25px; 
+}
+
+.like-button.active .heart-icon path {
+  fill: red;
+}

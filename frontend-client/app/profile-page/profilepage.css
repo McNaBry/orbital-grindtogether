@@ -57,8 +57,17 @@
 
 .full-star-icon  {
     color: #007fff;
+    font-size: 25px;
 }
 
 .half-star-icon {
     color: #007fff;
+    font-size: 25px;
+  }
+
+.empty-star-icon {
+    font-size: 25px;
+    color: #007fff;
+    stroke: 5px;
+    fill: white;
 }

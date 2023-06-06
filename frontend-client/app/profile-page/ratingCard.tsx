@@ -1,6 +1,8 @@
 import React, {useState} from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+import "./profilepage.css";
+import fullStarIcon from "/images/star-full-icon.png"
+import halfStarIcon from "/images/star-half-icon.png"
+import emptyStarIcon from "/images/star-empty-icon.png"
 
 interface RatingProp {
     rating: Number;
@@ -17,12 +19,12 @@ function RatingCard({rating} : RatingProp) {
         const stars = []
         
         for (let i = 0; i < 5; i += 1) {
-            if (rating > i + 1) {
-                stars.push(<FontAwesomeIcon className= "full-star-icon" icon={faStar}/>)
+            if (rating >= i + 1) {
+              stars.push(<img className="star-icon" src={fullStarIcon} alt="Full Star" />);
             } else if (rating >= i + 0.5) {
-                stars.push(<FontAwesomeIcon className= "half-star-icon" icon={faStarHalfAlt}/>)
+              stars.push(<img className="star-icon" src={halfStarIcon} alt="Half Star" />);
             } else {
-                stars.push(<FontAwesomeIcon className= "empty-star-icon" icon={faStar} opacity = {0.25}/>)
+              stars.push(<img className="star-icon" src={emptyStarIcon} alt="Empty Star" />);
             }
         }
         return stars;
@@ -35,7 +37,7 @@ function RatingCard({rating} : RatingProp) {
               <h5 className="card-title"> Rating </h5>
               <p> {rating} / 5 </p>
               <div className = "stars-container">
-                {getStars(currentRating)}
+                {getStars(rating)}
                 </div>
             </div>
           </div>
