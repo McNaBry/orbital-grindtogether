@@ -35,7 +35,7 @@ function NoAccount() {
 function ForgetPassword() {
   return (
     <p>
-      Forgot your password? <Link className = "reset-password-link" href = "reset-password"> Reset </Link>
+      Forgot your password? <Link className = "reset-password-link" href = "input-email-for-reset"> Reset </Link>
     </p>
   )
 }
@@ -80,7 +80,7 @@ function SignInPage() {
       } else if (res.status === 404) {
         setMsg("Email cannot be found in the database. Please create an account.");
       } else if (res.status === 401) {
-        setMsg("Passwords is incorrect.");
+        setMsg("Password is incorrect.");
       } else {
         setMsg("Cannot login due to unforeseen circumstances. Please try again later.");
       }

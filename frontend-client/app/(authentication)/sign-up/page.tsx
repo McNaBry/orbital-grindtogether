@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation"
 import Password from "../password";
 import ConfirmPassword from "../confirmPassword"
 import Email from "../email";
-import EyeForPassword from "../eyeForPassword";
 import CreateStatus from "../createStatus";
 import ValidatePassword from "../validatePassword"
 

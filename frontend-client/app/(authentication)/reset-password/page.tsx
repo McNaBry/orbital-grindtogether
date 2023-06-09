@@ -1,30 +1,17 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import Link from "next/link";
 import CreateStatus from "../createStatus";
 import Password from "../password";
 import ConfirmPassword from "../confirmPassword";
 import "./resetpassword.css";
+import SuddenlyRemember from "../suddenlyRemember";
 
 function ResetPassword() {
   return (
     <button type="submit" className="btn" id="reset-password">
       Reset Password
     </button>
-  );
-}
-
-function SuddenlyRemember() {
-  return (
-    <p className = "suddenly-remember">
-      {" "}
-      Suddenly remember your password?{" "}
-      <Link className="suddenly-remember-link" href="sign-in">
-        {" "}
-        Login{" "}
-      </Link>
-    </p>
   );
 }
 
