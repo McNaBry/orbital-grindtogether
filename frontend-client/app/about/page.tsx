@@ -85,15 +85,17 @@ function TechStack() {
 
 export default function About() {
   return (
-    <>
+    <div className = "aboutpage">
       <h1 className="about-header"> About GrindTogether </h1>
       <div className="motivation">
-        <h2 className="header"> Our motivation </h2>
+        
         <img
-          src="images/motivation-pic.png"
+          src="images/lofi-girl-synthwave-boy.png"
           alt="motivation picture"
           id="motivation-pic"
         ></img>
+        <div className = "motivation-word">
+        <h2 className="header motivation-header"> Our motivation </h2>
         <div className="motivation-text">
           <p>
             {" "}
@@ -128,6 +130,9 @@ export default function About() {
             &#128527;).
           </p>
         </div>
+
+        </div>
+        
       </div>
 
       <div className="mission">
@@ -145,7 +150,7 @@ export default function About() {
         <h2 className="header"> The brains behind the operation </h2>
         <div className="creators">
           <div className="card" style={{ width: "18rem" }}>
-            <img className="card-img-top" src="..." alt="Brain #1" />
+            <img className="card-img-top" src="images/creator-1.png" alt="Brain #1" />
             <div className="card-body">
               <h5 className="card-title"> Choo Tze Jie </h5>
               <p className="card-text">
@@ -155,7 +160,7 @@ export default function About() {
             </div>
           </div>
           <div className="card" style={{ width: "18rem" }}>
-            <img className="card-img-top" src="..." alt="Brain #2" />
+            <img className="card-img-top" src="" alt="Brain #2" />
             <div className="card-body">
               <h5 className="card-title"> Bryan Lee Jek Yan </h5>
               <p className="card-text">
@@ -168,6 +173,6 @@ export default function About() {
       </div>
 
       <TechStack />
-    </>
+    </div>
   );
 }

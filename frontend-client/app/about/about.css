@@ -1,8 +1,18 @@
+.aboutpage {
+    background-image: url("../../public/images/about-background.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+}
+
 .about-header {
     font-weight: bold;
     font-size: 50px;
     text-align: center;
     margin: 20px;
+    color: white;
 }
 
 .header {
@@ -44,6 +54,7 @@
   
 .tech-stacks {
     text-align: center;
+    background-color: black;
 }
   
 .tech-stacks .header {
@@ -79,25 +90,34 @@
     justify-items: center;
     align-items: center;
     margin: 50px;
+    color: #7f749c;
 }
   
 #motivation-pic {
-    margin: 0rem 0rem 1rem 0rem
+    margin: 0rem 0rem 1rem 0rem;
+    width: 720px;
+    max-width: 1200px;
+    height: auto;
 }
   
 .motivation {
     display: flex;
-    flex-direction: column;
-    justify-items: center;
-    align-items: center;
+    /* flex-direction: column; */
+    /* justify-items: center; */
+    /* align-items: center; */
     margin: 50px;
 }
   
 .motivation-text * {
     word-wrap: normal;
+    color: #7f749c;
 }
 
 .tech-header {
     font-family: 'Dale Adventure', sans-serif;
     font-size: 50px;
+}
+
+.motivation-header {
+    color: #ffae42;
 }
