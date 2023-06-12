@@ -73,20 +73,21 @@ function SignInPage() {
       });
   
       if (res.status == 200) {
-        setMsg("Account has been successfully created!");
+        setMsg("Sign in successful! Please wait...");
         setSuccess(true);
         router.push("/study-listings");
         return;
-      } else if (res.status === 404) {
-        setMsg("Email cannot be found in the database. Please create an account.");
-      } else if (res.status === 401) {
-        setMsg("Password is incorrect.");
       } else {
-        setMsg("Cannot login due to unforeseen circumstances. Please try again later.");
+        setMsg("Cannot login. Please try again later.");
       }
+      // else if (res.status === 404) {
+      //   setMsg("Email cannot be found in the database. Please create an account.");
+      // } else if (res.status === 401) {
+      //   setMsg("Password is incorrect.");
+      // } 
     } catch (error) {
       console.error("An error occurred:", error);
-      setMsg("Cannot login. Try again later.");
+      setMsg("Cannot login. Please try again later.");
     }
   
     setSuccess(false);
