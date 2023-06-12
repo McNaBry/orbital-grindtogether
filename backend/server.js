@@ -1,3 +1,5 @@
+// Firebase REST API: https://firebase.google.com/docs/reference/rest/auth
+
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -29,21 +31,31 @@ app.get("/firebase", async (req, res) => {
   res.send(JSON.stringify(data));
 });
 
+// Sign up API endpoint
 app.post("/sign-up", async (req, res) => {
+  /*
+    Creates a user profile with the full-name and email 
+    Uses default values for bio and rating 
+    DOES NOT contain plaintext password as this will be handled by Firebase Auth
+  */
   const user = {
     fullName: req.body.fullName,
     email: req.body.email,
-    password: req.body.password,
     bio: "Hello!",
     rating: 0,
   };
 
+  /*
+    Attempts to sign up the user with email and password on Firebase Auth
+    Upon success, a new user document/profile is created on Firestore
+    If the user's email already exists, Firebase Auth will throw an error
+  */
   try {
     await fireAuth
       .createUser({
         email: user.email,
         emailVerified: true,
-        password: user.password,
+        password: req.body.password,
         displayName: user.fullName,
         disabled: false,
       })
@@ -53,55 +65,35 @@ app.post("/sign-up", async (req, res) => {
           .add(user)
           .then(() => {
             console.log("Account successfully created");
-            res.send(200);
+            res.status(200).send();
           });
       });
   } catch (error) {
     console.error("Error occurred while saving data to Firebase: ", error);
-    res.status(500);
+    res.status(500).send();
     return;
   }
 });
 
+// Sign in API endpoint
 app.post("/sign-in", async (req, res) => {
   const { email, password } = req.body;
 
-  try {
-    const snapshot = await db
-      .collection("users")
-      .where("email", "==", email)
-      .get();
-    if (snapshot.empty) {
-      console.log("Email not found in database");
-      res.status(404).send();
-      return;
-    }
+  /* 
+    Sends a POST request with user credentials to Firebase Auth API
+    If sign in is successful a 200 OK HTTP status code is returned
+  */
+  const signInResponse = await axios.post(
+    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+    { email, password, returnSecureToken: true, }
+  ).catch(err => {
+    return res.status(500)
+  })
 
-    // assumes that there is only one record that matches the email
-    const userData = snapshot.docs[0].data();
-    const storedPassword = userData.password;
-
-    if (password != storedPassword) {
-      console.log("Passwords do not match");
-      res.status(401).send();
-      return;
-    }
-
-    const signInResponse = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
-      {
-        email,
-        password,
-        returnSecureToken: true,
-      }
-    );
-    console.log("Login successful");
-    res.status(200).send();
-    return;
-  } catch (error) {
-    console.log("god help us ", error);
-    res.status(500).send();
-    return;
+  if (signInResponse.status == 200) {
+    res.status(200).send()
+  } else {
+    res.status(500).send()
   }
 });
 
