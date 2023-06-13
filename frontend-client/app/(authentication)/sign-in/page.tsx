@@ -75,7 +75,7 @@ function SignInPage() {
       if (res.status == 200) {
         setMsg("Sign in successful! Please wait...");
         setSuccess(true);
-        router.push("/study-listings");
+        router.push("/dashboard");
         return;
       } else {
         setMsg("Cannot login. Please try again later.");
