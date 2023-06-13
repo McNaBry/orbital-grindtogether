@@ -107,7 +107,7 @@ function SignUpPage() {
     if (res.ok) {
       setMsg("Account has been successfully created!")
       setSuccess(true)
-      router.push("/study-listings")
+      router.push("/dashboard")
     } else {
       setMsg("Account not created. Issue with server")
       setSuccess(false)
