@@ -1,23 +1,32 @@
-export function checkPassword(password, confirmPassword) {
+function checkPassword(password, confirmPassword) {
     return password === confirmPassword;
 }
 
-export function atLeast8Char(password) {
+function atLeast8Char(password) {
     return password.length >= 8;
 }
 
-export function atLeastOneCap(password) {
+function atLeastOneCap(password) {
     return /[A-Z]/.test(password);
 }
 
-export function atLeastOneLower(password) {
+function atLeastOneLower(password) {
     return /[a-z]/.test(password);
 }
 
-export function atLeastOneNumber(password) {
+function atLeastOneNumber(password) {
     return /[0-9]/.test(password);
 }
 
-export function atLeastOneSpecial(password) {
+function atLeastOneSpecial(password) {
     return /(?=[^!@#$%^&*]*[!@#$%^&*])/.test(password);
 }
+
+module.exports = {
+    checkPassword,
+    atLeast8Char,
+    atLeastOneCap,
+    atLeastOneLower,
+    atLeastOneNumber,
+    atLeastOneSpecial
+};

@@ -53,7 +53,7 @@
   width: 100px;
 }
 
-.sign-up-link {
+.sign-up-link, .reset-password-link {
   text-decoration: none;
   color: #4166F5;
 }

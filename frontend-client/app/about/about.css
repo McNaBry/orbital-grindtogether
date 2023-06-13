@@ -54,7 +54,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 30px;
+    margin: 32px;
 }
   
 #react-logo {
@@ -95,4 +95,9 @@
   
 .motivation-text * {
     word-wrap: normal;
+}
+
+.tech-header {
+    font-family: 'Dale Adventure', sans-serif;
+    font-size: 50px;
 }
