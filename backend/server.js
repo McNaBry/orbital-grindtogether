@@ -31,7 +31,7 @@ app.get("/firebase", async (req, res) => {
   res.send(JSON.stringify(data));
 });
 
-// Sign up API endpoint
+// API endpoint for Signing Up
 app.post("/sign-up", async (req, res) => {
   /*
     Creates a user profile with the full-name and email 
@@ -75,22 +75,21 @@ app.post("/sign-up", async (req, res) => {
   }
 });
 
-// Sign in API endpoint
+// API endpoint for Signing In
 app.post("/sign-in", async (req, res) => {
-  const { email, password } = req.body;
-
+  const { email, password } = req.body
   /* 
     Sends a POST request with user credentials to Firebase Auth API
     If sign in is successful a 200 OK HTTP status code is returned
   */
-  const signInResponse = await axios.post(
+  const signInRes = await axios.post(
     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
-    { email, password, returnSecureToken: true, }
+    { email: email, password: password, returnSecureToken: true }
   ).catch(err => {
     return res.status(500)
   })
 
-  if (signInResponse.status == 200) {
+  if (signInRes.status == 200) {
     res.status(200).send()
   } else {
     res.status(500).send()
@@ -130,41 +129,61 @@ async function sendEmail(to, subject, htmlContent) {
   }
 }
 
+// API Endpoint to receieve email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
   const { email } = req.body;
+  const resetEmailRes = await axios.post(
+    `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`,
+    { requestType :"PASSWORD_RESET", email: email }
+  ).catch(err => {
+    return res.status(500)
+  })
 
-  try {
-    const snapshot = await db
-      .collection("users")
-      .where("email", "==", email)
-      .get();
-    if (snapshot.empty) {
-      console.log("Email not found in database");
-      res.status(404).send();
-      return;
-    }
-
-    const userData = snapshot.docs[0].data();
-    // send request to firebase to automate email and customise email automation
-    const customUserToken = await fireAuth.createCustomToken(email);
-    const subject = "reset your password lad";
-    const emailContent = `
-      <p>Click <a href="../reset-password?token=${customUserToken}"> here </a> to reset your password</p>
-    `;
-
-    sendEmail(email, subject, emailContent)
-      .then(() => {
-        console.log("Email sent successfully");
-      })
-      .catch((error) => {
-        console.error("Failed to send email:", error);
-      });
-  } catch (error) {
-    console.log("god help us ", error);
-    res.status(500).send();
-    return;
+  if (resetEmailRes.status == 200) {
+    res.status(200).send()
+  } else {
+    res.status(500).send()
   }
 });
+
+// API Endpoint to validate oob code for password reset
+app.post('/validate-oob', async (req, res) => {
+  const { oobCode } = req.body;
+  console.log(oobCode)
+  const validateOobRes = await axios.post(
+    `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
+    { oobCode: oobCode }
+  ).catch(err => {
+    return res.status(500)
+  })
+
+  if (validateOobRes.status == 200) {
+    res.status(200).send()
+  } else {
+    console.log("oob code invalid")
+    res.status(500).send()
+  }
+})
+
+// API Endpoint to reset password with valid oob code
+app.post('/reset-password', async (req, res) => {
+  const { oobCode, newPassword } = req.body;
+  console.log(oobCode)
+  console.log(newPassword)
+  const resetPasswordRes = await axios.post(
+    `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
+    { oobCode: oobCode, newPassword: newPassword }
+  ).catch(err => {
+    return res.status(500)
+  })
+
+  if (resetPasswordRes.status == 200) {
+    res.status(200).send()
+  } else {
+    res.status(500).send()
+  }
+})
+
 
 // app.post("/create-listing", async (req, res) => {
 //   const listing = {
