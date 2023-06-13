@@ -9,15 +9,15 @@ import ConfirmPassword from "../confirmPassword"
 import SuddenlyRemember from "../suddenlyRemember"
 import LoadingForm from "./loadingForm"
 
-import { Card, Form } from "react-bootstrap"
+import { Button, Card, Form } from "react-bootstrap"
 import "./resetPassword.css"
 import Link from "next/link";
 
 function ResetPassword() {
   return (
-    <button type="submit" className="btn" id="reset-password">
+    <Button type="submit" className="mb-3" id="reset-password">
       Reset Password
-    </button>
+    </Button>
   );
 }
 
@@ -93,7 +93,7 @@ function ResetPasswordPage() {
     });
     
     if (res.ok) {
-      setMsg("Reset successful. Directing you to sign in...")
+      setMsg("Reset successful. Redirecting you...")
       setSuccess(true)
       router.push("/sign-in")
     } else {
@@ -107,6 +107,7 @@ function ResetPasswordPage() {
       <Card style={{ width: "18rem" }}>
         <Card.Img variant="top" src="images/padlock.png" alt="padlock" />
         <Card.Body>
+          <Card.Text>Email: <i>{searchParams.get('email') ?? "No email provided"}</i></Card.Text>
           { isLoading
             ? <LoadingForm /> 
             : isOobValid
@@ -119,11 +120,14 @@ function ResetPasswordPage() {
                       onChange={handleConfirmPasswordChange}
                     />
                     <ResetPassword />
-                    <CreateStatus msg={msg} success={success} dismissAlert={dismissAlert} />
                   </Form>
                 </>
-              : <p> Code Invalid. Please request a new one <Link href="/input-email-for-reset">here</Link> </p>
+              : <>
+                  <Card.Text> Invalid Code: <i>{searchParams.get('oobCode') ?? "Missing Code"}.</i> </Card.Text>
+                  <Card.Text> Please request a new one <Link href="/input-email-for-reset">here</Link> </Card.Text>
+                </>
           }
+          <CreateStatus msg={msg} success={success} dismissAlert={dismissAlert} />
           <SuddenlyRemember />
         </Card.Body>
       </Card>

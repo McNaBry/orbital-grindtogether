@@ -1,18 +1,20 @@
-"use client";
+'use client';
 
-import { useState, ChangeEvent, FormEvent } from "react";
-import Email from "../email";
-import "./inputemailforreset.css"
-import SuddenlyRemember from "../suddenlyRemember";
-import CreateStatus from "../createStatus";
+import { useState, ChangeEvent, FormEvent } from 'react';
+import Email from '../email';
+import SuddenlyRemember from '../suddenlyRemember';
+import CreateStatus from '../createStatus';
+
+import { Container, Button, Card, Form } from 'react-bootstrap'
+import './inputEmailForReset.css'
 
 function SendRequestForReset() {
   return (
-    <button
+    <Button
       type="submit"
-      className="btn mb-3"
-      id = "request-for-reset"
-    > Request to reset password </button>
+      className="mb-3"
+      id="request-for-reset"
+    > Request reset link </Button>
   );
 }
 
@@ -38,42 +40,46 @@ function InputEmailForReset() {
         body : JSON.stringify({
           "email": formData.get("email"),
         })
+      }).then(payload => {
+        setMsg("The link will be sent to the email if it is valid")
+        setSuccess(true)
       });
 
-      if (res.ok) {
-        setMsg("Request successful! Check your email.")
-        setSuccess(true);
-      } else if (res.status == 404) {
-        setMsg("Email was not found in database.");
-        setSuccess(false);
-      } else {
-        setMsg("How the fuck did you end up here.");
-        setSuccess(false);
-      }
+      // if (res.ok) {
+      //   setMsg("Request successful! Check your email.")
+      //   setSuccess(true);
+      // } else if (res.status == 500) {
+      //   setMsg("Email was not found in database.");
+      //   setSuccess(false);
+      // } else {
+      //   setMsg("How the fuck did you end up here.");
+      //   setSuccess(false);
+      // }
     } catch (error) {
-      setMsg("I dont know what to do with this information.")
+      setMsg("Unexpected error. Reload the page.")
+      setSuccess(false)
     }
 
     // even if successful user should check their email and click the link provided
-    setSuccess(false);
+    //setSuccess(false);
   }
 
   return (
-    <div className="inputemailforresetpage">
-      <div className="card" style={{ width: "18rem" }}>
-        <img src="images/padlock.png" className="card-img-top" alt="padlock" />
-        <div className="card-body">
-          <h5 className="card-title">Reset Password</h5>
-          <p> Enter your email and we will send you instructions on how to reset your password. </p>
-          <form onSubmit = {submitForm}>
+    <Container className="input-email-for-reset-page">
+      <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" src="images/padlock.png" alt="padlock" />
+        <Card.Body>
+          <Card.Title>Reset Password</Card.Title>
+          <Card.Text> Enter your email and we will send you instructions on how to reset your password. </Card.Text>
+          <Form onSubmit = {submitForm}>
             <Email />
             <SendRequestForReset />
-            <CreateStatus msg = {msg} success = {success} dismissAlert={dismissAlert}/>
-            <SuddenlyRemember />
-          </form>
-        </div>
-      </div>
-    </div>
+          </Form>
+          <CreateStatus msg = {msg} success = {success} dismissAlert={dismissAlert}/>
+          <SuddenlyRemember />
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 

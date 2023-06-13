@@ -149,7 +149,6 @@ app.post("/input-email-for-reset", async (req, res) => {
 // API Endpoint to validate oob code for password reset
 app.post('/validate-oob', async (req, res) => {
   const { oobCode } = req.body;
-  console.log(oobCode)
   const validateOobRes = await axios.post(
     `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
     { oobCode: oobCode }
@@ -160,7 +159,6 @@ app.post('/validate-oob', async (req, res) => {
   if (validateOobRes.status == 200) {
     res.status(200).send()
   } else {
-    console.log("oob code invalid")
     res.status(500).send()
   }
 })
@@ -168,8 +166,6 @@ app.post('/validate-oob', async (req, res) => {
 // API Endpoint to reset password with valid oob code
 app.post('/reset-password', async (req, res) => {
   const { oobCode, newPassword } = req.body;
-  console.log(oobCode)
-  console.log(newPassword)
   const resetPasswordRes = await axios.post(
     `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
     { oobCode: oobCode, newPassword: newPassword }
