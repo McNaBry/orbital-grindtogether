@@ -1,15 +1,13 @@
 import React, {useState} from "react"
-import "./profilepage.css";
+import { Card } from "react-bootstrap"
 import Image from "next/image"
-import fullStarIcon from "/images/star-full-icon.png"
-import halfStarIcon from "/images/star-half-icon.png"
-import emptyStarIcon from "/images/star-empty-icon.png"
+import "./profilepage.css";
 
-interface RatingProp {
-    rating: Number;
-}
+const fullStarIcon = "/images/star-full-icon.png"
+const halfStarIcon = "/images/star-half-icon.png"
+const emptyStarIcon = "/images/star-empty-icon.png"
 
-function RatingCard({rating} : RatingProp) {
+function RatingCard({rating} : {rating: number}) {
     const [currentRating, setRating] = useState(0);
 
     const handleRatingChange = (newRating: number) => {
@@ -17,34 +15,37 @@ function RatingCard({rating} : RatingProp) {
     }
 
     const getStars = (rating: number) => {
-        const stars = []
-        
-        for (let i = 0; i < 5; i += 1) {
-            if (rating >= i + 1) {
-              stars.push(
-                <Image className="star-icon" src={fullStarIcon} alt="Full Star" />);
-            } else if (rating >= i + 0.5) {
-              stars.push(<Image className="star-icon" src={halfStarIcon} alt="Half Star" />);
-            } else {
-              stars.push(<Image className="star-icon" src={emptyStarIcon} alt="Empty Star" />);
-            }
-        }
-        return stars;
+      const stars = []
+
+      const makeStar = (key:number, src:string, alt:string) => 
+        <Image key={key} width={25} height={25} 
+          className="star-icon" src={src} alt={alt} />
+      
+      for (let i = 0; i < 5; i += 1) {      
+        if (rating >= i + 1) {
+            stars.push(makeStar(i, fullStarIcon, "Full Star"))
+          } else if (rating >= i + 0.5) {
+            stars.push(makeStar(i, halfStarIcon, "Half Star"))
+          } else {
+            stars.push(makeStar(i, emptyStarIcon, "Empty Star"))
+          }
+      }
+      return stars;
     }
 
     return (
-        <div className="col-sm-6 non-editable-card">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title"> Rating </h5>
-              <p> {rating} / 5 </p>
-              <div className = "stars-container">
-                {getStars(rating)}
-                </div>
+      <div className="col-sm-6 non-editable-card">
+        <Card>
+          <Card.Body>
+            <Card.Title> Rating </Card.Title>
+            <p> {rating} / 5 </p>
+            <div className="stars-container">
+              {getStars(rating)}
             </div>
-          </div>
-        </div>
-      );
+          </Card.Body>
+        </Card>
+      </div>
+    );
 }
 
 export default RatingCard;
