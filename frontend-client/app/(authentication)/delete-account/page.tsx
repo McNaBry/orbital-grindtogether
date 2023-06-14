@@ -8,6 +8,7 @@ import Email from "../email"
 import { Button, Card, Modal } from "react-bootstrap";
 import "./deleteaccount.css";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 function DeleteAccount() {
   return (
@@ -31,6 +32,13 @@ function AbortDelete() {
 }
 
 function SuccessDialog(props) {
+  const router = useRouter();
+
+  const handleClose = () => {
+    router.push("/");
+    props.onHide();
+  }
+
   return (
     <Modal
       {...props}
@@ -52,7 +60,7 @@ function SuccessDialog(props) {
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}> Close </Button>
+        <Button onClick={handleClose}> Close </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -71,10 +79,6 @@ function DeleteAccountPage() {
   const dismissAlert = () => {
     setSuccess(false);
     setMsg("");
-  };
-
-  const handleModal = () => {
-    setDisplayModal(true);
   };
 
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {

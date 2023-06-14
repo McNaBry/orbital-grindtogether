@@ -199,7 +199,7 @@ app.delete("/delete-account", async (req, res) => {
   const signInRes = await authUtil.signInUser(email, password)
   // Either email/password not valid or user is not in Firebase Auth
   if (signInRes.status != 200) {
-    res.status(400).send();
+    res.status(401).send();
   }
 
   // Get the user record to retrieve the UID for deletion
