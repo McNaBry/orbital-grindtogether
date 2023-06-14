@@ -7,7 +7,8 @@ const axios = require("axios");
 // const nodemailer = require("nodemailer");
 
 const app = express();
-const { db, fireAuth, EmailAuthProvider } = require("./firebase");
+const { db, fireAuth } = require("./firebase");
+const authUtil = require("./authentication")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
@@ -20,6 +21,10 @@ app.use(express.urlencoded({ extended: true })); // To parse form data
 //   console.log(formData);
 //   res.redirect("http://localhost:3000/study-listings");
 // });
+
+async function getUserByEmail(email) {
+  return await fireAuth.getUserByEmail(email).catch(err => null)
+}
 
 app.get("/firebase", async (req, res) => {
   const snapshot = await db.collection("users").get();
@@ -70,7 +75,7 @@ app.post("/sign-up", async (req, res) => {
       });
   } catch (error) {
     console.error("Error occurred while saving data to Firebase: ", error);
-    res.status(500).send();
+    res.status(400).send();
     return;
   }
 });
@@ -82,17 +87,12 @@ app.post("/sign-in", async (req, res) => {
     Sends a POST request with user credentials to Firebase Auth API
     If sign in is successful a 200 OK HTTP status code is returned
   */
-  const signInRes = await axios.post(
-    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
-    { email: email, password: password, returnSecureToken: true }
-  ).catch(err => {
-    return res.status(500)
-  })
+  const signInRes = await authUtil.signInUser(email, password)
 
   if (signInRes.status == 200) {
     res.status(200).send()
   } else {
-    res.status(500).send()
+    res.status(400).send()
   }
 });
 
@@ -136,13 +136,13 @@ app.post("/input-email-for-reset", async (req, res) => {
     `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`,
     { requestType :"PASSWORD_RESET", email: email }
   ).catch(err => {
-    return res.status(500)
+    return res.status(400)
   })
 
   if (resetEmailRes.status == 200) {
     res.status(200).send()
   } else {
-    res.status(500).send()
+    res.status(400).send()
   }
 });
 
@@ -153,13 +153,13 @@ app.post('/validate-oob', async (req, res) => {
     `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
     { oobCode: oobCode }
   ).catch(err => {
-    return res.status(500)
+    return res.status(400)
   })
 
   if (validateOobRes.status == 200) {
     res.status(200).send()
   } else {
-    res.status(500).send()
+    res.status(400).send()
   }
 })
 
@@ -170,52 +170,60 @@ app.post('/reset-password', async (req, res) => {
     `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
     { oobCode: oobCode, newPassword: newPassword }
   ).catch(err => {
-    return res.status(500)
+    return res.status(400)
   })
 
   if (resetPasswordRes.status == 200) {
     res.status(200).send()
   } else {
-    res.status(500).send()
+    res.status(400).send()
   }
 })
 
-function deleteCurrentUser(user, res) {
-  user.delete()
-    .then(() => {
-      res.status(200).send();
-      console.log("User data successfully deleted");
-    })
-    .catch((error) => {
-      res.status(500).send();
-      console.log("User data couldn't be deleted", error);
-    });
-}
+// function deleteCurrentUser(user, res) {
+//   user.delete()
+//     .then(() => {
+//       res.status(200).send();
+//       console.log("User data successfully deleted");
+//     })
+//     .catch((error) => {
+//       res.status(400).send();
+//       console.log("User data couldn't be deleted", error);
+//     });
+// }
 
 app.delete("/delete-account", async (req, res) => {
-  const { email, password } = req.body;
-  const userRecord = await fireAuth.getUserByEmail(email);
+  const { email, password } = req.body
 
-  // might remove when connecting backend of profile page to delete account in the future
-  // if (!userRecord) {
-  //   console.log("User not found");
-  //   res.status(400).send("User not found");
-  //   return;
-  // }
-
-  const user = await fireAuth.getUser(userRecord.uid);
-
-  try {
-    // await fireAuth.signInWithEmailAndPassword(email, password);
-
-    const credential = admin.auth.EmailAuthProvider.credential(email, password); 
-    console.log(credential);
-    await user.reauthenticateWithCredential(credential);
-    // delete user information from database
-    await db.collection("users").doc(user.uid).delete();
-    deleteCurrentUser(user, res);
-  } catch (error) {
+  // Check if details given are valid by signing in
+  const signInRes = await authUtil.signInUser(email, password)
+  // Either email/password not valid or user is not in Firebase Auth
+  if (signInRes.status != 200) {
     res.status(400).send();
+  }
+
+  // Get the user record to retrieve the UID for deletion
+  const userRecord = await getUserByEmail(email)
+  if (!userRecord) {
+    console.log("No user record found with the email provided")
+    return res.status(400).send()
+  }
+
+  // Delete user from Firebase Auth
+  const deleteAccAuth = await authUtil.deleteAccount(userRecord.uid)
+  if (!deleteAccAuth) {
+    console.log("Deletion error")
+    return res.status(400).send()
+  }
+
+  // Delete user from Firestore
+  try {
+    const snapshot = await db.collection("users").where("email", "==", email).get()
+    snapshot.forEach(doc => doc.ref.delete())
+    res.status(200).send()
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
   }
 });
 
