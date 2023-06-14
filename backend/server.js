@@ -4,10 +4,10 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
 const app = express();
-const { db, fireAuth } = require("./firebase");
+const { db, fireAuth, EmailAuthProvider } = require("./firebase");
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
@@ -96,38 +96,38 @@ app.post("/sign-in", async (req, res) => {
   }
 });
 
-async function sendEmail(to, subject, htmlContent) {
-  try {
-    // Create a transporter using SMTP settings
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "",
-        pass: "",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+// async function sendEmail(to, subject, htmlContent) {
+//   try {
+//     // Create a transporter using SMTP settings
+//     const transporter = nodemailer.createTransport({
+//       host: "smtp.gmail.com",
+//       port: 587,
+//       secure: false,
+//       auth: {
+//         user: "",
+//         pass: "",
+//       },
+//       tls: {
+//         rejectUnauthorized: false,
+//       },
+//     });
 
-    // Create the email message
-    const message = {
-      from: process.env.SMTP_FROM_EMAIL,
-      to,
-      subject,
-      html: htmlContent,
-    };
+//     // Create the email message
+//     const message = {
+//       from: process.env.SMTP_FROM_EMAIL,
+//       to,
+//       subject,
+//       html: htmlContent,
+//     };
 
-    // Send the email
-    const info = await transporter.sendMail(message);
-    console.log("Email sent:", info.response);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
-}
+//     // Send the email
+//     const info = await transporter.sendMail(message);
+//     console.log("Email sent:", info.response);
+//   } catch (error) {
+//     console.error("Error sending email:", error);
+//     throw error;
+//   }
+// }
 
 // API Endpoint to receieve email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -180,6 +180,44 @@ app.post('/reset-password', async (req, res) => {
   }
 })
 
+function deleteCurrentUser(user, res) {
+  user.delete()
+    .then(() => {
+      res.status(200).send();
+      console.log("User data successfully deleted");
+    })
+    .catch((error) => {
+      res.status(500).send();
+      console.log("User data couldn't be deleted", error);
+    });
+}
+
+app.delete("/delete-account", async (req, res) => {
+  const { email, password } = req.body;
+  const userRecord = await fireAuth.getUserByEmail(email);
+
+  // might remove when connecting backend of profile page to delete account in the future
+  // if (!userRecord) {
+  //   console.log("User not found");
+  //   res.status(400).send("User not found");
+  //   return;
+  // }
+
+  const user = await fireAuth.getUser(userRecord.uid);
+
+  try {
+    // await fireAuth.signInWithEmailAndPassword(email, password);
+
+    const credential = admin.auth.EmailAuthProvider.credential(email, password); 
+    console.log(credential);
+    await user.reauthenticateWithCredential(credential);
+    // delete user information from database
+    await db.collection("users").doc(user.uid).delete();
+    deleteCurrentUser(user, res);
+  } catch (error) {
+    res.status(400).send();
+  }
+});
 
 // app.post("/create-listing", async (req, res) => {
 //   const listing = {

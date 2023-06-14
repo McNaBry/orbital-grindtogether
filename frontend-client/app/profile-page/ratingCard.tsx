@@ -1,5 +1,6 @@
 import React, {useState} from "react"
 import "./profilepage.css";
+import Image from "next/image"
 import fullStarIcon from "/images/star-full-icon.png"
 import halfStarIcon from "/images/star-half-icon.png"
 import emptyStarIcon from "/images/star-empty-icon.png"
@@ -20,11 +21,12 @@ function RatingCard({rating} : RatingProp) {
         
         for (let i = 0; i < 5; i += 1) {
             if (rating >= i + 1) {
-              stars.push(<img className="star-icon" src={fullStarIcon} alt="Full Star" />);
+              stars.push(
+                <Image className="star-icon" src={fullStarIcon} alt="Full Star" />);
             } else if (rating >= i + 0.5) {
-              stars.push(<img className="star-icon" src={halfStarIcon} alt="Half Star" />);
+              stars.push(<Image className="star-icon" src={halfStarIcon} alt="Half Star" />);
             } else {
-              stars.push(<img className="star-icon" src={emptyStarIcon} alt="Empty Star" />);
+              stars.push(<Image className="star-icon" src={emptyStarIcon} alt="Empty Star" />);
             }
         }
         return stars;

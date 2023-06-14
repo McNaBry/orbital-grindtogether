@@ -78,7 +78,7 @@ function SignInPage() {
         router.push("/dashboard");
         return;
       } else {
-        setMsg("Cannot login. Please try again later.");
+        setMsg("Cannot login. Please try again.");
       }
       // else if (res.status === 404) {
       //   setMsg("Email cannot be found in the database. Please create an account.");

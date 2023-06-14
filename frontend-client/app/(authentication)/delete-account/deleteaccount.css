@@ -1,0 +1,36 @@
+.delete-account-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.delete-account-page label,
+p {
+  color: black;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+#delete-account {
+    background-color: #e3242b;
+    border-color: #e3242b;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 200px;
+    display: inline-block;
+}
+
+.abort-delete-link {
+  text-decoration: none;
+}
