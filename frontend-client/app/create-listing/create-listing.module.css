@@ -12,7 +12,6 @@
   justify-content: center;
   align-items: center;
   background-color: black;
-  color: white;
 }
 
 #options-container {
@@ -22,12 +21,23 @@
   align-items: center;
 }
 
+.single-option-input,
+.multi-option-input {
+  width: 80%;
+  margin: 5px;
+}
+
 #demo-card-container {
   margin-bottom: 20px;
 }
 
 #demo-card-container * {
   border: 0px;
+}
+
+.card-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .options-subcontainer {

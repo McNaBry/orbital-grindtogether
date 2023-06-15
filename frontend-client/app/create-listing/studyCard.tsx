@@ -1,6 +1,5 @@
 import styles from "./create-listing.module.css"
-import personIcon from "../images/person-interested.svg"
-import dateIcon from "../images/date.svg"
+import { Card } from 'react-bootstrap'
 
 export type StudyListing = {
   title:    string,
@@ -29,24 +28,28 @@ function Tags({ tags } : Pick<StudyListing, 'tags'>) {
 export default function StudyCard(listingData : StudyListing) {
   const {title, desc, tags, date, freq, interest, id} = listingData
   return (
-    <div className="card" key={id} style={{color:"black"}}>
+    <Card key={id} style={{color:"black"}}>
       <div className="row g-0">
         <div className="col-6 col-md-3">
-          <img src="images/terrace_pic.png" className="card-img img-fluid rounded-start" alt="No Image Available"/>
+          <Card.Img src="images/terrace_pic.png" className="img-fluid rounded-start" alt="No Image Available"/>
         </div>
         <div className="col-6 col-md-9">
-          <div className="card-body">
-            <h5 className="card-title">{title}</h5>
+          <Card.Body>
+            <Card.Title>{title}</Card.Title>
             <Tags tags={tags}/>
             <p className="card-text">{desc}</p>
-            <p className="card-text row" style={{marginTop: "auto"}}>
-              <small className="text-body-secondary"> <img src = {dateIcon} />{date}</small>
+            <Card.Text className="row" style={{marginTop: "auto"}}>
+              <small className="text-body-secondary"> 
+                <img src="/images/date.svg" className={styles["card-icon"]} /> {date}
+              </small>
               <small className="text-body-secondary">{freq}</small>
-              <small className="text-body-secondary">{interest} <img src = {personIcon} /> interested</small>
-            </p>
-          </div>
+              <small className="text-body-secondary">
+                {interest} <img src="/images/person-interested.svg" className={styles["card-icon"]} /> interested
+              </small>
+            </Card.Text>
+          </Card.Body>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }

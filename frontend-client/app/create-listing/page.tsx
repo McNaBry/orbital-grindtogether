@@ -1,46 +1,46 @@
-"use client"
+'use client'
 
-import styles from "./create-listing.module.css"
+import { useState } from 'react'
 
-import { useState, SyntheticEvent } from "react"
-import { Autocomplete, TextField } from "@mui/material"
-import { data } from "../study-listings/data"
-import StudyCard, { StudyListing } from "./studyCard"
+import { ActionMeta } from 'react-select'
+import { 
+  Option, 
+  SelectFreeOption, SelectMultiOption, 
+  SelectFreeOptionProps, SelectMultiOptionProps 
+} from "./select"
+import StudyCard, { StudyListing } from './studyCard'
+import styles from './create-listing.module.css'
 
-type ListingOptionProps = {
-  label: string,
-  type: string,
-  options: string[],
-  freesolo: boolean,
-  handleFilterChange: 
-    ((event:SyntheticEvent<Element, Event>, value:string[] | string | null, type:string) => void)
-}
+import { data } from '../study-listings/data'
 
-function SingleOption({ label, type, options, freesolo, handleFilterChange } : ListingOptionProps) {
+const modules:Option[] = [
+  { value: "CS2040S", label: "CS2040S" },
+  { value: "CS1231S", label: "CS1231S" },
+  { value: "CS2030S", label: "CS2030S" }
+]
+
+function SingleOption({ name, type, options, handleChange } : SelectFreeOptionProps) {
   return (
-    <Autocomplete
-      id="multiple-limit-tags"
-      className="col-10"
-      options={options}
-      freeSolo={freesolo}
-      sx={{ marginTop: "0px", color:"red"}}
-      renderInput={(params) => <TextField {...params} variant="standard" label={label} />}
-      onChange={(event, value) => handleFilterChange(event, value, type)}
+    <SelectFreeOption
+      params={{
+        name: name,
+        type: type,
+        options: options,
+        handleChange: handleChange
+      }}
     />
   )
 }
 
-function ListingOption({ label, type, options, freesolo, handleFilterChange } : ListingOptionProps) {
+function MultiOption({ name, type, options, handleChange } : SelectMultiOptionProps) {
   return (
-    <Autocomplete
-      multiple
-      id="multiple-limit-tags"
-      className="col-10"
-      options={options}
-      freeSolo={freesolo}
-      sx={{ marginTop: "0px", color:"red"}}
-      renderInput={(params) => <TextField {...params} variant="standard" label={label} />}
-      onChange={(event, value) => handleFilterChange(event, value, type)}
+    <SelectMultiOption
+      params={{
+        name: name,
+        type: type,
+        options: options,
+        handleChange: handleChange
+      }}
     />
   )
 }
@@ -64,26 +64,29 @@ export default function CreateListing() {
     id: 1
   })
 
-  function handleOptionChange(event: SyntheticEvent<Element, Event>, value: string[] | string | null, type: string) {
-    if (Array.isArray(value)) {
-      setDemoOptions(prevOptions => ({
-        ...prevOptions,
-        tags: {
-          ...prevOptions.tags,
-          [type]: value
-        }
-      }))
-    } else if (typeof value == "string") {
-      setDemoOptions(prevOptions => ({
-        ...prevOptions,
-        [type]: value
-      }))
-    } else {
+  function handleSingleOptionChange(type:string, option: Option | null, actionMeta: ActionMeta<Option>) {
+    if (option == null) {
       setDemoOptions(prevOptions => ({
         ...prevOptions,
         [type]: defaultOptions[type]
       }))
+    } else {
+      setDemoOptions(prevOptions => ({
+        ...prevOptions,
+        [type]: option.value
+      }))
     }
+  }
+
+  function handleMultipleOptionChange(type: string, option: readonly Option[], actionMeta: ActionMeta<Option>) {
+    const values = option.map(item => item.value)
+    setDemoOptions(prevOptions => ({
+      ...prevOptions,
+      tags: {
+        ...prevOptions.tags,
+        [type]: values
+      }
+    }))
   }
 
   return (
@@ -95,45 +98,39 @@ export default function CreateListing() {
       <div id={styles["options-container"]}>
         <div className={styles["options-subcontainer"]}>
           <SingleOption
-            label="Title"
+            name="Title"
             type="title"
-            options={["Study Group!", "Chill Sesh"]}
-            freesolo={true}
-            handleFilterChange={handleOptionChange}/>
+            options={modules}
+            handleChange={handleSingleOptionChange}/>
           <SingleOption
-            label="Description"
+            name="Description"
             type="desc"
-            options={["Let's grind together", "Relax and drink kopi"]}
-            freesolo={true}
-            handleFilterChange={handleOptionChange}/>
+            options={modules}
+            handleChange={handleSingleOptionChange}/>
         </div>
         <div className={styles["options-subcontainer"]}>
-          <ListingOption
-            label="Modules"
+          <MultiOption
+            name="Modules"
             type="modules"
-            options={Array.from(data["modules"])}
-            freesolo={false}
-            handleFilterChange={handleOptionChange}/>
-          <ListingOption
-            label="Location"
+            options={modules}
+            handleChange={handleMultipleOptionChange}/>
+          <MultiOption
+            name="Location"
             type="locations"
-            options={Array.from(data["locations"])}
-            freesolo={false}
-            handleFilterChange={handleOptionChange}/>
+            options={modules}
+            handleChange={handleMultipleOptionChange}/>
         </div>
         <div className={styles["options-subcontainer"]}>
           <SingleOption
-            label="Date"
+            name="Date"
             type="date"
-            options={["1/1/2024"]}
-            freesolo={true}
-            handleFilterChange={handleOptionChange}/>
+            options={modules}
+            handleChange={handleSingleOptionChange}/>
           <SingleOption
-            label="Frequency"
+            name="Frequency"
             type="freq"
-            options={["Once", "Every week", "Every day"]}
-            freesolo={false}
-            handleFilterChange={handleOptionChange}/>
+            options={modules}
+            handleChange={handleSingleOptionChange}/>
         </div>
       </div>
       <button className="btn btn-success">Create Listing</button>
