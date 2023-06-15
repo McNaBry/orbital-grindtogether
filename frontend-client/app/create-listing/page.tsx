@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { FormEvent, MouseEventHandler, useState } from 'react'
 
 import { ActionMeta } from 'react-select'
 import { 
@@ -9,6 +9,7 @@ import {
   SelectFreeOptionProps, SelectMultiOptionProps 
 } from "./select"
 import StudyCard, { StudyListing } from './studyCard'
+import { Form, Button } from 'react-bootstrap'
 import styles from './create-listing.module.css'
 
 import { data } from '../study-listings/data'
@@ -89,14 +90,31 @@ export default function CreateListing() {
     }))
   }
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const res = await fetch('http://localhost:5000/create-listing', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(demoOptions),
+    })
+
+    if (res.ok) {
+      console.log("submission success")
+    } else {
+      console.log("submission error")
+    }
+  }
+
   return (
     <div id={styles["create-listing-container"]}>
       <h1>Create Listing</h1>
       <div id={styles["demo-card-container"]}>
         <StudyCard {...demoOptions}/>
       </div>
-      <div id={styles["options-container"]}>
-        <div className={styles["options-subcontainer"]}>
+      <Form id={styles["options-container"]} onSubmit={handleSubmit}>
+        <Form.Group className={styles["options-subcontainer"]}>
           <SingleOption
             name="Title"
             type="title"
@@ -107,8 +125,8 @@ export default function CreateListing() {
             type="desc"
             options={modules}
             handleChange={handleSingleOptionChange}/>
-        </div>
-        <div className={styles["options-subcontainer"]}>
+        </Form.Group>
+        <Form.Group className={styles["options-subcontainer"]}>
           <MultiOption
             name="Modules"
             type="modules"
@@ -119,8 +137,8 @@ export default function CreateListing() {
             type="locations"
             options={modules}
             handleChange={handleMultipleOptionChange}/>
-        </div>
-        <div className={styles["options-subcontainer"]}>
+        </Form.Group>
+        <Form.Group className={styles["options-subcontainer"]}>
           <SingleOption
             name="Date"
             type="date"
@@ -131,9 +149,9 @@ export default function CreateListing() {
             type="freq"
             options={modules}
             handleChange={handleSingleOptionChange}/>
-        </div>
-      </div>
-      <button className="btn btn-success">Create Listing</button>
+        </Form.Group>
+        <Button variant="success" type="submit">Create Listing</Button>
+      </Form>
     </div>
   )
 }

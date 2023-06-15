@@ -181,35 +181,29 @@ app.post('/reset-password', async (req, res) => {
 })
 
 
-// app.post("/create-listing", async (req, res) => {
-//   const listing = {
-//     "title": req.body.,
-//     "description": req.body.,
-//     "modules": req.body.,
-//     "location": req.body,
-//     "date": ,
-//     "frequency":
-//   };
+app.post("/create-listing", async (req, res) => {
+  const listing = {
+    title: req.body.title,
+    desc : req.body.desc,
+    tags : {
+      modules: req.body.tags.modules,
+      locations: req.body.tags.locations,
+      faculties: req.body.tags.faculties
+    },
+    date : req.body.date,
+    freq : req.body.freq,
+    interest: 0,
+    likes: []
+  }
 
-//   try {
-//     await fireAuth.createUser({
-//       email: user.email,
-//       emailVerified: true,
-//       password: user.password,
-//       displayName: user.fullName,
-//       disabled: false,
-//     }).then(async () => {
-//       await db.collection("users").add(user).then(() => {
-//         console.log("Listing successfully created")
-//         res.send(200)
-//       })
-//     })
-//   } catch (error) {
-//     console.error("Error occurred while saving data to Firebase: ", error);
-//     res.status(500)
-//     return
-//   }
-// });
+  const addRes = await db.collection("listings").add(listing)
+  console.log("New listing added with ID:", addRes.id)
+  if (addRes.ok) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
 
 const port = 5000;
 
