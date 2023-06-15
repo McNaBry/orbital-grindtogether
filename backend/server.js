@@ -46,7 +46,10 @@ app.post("/sign-up", async (req, res) => {
   const user = {
     fullName: req.body.fullName,
     email: req.body.email,
-    bio: "Hello!",
+    bio: "",
+    year: 0,
+    course: "",
+    telegramHandle: "@",
     rating: 0,
   };
 
@@ -226,6 +229,43 @@ app.delete("/delete-account", async (req, res) => {
     res.status(400).send()
   }
 });
+
+// Get the data of the specific user to be displayed in the profile page
+app.get("/profile-page/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const snapshot = await db.collection("users").doc(userId).get();
+
+    if (!snapshot.exists) {
+      console.log("cannot find data")
+      res.status(404).send();
+      return ;
+    }
+
+    const userData = snapshot.data();
+    console.log("i successfully sent the data");
+    res.send(userData);
+  } catch (error) {
+    console.log("we are fucked");
+    res.status(500).send();
+  }
+})
+
+// Update the database when the user modifies a field in the profile page
+app.post("/profile-page/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const updatedData = req.body;
+    
+    await db.collection("users").doc(userId).update(updatedData);
+
+    console.log("updated successfully");
+    res.status(200).send();
+  } catch (error) {
+    console.log("cannot update");
+    res.status(500).send();
+  }
+})
 
 // app.post("/create-listing", async (req, res) => {
 //   const listing = {

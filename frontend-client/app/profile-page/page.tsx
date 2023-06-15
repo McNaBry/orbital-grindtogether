@@ -1,11 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./profilepage.css";
 import "./nonEditableCard";
 import NonEditableCard from "./nonEditableCard";
 import EditableCard from "./editableCard";
 import RatingCard from "./ratingCard";
 import LikeButton from "../study-listings/likeButton";
+
+import "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 function EditProfile() {
   return <h2> Edit Profile </h2>;
@@ -50,11 +53,37 @@ function EmailCard({ email }: {email: string}) {
 
 function ProfilePage() {
   const [fields, setFields] = useState({
+    email: "",
+    fullName: "",
     bio: "",
     year: 0,
     course: "",
     telegramHandle: "@",
+    rating: 0
   });
+
+  // where using firebase has a problem
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const userId = user.uid;
+
+  if (!userId) {
+    console.log("gg motherfkers");
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/profile-page/${userId}");
+        const data = await response.json();
+        setFields(data);
+      } catch (error) {
+
+      }
+    }
+
+    fetchData();
+  })
 
   const handleFieldChange = ({
     fieldToUpdate,
@@ -63,7 +92,18 @@ function ProfilePage() {
     fieldToUpdate: string;
     value: string | number;
   }) => {
+    // immediately update the state
     setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }));
+
+    const updatedProfileData = { [fieldToUpdate]: value };
+
+    fetch("/profile-page/${userId}", {
+      method: "POST",
+      headers : {
+        "Content-Type": "application/json",
+      },
+      body : JSON.stringify(updatedProfileData)
+    })
   };
 
   return (
@@ -71,8 +111,8 @@ function ProfilePage() {
       <EditProfile />
       <ProfilePic />
       <UploadProfilePic />
-      <NameCard name="Choo Tze Jie" />
-      <EmailCard email="e0929841@u.nus.edu" />
+      <NameCard name= {fields.fullName} />
+      <EmailCard email={fields.email} />
       <EditableCard
         field="Bio"
         value={fields.bio}
@@ -103,7 +143,7 @@ function ProfilePage() {
           handleFieldChange({ fieldToUpdate: "telegramHandle", value })
         }
       />
-      <RatingCard rating = {3.5}/>
+      <RatingCard rating = {fields.rating}/>
       <LikeButton />
     </div>
   );

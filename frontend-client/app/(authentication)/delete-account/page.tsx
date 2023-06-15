@@ -52,11 +52,9 @@ function SuccessDialog(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
+        <h4> Don't worry, all your data have also been deleted. </h4>
         <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
+          We are sorry to see you go... See you soon!
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -128,7 +126,7 @@ function DeleteAccountPage() {
           <Card.Img variant="top" src="images/delete.png" />
           <Card.Body>
             <Card.Title> Delete your account </Card.Title>
-            <Card.Text>We are sad to see you go...</Card.Text>
+            <Card.Text>This action is irreversible. If you wish to proceed, please key in your email and password. </Card.Text>
             <Email />
             <Password value={password} onChange={handlePasswordChange} />
             <DeleteAccount />
