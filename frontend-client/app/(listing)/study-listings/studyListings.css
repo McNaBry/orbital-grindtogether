@@ -7,13 +7,9 @@
 #F6F5F1
 */
 
-* {
-  font-family: Poppins;
-}
-
 body {
   /* background-color: #DCD7C9; */
-  background: radial-gradient(#414345, #232526 ) fixed;
+  background: black;
 }
 
 #filter-container {
@@ -50,34 +46,4 @@ body {
   object-fit: cover;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin-bottom: 5px;
-}
-
-.badge {
-  margin-right: 5px;
-  background-color: #966844;
-}
-
-.tag {
-  width: fit-content;
-  text-align: center;
-  border-radius: 0.5rem;
-}
-
-.modules {
-  background-color: #0052d4;
-}
-
-.locations {
-  background-color: #65c7f7;
-}
-
-.faculties {
-  background-color: #9cecfb;
 }

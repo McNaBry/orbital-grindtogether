@@ -196,13 +196,21 @@ app.post("/create-listing", async (req, res) => {
     likes: []
   }
 
-  const addRes = await db.collection("listings").add(listing)
-  console.log("New listing added with ID:", addRes.id)
-  if (addRes.ok) {
+  const docRef = await db.collection("listings").add(listing)
+  console.log("New listing added with ID:", docRef.id)
+  if (!docRef.empty) {
     res.status(200).send()
   } else {
     res.status(400).send()
   }
+})
+
+app.post('/get-listings', async (req, res) => {
+  const snapshot = await db.collection("listings").orderBy("date").get()
+  if (!snapshot.empty) {
+    snapshot.forEach(doc => console.log(doc.data()))
+  }
+  res.json({name: "hello"}).send()
 })
 
 const port = 5000;

@@ -22,9 +22,17 @@
 }
 
 .single-option-input,
-.multi-option-input {
+.multi-option-input,
+.date-option-container {
   width: 80%;
   margin: 5px;
+}
+
+.date-option-input {
+  width: 100%;
+  padding: 5px 5px 5px 10px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
 }
 
 #demo-card-container {
@@ -35,9 +43,10 @@
   border: 0px;
 }
 
-.card-icon {
-  width: 20px;
-  height: 20px;
+@media (max-width: 576px) {
+  #options-container {
+    width: 100%
+  }
 }
 
 .options-subcontainer {
@@ -58,27 +67,4 @@
 .option-label {
   display: flex;
   align-content: "center";
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin-bottom: 5px;
-}
-
-.tag {
-  margin-right: 5px;
-}
-
-.modules {
-  background-color: #0052d4;
-}
-
-.locations {
-  background-color: #65c7f7;
-}
-
-.faculties {
-  background-color: #9cecfb;
 }

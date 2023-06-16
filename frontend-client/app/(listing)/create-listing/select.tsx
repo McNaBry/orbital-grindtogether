@@ -1,6 +1,19 @@
+import 'react-datepicker/dist/react-datepicker.css'
+import styles from './create-listing.module.css'
+
 import Select, { ActionMeta } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-import styles from './create-listing.module.css'
+import DatePicker from 'react-datepicker'
+
+/* Taken from react-select src/types.ts
+export type ActionMeta<Option> =
+  | SelectOptionActionMeta<Option>
+  | DeselectOptionActionMeta<Option>
+  | RemoveValueActionMeta<Option>
+  | PopValueActionMeta<Option>
+  | ClearActionMeta<Option>
+  | CreateOptionActionMeta<Option>;
+*/
 
 export type Option = {
   value: string,
@@ -25,6 +38,7 @@ function SelectFreeOption({params} : {params : SelectFreeOptionProps}) {
     <CreatableSelect 
       className={styles["single-option-input"]} 
       name={name}
+      placeholder={name}
       isClearable
       options={options} 
       onChange={(option, actionMeta) => handleChange(type, option, actionMeta)} 
@@ -44,6 +58,7 @@ function SelectMultiOption({params} : {params : SelectMultiOptionProps}) {
     <Select
       className={"basic-multi-select " + styles["multi-option-input"]}
       name={name}
+      placeholder={name}
       isMulti
       options={options}
       onChange={(option, actionMeta) => handleChange(type, option, actionMeta)}
@@ -51,7 +66,26 @@ function SelectMultiOption({params} : {params : SelectMultiOptionProps}) {
   )
 }
 
+type DateOptionProps = {
+  startDate: Date | null,
+  setStartDate: (date: Date | null) => void
+}
+
+function DateOption({startDate, setStartDate} : DateOptionProps) {
+  return (
+    <div className={styles["date-option-container"]}>
+      <DatePicker
+        dateFormat="dd/MM/yyyy"
+        className={styles["date-option-input"]}
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+      />
+    </div>
+  )
+}
+
 export {
   SelectFreeOption,
-  SelectMultiOption
+  SelectMultiOption,
+  DateOption
 }

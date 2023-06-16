@@ -2,7 +2,12 @@
 
 import { ChangeEvent, SyntheticEvent, useState } from "react"
 import { Autocomplete, TextField } from "@mui/material"
-import { data } from "./data"
+import { 
+  Option, 
+  SelectFreeOption, SelectMultiOption, 
+  SelectFreeOptionProps, SelectMultiOptionProps 
+} from "../create-listing/select"
+import { tagData } from "./data"
 
 // function FilterTags({ filters } : Pick<FilterPanelProps, 'filters'>) {
 //   const mustIncludeFilters = filters[0].map((filter) => {
@@ -34,47 +39,47 @@ type FilterAutoCompleteProps = {
   handleFilterChange: (event:SyntheticEvent<Element, Event>, value:string[], type:string) => void
 }
 
-function FilterAutoComplete({ label, type, options, handleFilterChange } : FilterAutoCompleteProps) {
+function FilterAutoComplete({ name, type, options, handleChange } : SelectMultiOptionProps) {
   return (
-    <label style={{marginBottom: "5px"}}>{label}
-      <Autocomplete
-        multiple
-        id="multiple-limit-tags"
-        options={options}
-        sx={{ width: "100%", marginTop: "8px"  }}
-        renderInput={(params) => <TextField {...params} label={label} />}
-        onChange={(event, value) => handleFilterChange(event, value, type)}
+    <label style={{marginBottom: "5px"}}>{name}
+      <SelectMultiOption
+        params={{
+          name: name,
+          type: type,
+          options: options,
+          handleChange: handleChange
+        }}
       /> </label>
   )
 }
 
 type FilterPanelProps = {
-  modifyFilters: (filterArray:string[], type:string) => void,
+  handleChange: Pick<SelectMultiOptionProps, 'handleChange'>,
 }
 
-export default function FilterPanel({ modifyFilters } : FilterPanelProps) {
+export default function FilterPanel({ handleChange } : Pick<SelectMultiOptionProps, 'handleChange'>) {
 
-  function handleFilterChange(event: SyntheticEvent<Element, Event>, value: string[], type: string) {
-    modifyFilters(value, type)
-  }
+  // function handleFilterChange(event: SyntheticEvent<Element, Event>, value: string[], type: string) {
+  //   modifyFilters(value, type)
+  // }
 
   return (
     <div className="container col-4" id="filter-container">
       <FilterAutoComplete 
-        label="Module"   
+        name="Module"   
         type="modules"
-        options={Array.from(data["modules"])}
-        handleFilterChange={handleFilterChange} />
+        options={tagData["modules"].map(value => ({value: value, label: value}))}
+        handleChange={handleChange} />
       <FilterAutoComplete 
-        label="Location" 
+        name="Location" 
         type="locations"
-        options={Array.from(data["locations"])}
-        handleFilterChange={handleFilterChange} />
+        options={tagData["locations"].map(value => ({value: value, label: value}))}
+        handleChange={handleChange} />
       <FilterAutoComplete 
-        label="Faculty"  
+        name="Faculty"  
         type="faculties"
-        options={Array.from(data["faculties"])}
-        handleFilterChange={handleFilterChange} />
+        options={tagData["faculties"].map(value => ({value: value, label: value}))}
+        handleChange={handleChange} />
     </div>
   )
 }

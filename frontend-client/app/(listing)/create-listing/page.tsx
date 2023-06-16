@@ -1,18 +1,19 @@
 'use client'
 
-import { FormEvent, MouseEventHandler, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 import { ActionMeta } from 'react-select'
 import { 
   Option, 
   SelectFreeOption, SelectMultiOption, 
-  SelectFreeOptionProps, SelectMultiOptionProps 
+  SelectFreeOptionProps, SelectMultiOptionProps,
+  DateOption 
 } from "./select"
-import StudyCard, { StudyListing } from './studyCard'
-import { Form, Button } from 'react-bootstrap'
+import StudyCard, { StudyListing } from '../studyCard'
+import { Container, Form, Button } from 'react-bootstrap'
 import styles from './create-listing.module.css'
 
-import { data } from '../study-listings/data'
+import { tagData } from '../study-listings/data'
 
 const modules:Option[] = [
   { value: "CS2040S", label: "CS2040S" },
@@ -39,19 +40,23 @@ function MultiOption({ name, type, options, handleChange } : SelectMultiOptionPr
       params={{
         name: name,
         type: type,
-        options: options,
+        options: tagData[type].map(value => ({value: value, label: value})),
         handleChange: handleChange
       }}
     />
   )
 }
 
-const defaultOptions:{[key:string] : string} = {
+// Typescript has a weird error where you can't index the object with string keys
+// Hence instead of giving it a StudyListing type, it is given a dict type
+const defaultOptions:{[key:string]: any} = {
   "title":    "Title",
   "desc":     "Description",
-  "date":     "1/1/2023",
+  "tags":     {"modules":[], "locations":[], "faculties":[]},
+  "date":     new Date(), // Set current timing
   "freq":     "Every day",
-  "interest": "10"
+  "interest": 10,
+  "id":       0
 }
 
 export default function CreateListing() {
@@ -64,6 +69,18 @@ export default function CreateListing() {
     interest: defaultOptions['interest'],
     id: 1
   })
+
+  function handleDateOptionChange(date: Date | null) {
+    console.log(date)
+    if (date == null) setDemoOptions(prevOptions => ({
+      ...prevOptions,
+      date: new Date()
+    }))
+    else setDemoOptions(prevOptions => ({
+      ...prevOptions,
+      date: date
+    }))
+  }
 
   function handleSingleOptionChange(type:string, option: Option | null, actionMeta: ActionMeta<Option>) {
     if (option == null) {
@@ -92,6 +109,7 @@ export default function CreateListing() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    console.log("Form submit triggered")
     const res = await fetch('http://localhost:5000/create-listing', {
       method: 'POST',
       headers: {
@@ -114,7 +132,7 @@ export default function CreateListing() {
         <StudyCard {...demoOptions}/>
       </div>
       <Form id={styles["options-container"]} onSubmit={handleSubmit}>
-        <Form.Group className={styles["options-subcontainer"]}>
+        <Container className={styles["options-subcontainer"]}>
           <SingleOption
             name="Title"
             type="title"
@@ -125,8 +143,8 @@ export default function CreateListing() {
             type="desc"
             options={modules}
             handleChange={handleSingleOptionChange}/>
-        </Form.Group>
-        <Form.Group className={styles["options-subcontainer"]}>
+        </Container>
+        <Container className={styles["options-subcontainer"]}>
           <MultiOption
             name="Modules"
             type="modules"
@@ -137,19 +155,23 @@ export default function CreateListing() {
             type="locations"
             options={modules}
             handleChange={handleMultipleOptionChange}/>
-        </Form.Group>
-        <Form.Group className={styles["options-subcontainer"]}>
-          <SingleOption
-            name="Date"
-            type="date"
+          <MultiOption
+            name="Faculty"
+            type="faculties"
             options={modules}
-            handleChange={handleSingleOptionChange}/>
+            handleChange={handleMultipleOptionChange}/>
+        </Container>
+        <Container className={styles["options-subcontainer"]}>
+          <DateOption
+            startDate={demoOptions["date"]}
+            setStartDate={handleDateOptionChange}
+          />
           <SingleOption
             name="Frequency"
             type="freq"
             options={modules}
             handleChange={handleSingleOptionChange}/>
-        </Form.Group>
+        </Container>
         <Button variant="success" type="submit">Create Listing</Button>
       </Form>
     </div>
