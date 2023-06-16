@@ -56,7 +56,7 @@ const defaultOptions:{[key:string]: any} = {
   "date":     new Date(), // Set current timing
   "freq":     "Every day",
   "interest": 10,
-  "id":       0
+  "id":       "invitedefault"
 }
 
 export default function CreateListing() {
@@ -67,7 +67,7 @@ export default function CreateListing() {
     date: defaultOptions['date'],
     freq: defaultOptions['freq'],
     interest: defaultOptions['interest'],
-    id: 1
+    id: defaultOptions['id']
   })
 
   function handleDateOptionChange(date: Date | null) {

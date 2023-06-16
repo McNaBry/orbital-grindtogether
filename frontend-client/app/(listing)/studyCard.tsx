@@ -10,13 +10,14 @@ export type StudyListing = {
   date:     Date | null,
   freq:     string,
   interest: number,
-  id:       number
+  id:       string
 }
 
 function Tags({ tags } : Pick<StudyListing, 'tags'>) {
-  let tagBoxes = Object.keys(tags).map((tagType) => {
-    return tags[tagType].map(tag => {
-      return <span className={"badge " + cardStyles[tagType] + " " + cardStyles["tag"]} key={tag}>{tag}</span>
+  const keys = ["modules", "locations", "faculties"]
+  let tagBoxes = keys.map((key) => {
+    return tags[key].map(tag => {
+      return <span className={"badge " + cardStyles[key] + " " + cardStyles["tag"]} key={tag}>{tag}</span>
     })
   })
 
@@ -56,7 +57,7 @@ export default function StudyCard(listingData : StudyListing) {
                   className={cardStyles["card-icon"]} /> 
                 interested
               </small>
-              <LikeButton />
+              {/* <LikeButton /> */}
             </Card.Text>
           </Card.Body>
         </div>

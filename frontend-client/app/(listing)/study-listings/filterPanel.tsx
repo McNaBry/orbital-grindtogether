@@ -1,7 +1,5 @@
 "use client"
 
-import { ChangeEvent, SyntheticEvent, useState } from "react"
-import { Autocomplete, TextField } from "@mui/material"
 import { 
   Option, 
   SelectFreeOption, SelectMultiOption, 
@@ -32,16 +30,10 @@ import { tagData } from "./data"
 //   )
 // }
 
-type FilterAutoCompleteProps = {
-  label: string,
-  type: string,
-  options: string[],
-  handleFilterChange: (event:SyntheticEvent<Element, Event>, value:string[], type:string) => void
-}
-
 function FilterAutoComplete({ name, type, options, handleChange } : SelectMultiOptionProps) {
   return (
-    <label style={{marginBottom: "5px"}}>{name}
+    <>
+      <label style={{color: "white", marginTop: "10px"}}>{name}</label>
       <SelectMultiOption
         params={{
           name: name,
@@ -49,12 +41,9 @@ function FilterAutoComplete({ name, type, options, handleChange } : SelectMultiO
           options: options,
           handleChange: handleChange
         }}
-      /> </label>
+      />
+    </>
   )
-}
-
-type FilterPanelProps = {
-  handleChange: Pick<SelectMultiOptionProps, 'handleChange'>,
 }
 
 export default function FilterPanel({ handleChange } : Pick<SelectMultiOptionProps, 'handleChange'>) {

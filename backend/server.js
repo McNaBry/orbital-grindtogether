@@ -205,12 +205,25 @@ app.post("/create-listing", async (req, res) => {
   }
 })
 
-app.post('/get-listings', async (req, res) => {
-  const snapshot = await db.collection("listings").orderBy("date").get()
+app.post('/get-listings', async (req, res) => {  
+  const snapshot = await db
+    .collection("listings")
+    .orderBy("date")
+    .get()
+  
   if (!snapshot.empty) {
-    snapshot.forEach(doc => console.log(doc.data()))
+    const results = []
+    snapshot.forEach(doc => {
+      const docData = doc.data()
+      docData['id'] = doc.id
+      results.push(docData)
+    })
+    //console.log(results)
+    res.json(results).send()
+  } else {
+    res.status(400).send()
   }
-  res.json({name: "hello"}).send()
+  res.status(200).send()
 })
 
 const port = 5000;
