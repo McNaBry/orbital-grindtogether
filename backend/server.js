@@ -251,10 +251,10 @@ app.post('/delete-listing', async (req, res) => {
 app.post('get-created-listings', async (req, res) => {
   const { userID } = req.body
   const snapshot = await db
-  .collection('listings')
-  .orderBy('date')
-  .where('createdBy', '==', userID)
-  .get()
+    .collection('listings')
+    .orderBy('date')
+    .where('createdBy', '==', userID)
+    .get()
   if (snapshot.exists) {
     const results = []
     snapshot.forEach(doc => {

@@ -1,8 +1,8 @@
 import React, {useState} from "react"
 import "./profilepage.css";
-import fullStarIcon from "/images/star-full-icon.png"
-import halfStarIcon from "/images/star-half-icon.png"
-import emptyStarIcon from "/images/star-empty-icon.png"
+const fullStarIcon = "/images/star-full-icon.png"
+const halfStarIcon = "/images/star-half-icon.png"
+const emptyStarIcon = "/images/star-empty-icon.png"
 
 interface RatingProp {
     rating: Number;
