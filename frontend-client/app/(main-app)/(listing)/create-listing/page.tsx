@@ -132,7 +132,7 @@ export default function CreateListing() {
 
   return (
     <div id={styles["create-listing-container"]}>
-      <h1>Create Listing</h1>
+      <h1 style={{color: "white"}}>Create Listing</h1>
       <div id={styles["demo-card-container"]}>
         <StudyCard {...demoOptions}/>
       </div>

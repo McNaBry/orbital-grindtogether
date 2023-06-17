@@ -248,6 +248,44 @@ app.post('/delete-listing', async (req, res) => {
 
 })
 
+app.post('get-created-listings', async (req, res) => {
+  const { userID } = req.body
+  const snapshot = await db
+  .collection('listings')
+  .orderBy('date')
+  .where('createdBy', '==', userID)
+  .get()
+  if (snapshot.exists) {
+    const results = []
+    snapshot.forEach(doc => {
+      results.push(doc.data())
+    })
+    console.log(results)
+    res.json(results).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post('/get-liked-listings', async (req, res) => {
+  const { userID } = req.body
+  const snapshot = await db
+    .collection('listings')
+    .orderBy('date')
+    .where('likes', 'array-contains', userID)
+    .get()
+  if (snapshot.exists) {
+    const results = []
+    snapshot.forEach(doc => {
+      results.push(doc.data())
+    })
+    console.log(results)
+    res.json(results).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
 const port = 5000;
 
 app.listen(port, () => console.log("Listening on " + port));

@@ -1,7 +1,5 @@
 import "./about.css";
 
-import React from "react";
-
 interface ImageData {
   imgLink: string;
   imgAlt: string;
@@ -85,7 +83,7 @@ function TechStack() {
 
 export default function About() {
   return (
-    <>
+    <div style={{color: "white", padding: "10px"}}>
       <h1 className="about-header"> About GrindTogether </h1>
       <div className="motivation">
         <h2 className="header"> Our motivation </h2>
@@ -168,6 +166,6 @@ export default function About() {
       </div>
 
       <TechStack />
-    </>
+    </div>
   );
 }
