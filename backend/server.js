@@ -15,12 +15,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
 
-// app.post("/auth", (req, res) => {
-//   const formData = req.body;
-//   console.log(formData);
-//   res.redirect("http://localhost:3000/study-listings");
-// });
-
 app.get("/firebase", async (req, res) => {
   const snapshot = await db.collection("users").get();
   const data = {};
@@ -35,14 +29,21 @@ app.get("/firebase", async (req, res) => {
 app.post("/sign-up", async (req, res) => {
   /*
     Creates a user profile with the full-name and email 
-    Uses default values for bio and rating 
+    Uses placeholder values for bio, course, telegramHandle, year and rating
+    Posts is an array of doc ref to the listings that the user has created
+    Likes is an array of doc ref to the listings that the user has liked 
     DOES NOT contain plaintext password as this will be handled by Firebase Auth
   */
   const user = {
     fullName: req.body.fullName,
     email: req.body.email,
     bio: "Hello!",
+    course: "",
+    teleHandle: "@",
+    year: 0,
     rating: 0,
+    listings: [],
+    likes: []
   };
 
   /*
@@ -96,38 +97,38 @@ app.post("/sign-in", async (req, res) => {
   }
 });
 
-async function sendEmail(to, subject, htmlContent) {
-  try {
-    // Create a transporter using SMTP settings
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "",
-        pass: "",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+// async function sendEmail(to, subject, htmlContent) {
+//   try {
+//     // Create a transporter using SMTP settings
+//     const transporter = nodemailer.createTransport({
+//       host: "smtp.gmail.com",
+//       port: 587,
+//       secure: false,
+//       auth: {
+//         user: "",
+//         pass: "",
+//       },
+//       tls: {
+//         rejectUnauthorized: false,
+//       },
+//     });
 
-    // Create the email message
-    const message = {
-      from: process.env.SMTP_FROM_EMAIL,
-      to,
-      subject,
-      html: htmlContent,
-    };
+//     // Create the email message
+//     const message = {
+//       from: process.env.SMTP_FROM_EMAIL,
+//       to,
+//       subject,
+//       html: htmlContent,
+//     };
 
-    // Send the email
-    const info = await transporter.sendMail(message);
-    console.log("Email sent:", info.response);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
-}
+//     // Send the email
+//     const info = await transporter.sendMail(message);
+//     console.log("Email sent:", info.response);
+//   } catch (error) {
+//     console.error("Error sending email:", error);
+//     throw error;
+//   }
+// }
 
 // API Endpoint to receieve email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -180,7 +181,7 @@ app.post('/reset-password', async (req, res) => {
   }
 })
 
-
+// API Endpoint to create listing
 app.post("/create-listing", async (req, res) => {
   const listing = {
     title: req.body.title,
@@ -224,6 +225,12 @@ app.post('/get-listings', async (req, res) => {
     res.status(400).send()
   }
   res.status(200).send()
+})
+
+app.post('/delete-listing', async (req, res) => {
+  const { userID, postID } = req.body
+
+
 })
 
 const port = 5000;
