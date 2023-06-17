@@ -27,14 +27,18 @@ export default function StudyListings({ page, limit, filters, data } : StudyList
     return true
   })
 
-  const listings = filterData.map((listing) => {
+  const slicedData = page == -1
+    ? filterData
+    : filterData.slice((page - 1) * limit, page * limit)
+
+  const listings = slicedData.map((listing) => {
     return <StudyCard key={listing["id"]} {...listing} />
   })
 
   return (
     <div className="container col-8" id="listing-container">
       <div className="row g-0 justify-content-evenly">
-        {listings.slice((page - 1) * limit, page * limit)}
+        {listings}
       </div>
     </div>
   )

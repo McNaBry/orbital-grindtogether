@@ -8,6 +8,7 @@ const nodemailer = require("nodemailer");
 
 const app = express();
 const { db, fireAuth } = require("./firebase");
+const { getLikedListings, getCreatedListings } = require("./listing-db")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
@@ -248,42 +249,14 @@ app.post('/delete-listing', async (req, res) => {
 
 })
 
-app.post('get-created-listings', async (req, res) => {
-  const { userID } = req.body
-  const snapshot = await db
-    .collection('listings')
-    .orderBy('date')
-    .where('createdBy', '==', userID)
-    .get()
-  if (snapshot.exists) {
-    const results = []
-    snapshot.forEach(doc => {
-      results.push(doc.data())
-    })
-    console.log(results)
-    res.json(results).send()
-  } else {
-    res.status(400).send()
-  }
-})
-
-app.post('/get-liked-listings', async (req, res) => {
-  const { userID } = req.body
-  const snapshot = await db
-    .collection('listings')
-    .orderBy('date')
-    .where('likes', 'array-contains', userID)
-    .get()
-  if (snapshot.exists) {
-    const results = []
-    snapshot.forEach(doc => {
-      results.push(doc.data())
-    })
-    console.log(results)
-    res.json(results).send()
-  } else {
-    res.status(400).send()
-  }
+app.post('/get-dashboard-listings', async (req, res) => {
+  const { userID } = req.query
+  console.log(userID)
+  const likedListings = getLikedListings(userID)
+  const createdListings = getCreatedListings(userID)
+  const results = await Promise.all([likedListings, createdListings])
+  console.log(results)
+  return res.json(results).send()
 })
 
 const port = 5000;
