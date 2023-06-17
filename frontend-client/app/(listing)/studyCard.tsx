@@ -4,13 +4,14 @@ import dayjs from 'dayjs'
 import LikeButton from './study-listings/likeButton'
 
 export type StudyListing = {
-  title:    string,
-  desc:     string,
-  tags:     { [key:string] : string[] },
-  date:     Date | null,
-  freq:     string,
-  interest: number,
-  id:       string
+  createdBy: string,
+  title:     string,
+  desc:      string,
+  tags:      { [key:string] : string[] },
+  date:      Date | null,
+  freq:      string,
+  interest:  number,
+  id:        string
 }
 
 function Tags({ tags } : Pick<StudyListing, 'tags'>) {

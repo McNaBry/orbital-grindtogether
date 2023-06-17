@@ -184,6 +184,7 @@ app.post('/reset-password', async (req, res) => {
 // API Endpoint to create listing
 app.post("/create-listing", async (req, res) => {
   const listing = {
+    createdBy: req.body.userID,
     title: req.body.title,
     desc : req.body.desc,
     tags : {
@@ -214,9 +215,22 @@ app.post('/get-listings', async (req, res) => {
   
   if (!snapshot.empty) {
     const results = []
-    snapshot.forEach(doc => {
-      const docData = doc.data()
-      docData['id'] = doc.id
+    snapshot.forEach(async doc => {
+      let docData = doc.data()
+      const userRef = db.collection('users').doc(docData.createdBy)
+      const user = await userRef.get()
+      if (!doc.exists) {
+        docData = {
+          ...docData,
+          id: doc.id,
+          createdBy: "Annonymous"
+        }
+      } else 
+        docData = {
+          ...docData,
+          id: doc.id,
+          createdBy: user.fullName
+        }
       results.push(docData)
     })
     //console.log(results)

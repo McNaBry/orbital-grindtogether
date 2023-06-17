@@ -50,17 +50,19 @@ function MultiOption({ name, type, options, handleChange } : SelectMultiOptionPr
 // Typescript has a weird error where you can't index the object with string keys
 // Hence instead of giving it a StudyListing type, it is given a dict type
 const defaultOptions:{[key:string]: any} = {
-  "title":    "Title",
-  "desc":     "Description",
-  "tags":     {"modules":[], "locations":[], "faculties":[]},
-  "date":     new Date(), // Set current timing
-  "freq":     "Every day",
-  "interest": 10,
-  "id":       "invitedefault"
+  "createdBy": "Bryan Lee",
+  "title":     "Title",
+  "desc":      "Description",
+  "tags":      {"modules":[], "locations":[], "faculties":[]},
+  "date":      new Date(), // Set current timing
+  "freq":      "Every day",
+  "interest":  10,
+  "id":        "invitedefault"
 }
 
 export default function CreateListing() {
   const [demoOptions, setDemoOptions] = useState<StudyListing>({
+    createdBy: defaultOptions['createdBy'],
     title: defaultOptions['title'],
     desc: defaultOptions['desc'],
     tags: {"modules":[], "locations":[], "faculties":[]},
@@ -115,7 +117,10 @@ export default function CreateListing() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(demoOptions),
+      body: JSON.stringify({
+        ...demoOptions,
+        userID: 'hxASjzp8fZz3GyekGHhO' // For testing
+      }),
     })
 
     if (res.ok) {
