@@ -30,7 +30,7 @@ function Tags({ tags } : Pick<StudyListing, 'tags'>) {
 }
   
 export default function StudyCard(listingData : StudyListing) {
-  const {title, desc, tags, date, freq, interest, id} = listingData
+  const {createdBy, title, desc, tags, date, freq, interest, id} = listingData
   return (
     <Card key={id} style={{color:"black"}}>
       <Row className="g-0">
@@ -44,7 +44,7 @@ export default function StudyCard(listingData : StudyListing) {
           <Card.Body>
             <Card.Title>{title}</Card.Title>
             <Tags tags={tags}/>
-            <p className="card-text">{desc}</p>
+            <Card.Text>{desc}</Card.Text>
             <Card.Text className="row" style={{marginTop: "auto"}}>
               <small className="text-body-secondary"> 
                 <img src="/images/date.svg" 
@@ -58,6 +58,7 @@ export default function StudyCard(listingData : StudyListing) {
                   className={cardStyles["card-icon"]} /> 
                 interested
               </small>
+              <small>Created by {createdBy}</small>
               {/* <LikeButton /> */}
             </Card.Text>
           </Card.Body>

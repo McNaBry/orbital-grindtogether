@@ -215,11 +215,12 @@ app.post('/get-listings', async (req, res) => {
   
   if (!snapshot.empty) {
     const results = []
-    snapshot.forEach(async doc => {
+    // Note: Have to use a for... of loop for async 
+    for (const doc of snapshot.docs) {
       let docData = doc.data()
-      const userRef = db.collection('users').doc(docData.createdBy)
-      const user = await userRef.get()
-      if (!doc.exists) {
+      const user = await db.collection('users').doc(docData.createdBy).get()
+      const userData = user.data()
+      if (!user.exists) {
         docData = {
           ...docData,
           id: doc.id,
@@ -229,10 +230,10 @@ app.post('/get-listings', async (req, res) => {
         docData = {
           ...docData,
           id: doc.id,
-          createdBy: user.fullName
+          createdBy: userData.fullName
         }
       results.push(docData)
-    })
+    }
     //console.log(results)
     res.json(results).send()
   } else {
