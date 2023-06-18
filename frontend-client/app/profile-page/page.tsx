@@ -5,10 +5,6 @@ import "./nonEditableCard";
 import NonEditableCard from "./nonEditableCard";
 import EditableCard from "./editableCard";
 import RatingCard from "./ratingCard";
-import LikeButton from "../study-listings/likeButton";
-
-import "firebase/auth";
-import { getAuth } from "firebase/auth";
 
 function EditProfile() {
   return <h2> Edit Profile </h2>;
@@ -62,28 +58,19 @@ function ProfilePage() {
     rating: 0
   });
 
-  // where using firebase has a problem
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const userId = user.uid;
-
-  if (!userId) {
-    console.log("gg motherfkers");
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/profile-page/${userId}");
+        const response = await fetch("/profile-page");
         const data = await response.json();
         setFields(data);
       } catch (error) {
-
+        console.log("gg");
       }
     }
 
     fetchData();
-  })
+  }, [])
 
   const handleFieldChange = ({
     fieldToUpdate,
@@ -97,7 +84,7 @@ function ProfilePage() {
 
     const updatedProfileData = { [fieldToUpdate]: value };
 
-    fetch("/profile-page/${userId}", {
+    fetch("/profile-page", {
       method: "POST",
       headers : {
         "Content-Type": "application/json",
@@ -144,7 +131,6 @@ function ProfilePage() {
         }
       />
       <RatingCard rating = {fields.rating}/>
-      <LikeButton />
     </div>
   );
 }

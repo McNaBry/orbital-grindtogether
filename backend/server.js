@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 // const nodemailer = require("nodemailer");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const { db, fireAuth } = require("./firebase");
@@ -15,6 +16,7 @@ const apiKey = process.env.FIREBASE_API_KEY;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
+app.use(cookieParser());
 
 // app.post("/auth", (req, res) => {
 //   const formData = req.body;
@@ -91,6 +93,8 @@ app.post("/sign-in", async (req, res) => {
     If sign in is successful a 200 OK HTTP status code is returned
   */
   const signInRes = await authUtil.signInUser(email, password)
+  const idToken = signInRes.data.idToken;
+  res.cookie("idToken", idToken, {httpOnly: true});
 
   if (signInRes.status == 200) {
     res.status(200).send()
@@ -230,31 +234,53 @@ app.delete("/delete-account", async (req, res) => {
   }
 });
 
-// Get the data of the specific user to be displayed in the profile page
-app.get("/profile-page/:userId", async (req, res) => {
+// middleware to extract token from cookie and verify it before use 
+const verifyIdToken = async (req, res, next) => {
+  const idToken = req.cookies.idToken;
+
+  if (!idToken) {
+    return res.status(401).send("Unauthorised");
+  }
+
   try {
-    const userId = req.params.userId;
-    const snapshot = await db.collection("users").doc(userId).get();
+    const decodedToken = await fireAuth.verifyIdToken(idToken);
+    const userId = decodedToken.uid;
+    const email = decodedToken.email;
+    
+    // we will attach the user object to the req object to be passed around 
+    req.user = { userId, email }
+    next(); 
+  } catch (error) {
+    console.log('Failed to verify idToken:', error);
+    res.status(401).send('Unauthorized');
+  }
+}
+
+// Get the data of the specific user to be displayed in the profile page
+app.get("/profile-page", verifyIdToken, async (req, res) => {
+  try {
+    const uid = req.user.userId;
+    const snapshot = await db.collection("users").doc(uid).get();
 
     if (!snapshot.exists) {
-      console.log("cannot find data")
+      console.log("no data found regarding particular user");
       res.status(404).send();
-      return ;
+      return;
     }
 
-    const userData = snapshot.data();
+    const userData = snapshot.data()
     console.log("i successfully sent the data");
     res.send(userData);
   } catch (error) {
-    console.log("we are fucked");
+    console.log("no data for you");
     res.status(500).send();
   }
 })
 
 // Update the database when the user modifies a field in the profile page
-app.post("/profile-page/:userId", async (req, res) => {
+app.post("/profile-page", async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user.userId;
     const updatedData = req.body;
     
     await db.collection("users").doc(userId).update(updatedData);
