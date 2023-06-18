@@ -131,7 +131,7 @@ app.post("/sign-in", async (req, res) => {
 //   }
 // }
 
-// API Endpoint to receieve email to send password reset link
+// API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
   const { email } = req.body;
   const resetEmailRes = await axios.post(

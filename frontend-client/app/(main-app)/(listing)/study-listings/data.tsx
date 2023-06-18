@@ -1,9 +1,11 @@
 import { StudyListing } from "../studyCard"
 
-export const tagData:{[key:string]:string[]} = {
-  "modules"   : ["CS1101S", "CS1010X", "CS1231S", "IS2218", "IS1108", "CS2030S", "CS2040S", "HSI1000"],
+export const tagData:{[key:string]: string[]} = {
+  "modules"   : ["CS1101S", "CS1010X", "CS1010S" ,"CS1231", "CS1231S", "CS2030", "CS2030S", "CS2040", 
+  "CS2040S", "CS2100", "MA1521", "MA2001", "ST2334", "IS1108", "IS2218", "GEA1000", "HSI1000", "ES2660"],
   "locations" : ["Terrace", "Benches @ LT-19", "Basement 1", "COM3"],
-  "faculties" : ["SOC", "CHS", "FASS", "Computing", "Social Sciences", "Mathematics", "Statistics"],
+  "faculties" : ["SOC", "CHS", "FASS", "Computing", "Social Sciences", "Mathematics", "Statistics",
+  "Engineering"],
 }
 
 export const testData : StudyListing[] = [
