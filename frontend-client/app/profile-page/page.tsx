@@ -5,6 +5,7 @@ import "./nonEditableCard";
 import NonEditableCard from "./nonEditableCard";
 import EditableCard from "./editableCard";
 import RatingCard from "./ratingCard";
+import SignOutButton from "./signOutButton";
 
 function EditProfile() {
   return <h2> Edit Profile </h2>;
@@ -32,14 +33,14 @@ function ProfilePic() {
   return <div className="profile-pic"></div>;
 }
 
-function NameCard({ name }: {name: string}) {
+function NameCard({ name }: { name: string }) {
   return (
     <NonEditableCard title="Full Name">
       <p className="card-text"> {name} </p>
     </NonEditableCard>
   );
 }
-function EmailCard({ email }: {email: string}) {
+function EmailCard({ email }: { email: string }) {
   return (
     <NonEditableCard title="Email">
       <p className="card-text"> {email} </p>
@@ -55,7 +56,7 @@ function ProfilePage() {
     year: 0,
     course: "",
     telegramHandle: "@",
-    rating: 0
+    rating: 0,
   });
 
   useEffect(() => {
@@ -67,10 +68,10 @@ function ProfilePage() {
       } catch (error) {
         console.log("gg");
       }
-    }
+    };
 
     fetchData();
-  }, [])
+  }, []);
 
   const handleFieldChange = ({
     fieldToUpdate,
@@ -86,11 +87,11 @@ function ProfilePage() {
 
     fetch("/profile-page", {
       method: "POST",
-      headers : {
+      headers: {
         "Content-Type": "application/json",
       },
-      body : JSON.stringify(updatedProfileData)
-    })
+      body: JSON.stringify(updatedProfileData),
+    });
   };
 
   return (
@@ -98,18 +99,18 @@ function ProfilePage() {
       <EditProfile />
       <ProfilePic />
       <UploadProfilePic />
-      <NameCard name= {fields.fullName} />
+      <NameCard name={fields.fullName} />
       <EmailCard email={fields.email} />
       <EditableCard
         field="Bio"
         value={fields.bio}
-        maxChars= {150}
+        maxChars={150}
         onSave={(value) => handleFieldChange({ fieldToUpdate: "bio", value })}
       />
       <EditableCard
         field="Year"
         value={fields.year}
-        maxChars= {1}
+        maxChars={1}
         onSave={(value) =>
           handleFieldChange({ fieldToUpdate: "year", value: Number(value) })
         }
@@ -117,7 +118,7 @@ function ProfilePage() {
       <EditableCard
         field="Course"
         value={fields.course}
-        maxChars= {50}
+        maxChars={50}
         onSave={(value) =>
           handleFieldChange({ fieldToUpdate: "course", value })
         }
@@ -125,12 +126,13 @@ function ProfilePage() {
       <EditableCard
         field="Telegram Handle"
         value={fields.telegramHandle}
-        maxChars= {32}
+        maxChars={32}
         onSave={(value) =>
           handleFieldChange({ fieldToUpdate: "telegramHandle", value })
         }
       />
-      <RatingCard rating = {fields.rating}/>
+      <RatingCard rating={fields.rating} />
+      <SignOutButton />
     </div>
   );
 }

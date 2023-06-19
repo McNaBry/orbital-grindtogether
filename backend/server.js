@@ -293,6 +293,18 @@ app.post("/profile-page", async (req, res) => {
   }
 })
 
+app.get("/sign-out", async (req, res) => {
+  // forces users to sign out from all devices
+  fireAuth.revokeRefreshTokens(req.user.uid).then(() => {
+    res.clearCookie("session");
+    res.status(200).send();
+    // res.redirect("/")
+  }).catch((error) => {
+    console.log("no logging out for you you are stuck here forever");
+    res.status(500).send();
+  })
+})
+
 // app.post("/create-listing", async (req, res) => {
 //   const listing = {
 //     "title": req.body.,
