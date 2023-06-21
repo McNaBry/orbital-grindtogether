@@ -7,6 +7,7 @@ import "./signin.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation"
 import CreateStatus from "../createStatus";
+import Cookie from 'universal-cookie'
 
 function WelcomeBack() {
   return <h2 className="welcome-back"> Welcome Back! </h2>;
@@ -41,6 +42,10 @@ function ForgetPassword() {
 }
 
 function SignInPage() {
+  const cookie = new Cookie()
+  const token = cookie.get("tokenID")
+  console.log(token)
+  cookie.set("tokenID", "iamawesome", {path: "/"})
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const [success, setSuccess] = useState(false);
