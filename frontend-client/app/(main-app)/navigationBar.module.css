@@ -1,0 +1,16 @@
+.toggler {
+  border: none;
+  background-color: #FF4E00;
+}
+
+.toggler-icon {
+  color: white;
+}
+
+.navBar-link {
+  padding-left: 10px;
+}
+
+.navBar-link:hover {
+  background-color: rgba(97, 91, 91, 0.394);
+}

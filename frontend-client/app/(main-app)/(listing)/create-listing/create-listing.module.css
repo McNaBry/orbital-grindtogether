@@ -1,18 +1,11 @@
 #create-listing-container {
   width: 100%;
   height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: black;
-  color: white;
 }
 
 #options-container {
@@ -22,12 +15,32 @@
   align-items: center;
 }
 
+.single-option-input,
+.multi-option-input,
+.date-option-container {
+  width: 100%;
+  margin: 5px 10px 5px 10px;
+}
+
+.date-option-input {
+  width: 100%;
+  padding: 5px 5px 5px 10px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+}
+
 #demo-card-container {
   margin-bottom: 20px;
 }
 
 #demo-card-container * {
   border: 0px;
+}
+
+@media (max-width: 576px) {
+  #options-container {
+    width: 100%
+  }
 }
 
 .options-subcontainer {
@@ -48,27 +61,4 @@
 .option-label {
   display: flex;
   align-content: "center";
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin-bottom: 5px;
-}
-
-.tag {
-  margin-right: 5px;
-}
-
-.modules {
-  background-color: #0052d4;
-}
-
-.locations {
-  background-color: #65c7f7;
-}
-
-.faculties {
-  background-color: #9cecfb;
 }

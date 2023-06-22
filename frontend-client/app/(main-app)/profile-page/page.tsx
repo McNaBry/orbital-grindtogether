@@ -5,7 +5,7 @@ import "./nonEditableCard";
 import NonEditableCard from "./nonEditableCard";
 import EditableCard from "./editableCard";
 import RatingCard from "./ratingCard";
-import LikeButton from "../study-listings/likeButton";
+import LikeButton from "../(listing)/study-listings/likeButton";
 
 function EditProfile() {
   return <h2> Edit Profile </h2>;
