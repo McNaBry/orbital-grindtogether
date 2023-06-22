@@ -21,6 +21,10 @@ type user = {
   fullName: string
 }
 
+// type authProviderContext = user & {
+//   validateUser: (tokenID: string, setUser: (user: user) => void) => void
+// }
+
 const defaultUser:user = {
   uid: "",
   verified: false,
@@ -44,6 +48,29 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
+export async function validateUser(tokenID: string, setUser: (user: user) => void) {
+  console.log("Auth Provider: ", tokenID)
+  const res = await fetch("http://localhost:5000/validate-token", {
+    method: 'POST',
+    headers : {
+      "Content-Type": "application/json",
+    },
+    body : JSON.stringify({tokenID: tokenID})
+  })
+  // If request is successful and the server returns a user profile
+  .then(payload => {
+    payload.json().then(data => {
+      setUser(({...data, verified: true}))
+      console.log("AUTH PROVIDER:", data)
+      return
+    })
+  })
+  // If not successful, we log the error and do nothing
+  .catch(err => {
+    console.log(err)
+  })
+}
+
 // Contains the user data
 function useAuthProvider() {
   const [user, setUser] = useState<user>({
@@ -52,27 +79,14 @@ function useAuthProvider() {
     fullName: "Guest"
   })
 
-  // const cookies = new Cookies()
-  // const tokenID = cookies.get("tokenID")
+  const cookies = new Cookies()
+  const tokenID = cookies.get("tokenID")
   // console.log("Auth Provider: ", tokenID)
-  // if (!tokenID) return user
-
-  // Fetcher method to retrieve data from backend
-  const fetcher = async (url:string) => 
-    await fetch(url, {
-      method: 'POST'
-    }).then(res => {
-      return res.json()
-    }
-  )
-  // Data fetching hook. Runs only ONCE.
-  const { data, error } = useSWRImmutable('http://localhost:3000/api/validate-token', fetcher)
+  if (!tokenID) return user
   
   useEffect(() => {
-    if (data) {
-      setUser(({...data, verified: true}))
-    }
-  }, [data])
+    validateUser(tokenID, setUser)
+  }, [])
 
   return user
 }

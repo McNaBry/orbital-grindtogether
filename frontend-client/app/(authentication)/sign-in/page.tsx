@@ -54,6 +54,8 @@ function TokenValidate({ router } : { router: AppRouterInstance }) {
 
 function SignInPage() {
   const router = useRouter()
+  const user = useAuth()
+  console.log(user)
   
   const [password, setPassword] = useState("")
   const [msg, setMsg] = useState("")
@@ -73,7 +75,7 @@ function SignInPage() {
     const formData = new FormData(event.currentTarget)
   
     try {
-      const res = await fetch('http://localhost:3000/api/sign-in', {
+      const res = await fetch('http://localhost:5000/sign-in', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,8 +92,11 @@ function SignInPage() {
       if (res.status == 200) {
         setMsg("Sign in successful! Please wait...")
         setSuccess(true)
-        //const cookies = new Cookie()
-        //cookies.set("tokenID", cookies.get("tokenID"), { path: '/'})
+        // Store sign in token ID for future reference
+        const cookies = new Cookie()
+        res.json().then(data => {
+          cookies.set("tokenID", data.tokenID, { path: '/' })
+        })
         return
       } else {
         setMsg("Cannot login. Please try again.")

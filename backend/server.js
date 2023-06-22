@@ -5,7 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 // const nodemailer = require("nodemailer");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 // const Cookies = require('universal-cookie')
 
 const app = express();
@@ -14,7 +14,7 @@ const authUtil = require("./authentication")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
@@ -98,23 +98,45 @@ app.post("/sign-in", async (req, res) => {
   const tokenID = signInRes.data.idToken;
 
   if (signInRes.status == 200) {
-    res
-      .cookie(
-        "tokenID", tokenID, 
-        {
-          expires: new Date(Date.now() + 3600000), 
-          httpOnly: true, 
-          path:'/'
-        }
-      ).send()
+    res.status(200).json({tokenID: tokenID}).send()
   } else {
     res.status(400).send()
   }
 });
 
 app.post("/validate-token", async (req, res) => {
-  console.log(req.headers.cookie)
-  res.send()
+  const { tokenID } = req.body
+  const decodedToken = await fireAuth
+    .verifyIdToken(tokenID)
+    .then((decodedToken) => {
+      return decodedToken.email
+    })
+    .catch((error) => {
+      console.log(error)
+      return ""
+    })
+  
+  if (decodedToken != "") {
+    const snapshot = await db.collection("users").where("email", "==", decodedToken).get()
+    const users = []
+    snapshot.forEach(doc => {
+      const data = doc.data()
+      users.push({uid: data.uid, fullName: data.fullName})
+    })
+
+    if (users.length != 1) {
+      console.log("Null array for user UID query")
+      res.status(400).send()
+    } else if (users.length > 1) {
+      // Under no circumstance should this happen.
+      // But if our database has duplicate emails, then we log the "error"
+      console.log("Error with query for user UID")
+    }
+    // If all goes well, we send back the first (and only) user extracted
+    res.status(200).json(users[0]).send()
+  } else {
+    res.status(400).send()
+  }
 })
 
 // async function sendEmail(to, subject, htmlContent) {
@@ -201,18 +223,6 @@ app.post('/reset-password', async (req, res) => {
   }
 })
 
-// function deleteCurrentUser(user, res) {
-//   user.delete()
-//     .then(() => {
-//       res.status(200).send();
-//       console.log("User data successfully deleted");
-//     })
-//     .catch((error) => {
-//       res.status(400).send();
-//       console.log("User data couldn't be deleted", error);
-//     });
-// }
-
 app.delete("/delete-account", async (req, res) => {
   const { email, password } = req.body
 
@@ -249,50 +259,61 @@ app.delete("/delete-account", async (req, res) => {
 });
 
 // middleware to extract token from cookie and verify it before use 
-const verifyIdToken = async (req, res, next) => {
-  const idToken = req.cookies.idToken;
+// const verifyIdToken = async (req, res, next) => {
+//   const idToken = req.cookies.idToken;
 
-  if (!idToken) {
-    return res.status(401).send("Unauthorised");
-  }
+//   if (!idToken) {
+//     return res.status(401).send("Unauthorised");
+//   }
 
-  try {
-    const decodedToken = await fireAuth.verifyIdToken(idToken);
-    const userId = decodedToken.uid;
-    const email = decodedToken.email;
+//   try {
+//     const decodedToken = await fireAuth.verifyIdToken(idToken);
+//     const userId = decodedToken.uid;
+//     const email = decodedToken.email;
     
-    // we will attach the user object to the req object to be passed around 
-    req.user = { userId, email }
-    next(); 
-  } catch (error) {
-    console.log('Failed to verify idToken:', error);
-    res.status(401).send('Unauthorized');
-  }
-}
+//     // we will attach the user object to the req object to be passed around 
+//     req.user = { userId, email }
+//     next(); 
+//   } catch (error) {
+//     console.log('Failed to verify idToken:', error);
+//     res.status(401).send('Unauthorized');
+//   }
+// }
 
 // Get the data of the specific user to be displayed in the profile page
-app.get("/profile-page", verifyIdToken, async (req, res) => {
-  try {
-    const uid = req.user.userId;
-    const snapshot = await db.collection("users").doc(uid).get();
+// app.get("/profile-page", verifyIdToken, async (req, res) => {
+//   try {
+//     const uid = req.user.userId;
+//     const snapshot = await db.collection("users").doc(uid).get();
 
-    if (!snapshot.exists) {
-      console.log("no data found regarding particular user");
-      res.status(404).send();
-      return;
-    }
+//     if (!snapshot.exists) {
+//       console.log("no data found regarding particular user");
+//       res.status(404).send();
+//       return;
+//     }
 
-    const userData = snapshot.data()
-    console.log("i successfully sent the data");
-    res.send(userData);
-  } catch (error) {
-    console.log("no data for you");
-    res.status(500).send();
+//     const userData = snapshot.data()
+//     console.log("i successfully sent the data");
+//     res.send(userData);
+//   } catch (error) {
+//     console.log("no data for you");
+//     res.status(500).send();
+//   }
+// })
+
+app.post("/get-profile", async (req, res) => {
+  const {uid} = req.body
+  const docRef = await db.collection("users").doc(uid).get()
+  if (docRef.exists) {
+    const userData = docRef.data()
+    res.status(200).json(userData).send()
+  } else {
+    res.status(400).json({}).send()
   }
 })
 
 // Update the database when the user modifies a field in the profile page
-app.post("/profile-page", async (req, res) => {
+app.post("/update-profile", async (req, res) => {
   try {
     const userId = req.user.userId;
     const updatedData = req.body;
@@ -306,36 +327,6 @@ app.post("/profile-page", async (req, res) => {
     res.status(500).send();
   }
 })
-
-// app.post("/create-listing", async (req, res) => {
-//   const listing = {
-//     "title": req.body.,
-//     "description": req.body.,
-//     "modules": req.body.,
-//     "location": req.body,
-//     "date": ,
-//     "frequency":
-//   };
-
-//   try {
-//     await fireAuth.createUser({
-//       email: user.email,
-//       emailVerified: true,
-//       password: user.password,
-//       displayName: user.fullName,
-//       disabled: false,
-//     }).then(async () => {
-//       await db.collection("users").add(user).then(() => {
-//         console.log("Listing successfully created")
-//         res.send(200)
-//       })
-//     })
-//   } catch (error) {
-//     console.error("Error occurred while saving data to Firebase: ", error);
-//     res.status(500)
-//     return
-//   }
-// });
 
 const port = 5000;
 
