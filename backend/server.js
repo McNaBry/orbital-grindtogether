@@ -6,6 +6,7 @@ const cors = require("cors");
 const axios = require("axios");
 // const nodemailer = require("nodemailer");
 const cookieParser = require("cookie-parser");
+// const Cookies = require('universal-cookie')
 
 const app = express();
 const { db, fireAuth } = require("./firebase");
@@ -13,10 +14,10 @@ const authUtil = require("./authentication")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
-app.use(cookieParser());
 
 // app.post("/auth", (req, res) => {
 //   const formData = req.body;
@@ -93,15 +94,28 @@ app.post("/sign-in", async (req, res) => {
     If sign in is successful a 200 OK HTTP status code is returned
   */
   const signInRes = await authUtil.signInUser(email, password)
-  const idToken = signInRes.data.idToken;
-  res.cookie("idToken", idToken, {httpOnly: true});
+  // Retrieves the ID token that Firebase Auth returns when the user is signed in
+  const tokenID = signInRes.data.idToken;
 
   if (signInRes.status == 200) {
-    res.status(200).send()
+    res
+      .cookie(
+        "tokenID", tokenID, 
+        {
+          expires: new Date(Date.now() + 3600000), 
+          httpOnly: true, 
+          path:'/'
+        }
+      ).send()
   } else {
     res.status(400).send()
   }
 });
+
+app.post("/validate-token", async (req, res) => {
+  console.log(req.headers.cookie)
+  res.send()
+})
 
 // async function sendEmail(to, subject, htmlContent) {
 //   try {
