@@ -19,6 +19,7 @@ export default function NavigationBar() {
             <Nav style={{color: "white"}} className="me-auto">
               <NavLink href={"create-listing"} value={"Create Listing"} />
               <NavLink href={"study-listings"} value={"View Listings"} />
+              <NavLink href={"locations"} value={"Study Locations"} />
               <NavLink href={"profile-page"} value={"Profile Page"} />
               <NavLink href={"about"} value={"About GT"} />
             </Nav>
