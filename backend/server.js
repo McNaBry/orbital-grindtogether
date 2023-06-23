@@ -121,7 +121,7 @@ app.post("/validate-token", async (req, res) => {
     const users = []
     snapshot.forEach(doc => {
       const data = doc.data()
-      users.push({uid: data.uid, fullName: data.fullName})
+      users.push(({uid: doc.id, fullName: data.fullName}))
     })
 
     if (users.length != 1) {
@@ -133,6 +133,7 @@ app.post("/validate-token", async (req, res) => {
       console.log("Error with query for user UID")
     }
     // If all goes well, we send back the first (and only) user extracted
+    console.log(users)
     res.status(200).json(users[0]).send()
   } else {
     res.status(400).send()
@@ -303,9 +304,11 @@ app.delete("/delete-account", async (req, res) => {
 
 app.post("/get-profile", async (req, res) => {
   const {uid} = req.body
+  if (uid == "") res.status(400).json({}).send()
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
     const userData = docRef.data()
+    console.log(userData)
     res.status(200).json(userData).send()
   } else {
     res.status(400).json({}).send()

@@ -1,15 +1,14 @@
-"use client";
+"use client"
 
-import { useState, ChangeEvent, FormEvent } from "react";
-import Password from "../password";
-import Email from "../email";
-import "./signin.css";
-import Link from "next/link";
+import { useState, ChangeEvent, FormEvent } from "react"
+import Password from "../password"
+import Email from "../email"
+import "./signin.css"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
-import CreateStatus from "../createStatus";
-import Cookie from 'universal-cookie'
+import CreateStatus from "../createStatus"
 import { useAuth } from '../../authProvider'
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 function WelcomeBack() {
   return <h2 className="welcome-back"> Welcome Back! </h2>;
@@ -43,19 +42,9 @@ function ForgetPassword() {
   )
 }
 
-function TokenValidate({ router } : { router: AppRouterInstance }) {
-  const user = useAuth()
-  if (user.verified) {
-    // router.push("/dashboard")
-    console.log("Validated")
-  }
-  return (<></>)
-}
-
 function SignInPage() {
   const router = useRouter()
-  const user = useAuth()
-  console.log(user)
+  const auth = useAuth()
   
   const [password, setPassword] = useState("")
   const [msg, setMsg] = useState("")
@@ -93,10 +82,10 @@ function SignInPage() {
         setMsg("Sign in successful! Please wait...")
         setSuccess(true)
         // Store sign in token ID for future reference
-        const cookies = new Cookie()
-        res.json().then(data => {
-          cookies.set("tokenID", data.tokenID, { path: '/' })
+        res.json().then(async data => {
+          await auth.signIn(data.tokenID)
         })
+        router.push("/dashboard")
         return
       } else {
         setMsg("Cannot login. Please try again.")
@@ -117,7 +106,6 @@ function SignInPage() {
 
   return (
     <div className="signinpage row">
-      <TokenValidate router={router} />
       <div className="left-half col-1 col-md-6"/>
       <div className="right-half col-10 col-md-5">
         <form onSubmit = {submitForm}>

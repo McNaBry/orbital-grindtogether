@@ -1,8 +1,5 @@
 "use client"
 
-import useSWRImmutable from 'swr/immutable'
-import Cookies from 'universal-cookie'
-
 /**
  * Top level component that allows any component wrapped in it to access
  * the object/methods stored in the value attribute. Children components
@@ -17,29 +14,44 @@ import { useState, useContext, createContext, useEffect } from "react"
 
 type user = {
   uid: string,
-  verified: false,
+  verified: boolean,
   fullName: string
 }
 
-// type authProviderContext = user & {
-//   validateUser: (tokenID: string, setUser: (user: user) => void) => void
-// }
+type authProvider = {
+  user: user,
+  signIn: (tokenID: string) => Promise<void>,
+  signOut: () => Promise<void>
+}
 
-const defaultUser:user = {
+const defaultUser: user = {
   uid: "",
   verified: false,
-  fullName: "Guest"
+  fullName: "Guest",
+}
+
+const defaultAuthObj: authProvider = {
+  user: defaultUser,
+  signIn: async (tokenID: string) => console.log(tokenID),
+  signOut: async () => {}
 }
 
 // Creates the context object
 // Accepts a default value which is  
-const authContext = createContext<user>(defaultUser)
+const authContext = createContext<authProvider>(defaultAuthObj)
 
 // AuthProvider component that wraps the components passed into it via children
 // Components will interact with it via useAuth()
 export default function AuthProvider({children} : {children : any}) {
   const auth = useAuthProvider()
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>
+  let validate = false
+  useEffect(() => {
+    const valUser = async () => await validateUser(window.localStorage.getItem("tokenID")).then(data => validate = true)
+    valUser()
+  }, [])
+  return (
+    <authContext.Provider value={auth}>{children}</authContext.Provider>
+  )
 }
 
 // Hook that allows child components to access the object within useContext
@@ -48,8 +60,13 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
-export async function validateUser(tokenID: string, setUser: (user: user) => void) {
-  console.log("Auth Provider: ", tokenID)
+// Function that POST a request to validate stored Firebase tokenID
+async function validateUser(tokenID: string | null) {
+  console.log("Token to be validated: ", tokenID)
+  if (tokenID == null) return false
+  // By right, this request should be send to a proxy API using Next.js
+  // This will allow us to access httpOnly cookies and is more secure
+  // However, for now this will do.
   const res = await fetch("http://localhost:5000/validate-token", {
     method: 'POST',
     headers : {
@@ -57,37 +74,64 @@ export async function validateUser(tokenID: string, setUser: (user: user) => voi
     },
     body : JSON.stringify({tokenID: tokenID})
   })
-  // If request is successful and the server returns a user profile
+  // If request is successful, server returns...
+  // User's firestore document UID and full name.
   .then(payload => {
     payload.json().then(data => {
-      setUser(({...data, verified: true}))
-      console.log("AUTH PROVIDER:", data)
-      return
+      window.localStorage.setItem("uid", data.uid)
+      window.localStorage.setItem("fullName", data.fullName)
+      console.log("User data from backend: ", data)
+      return true
     })
   })
   // If not successful, we log the error and do nothing
   .catch(err => {
     console.log(err)
+    return false
   })
+  
+  return !res ? false : true
 }
 
-// Contains the user data
-function useAuthProvider() {
-  const [user, setUser] = useState<user>({
-    uid: "",
-    verified: false,
-    fullName: "Guest"
-  })
+function getStoredUser() {
+  const uid = window.localStorage.getItem("uid")
+  const fullName = window.localStorage.getItem("fullName")
+  const profile: user = {
+    uid: uid != null ? uid : "",
+    verified: true,
+    fullName: fullName != null ? fullName : ""
+  }
+  return profile
+}
 
-  const cookies = new Cookies()
-  const tokenID = cookies.get("tokenID")
-  // console.log("Auth Provider: ", tokenID)
-  if (!tokenID) return user
-  
+// Function that exposes necessary data to children component
+function useAuthProvider() {
+  // User profile that components can use to determine if user is signed in
+  const [user, setUser] = useState<user>(defaultUser)
+
   useEffect(() => {
-    validateUser(tokenID, setUser)
+    const storedUser = getStoredUser()
+    const userProfile: user = 
+      storedUser.uid == null || storedUser.fullName == null 
+      ? defaultUser
+      : storedUser
+    setUser(userProfile)
   }, [])
 
-  return user
+  async function signIn(tokenID: string) {
+    window.localStorage.setItem("tokenID", tokenID)
+    const res = await validateUser(tokenID)
+    if (res) setUser(getStoredUser())
+  }
+
+  async function signOut() {
+    window.localStorage.removeItem("uid")
+    window.localStorage.removeItem("fullName")
+    window.localStorage.removeItem("tokenID")
+  }
+
+  return {
+    user, signIn, signOut
+  }
 }
 

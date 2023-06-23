@@ -1,9 +1,6 @@
 import './globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Inter } from 'next/font/google'
 import AuthProvider from './authProvider'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -18,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
-      <body className={inter.className}>
+      <body>
         <AuthProvider>
           {children}
         </AuthProvider>
