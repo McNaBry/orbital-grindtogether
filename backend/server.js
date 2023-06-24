@@ -11,6 +11,7 @@ const axios = require("axios");
 const app = express();
 const { db, fireAuth } = require("./firebase");
 const authUtil = require("./authentication")
+const { getLikedListings, getCreatedListings } = require("./listing-db")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
@@ -43,17 +44,21 @@ app.get("/firebase", async (req, res) => {
 app.post("/sign-up", async (req, res) => {
   /*
     Creates a user profile with the full-name and email 
-    Uses default values for bio and rating 
+    Uses placeholder values for bio, course, telegramHandle, year and rating
+    Posts is an array of doc ref to the listings that the user has created
+    Likes is an array of doc ref to the listings that the user has liked 
     DOES NOT contain plaintext password as this will be handled by Firebase Auth
   */
   const user = {
     fullName: req.body.fullName,
     email: req.body.email,
-    bio: "",
-    year: 0,
+    bio: "Hello!",
     course: "",
-    telegramHandle: "@",
+    teleHandle: "@",
+    year: 0,
     rating: 0,
+    listings: [],
+    likes: []
   };
 
   /*
@@ -173,7 +178,7 @@ app.post("/validate-token", async (req, res) => {
 //   }
 // }
 
-// API Endpoint to receieve email to send password reset link
+// API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
   const { email } = req.body;
   const resetEmailRes = await axios.post(
@@ -327,6 +332,83 @@ app.post("/update-profile", async (req, res) => {
     console.log("cannot update");
     res.status(500).send();
   }
+})
+
+// API Endpoint to create listing
+app.post("/create-listing", async (req, res) => {
+  const listing = {
+    createdBy: req.body.userID,
+    title: req.body.title,
+    desc : req.body.desc,
+    tags : {
+      modules: req.body.tags.modules,
+      locations: req.body.tags.locations,
+      faculties: req.body.tags.faculties
+    },
+    date : req.body.date,
+    freq : req.body.freq,
+    interest: 0,
+    likes: []
+  }
+
+  const docRef = await db.collection("listings").add(listing)
+  console.log("New listing added with ID:", docRef.id)
+  if (!docRef.empty) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post('/get-listings', async (req, res) => {  
+  const snapshot = await db
+    .collection("listings")
+    .orderBy("date")
+    .get()
+  
+  if (!snapshot.empty) {
+    const results = []
+    // Note: Have to use a for... of loop for async 
+    for (const doc of snapshot.docs) {
+      let docData = doc.data()
+      const user = await db.collection('users').doc(docData.createdBy).get()
+      const userData = user.data()
+      if (!user.exists) {
+        docData = {
+          ...docData,
+          id: doc.id,
+          createdBy: "Annonymous"
+        }
+      } else 
+        docData = {
+          ...docData,
+          id: doc.id,
+          createdBy: userData.fullName
+        }
+      results.push(docData)
+    }
+    //console.log(results)
+    res.json(results).send()
+  } else {
+    res.status(400).send()
+  }
+  res.status(200).send()
+})
+
+app.post('/delete-listing', async (req, res) => {
+  const { userID, postID } = req.body
+
+
+})
+
+app.post('/get-dashboard-listings', async (req, res) => {
+  const { userID } = req.query
+  console.log(userID)
+  const likedListings = getLikedListings(userID)
+  const createdListings = getCreatedListings(userID)
+  const results = await Promise.all([likedListings, createdListings])
+  console.log(results)
+  return res.json(results).send()
 })
 
 const port = 5000;
