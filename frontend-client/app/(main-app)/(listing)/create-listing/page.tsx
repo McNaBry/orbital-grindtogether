@@ -56,7 +56,7 @@ const defaultOptions:{[key:string]: any} = {
   "tags":      {"modules":[], "locations":[], "faculties":[]},
   "date":      new Date(), // Set current timing
   "freq":      "Every day",
-  "interest":  10,
+  "interest":  0,
   "id":        "invitedefault"
 }
 
