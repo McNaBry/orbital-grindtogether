@@ -1,11 +1,14 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import "./profilepage.css";
-import "./nonEditableCard";
-import NonEditableCard from "./nonEditableCard";
-import EditableCard from "./editableCard";
-import RatingCard from "./ratingCard";
-import SignOutButton from "./signOutButton";
+"use client"
+
+import { useState, useEffect } from "react"
+import "./profilepage.css"
+import "./nonEditableCard"
+import NonEditableCard from "./nonEditableCard"
+import EditableCard from "./editableCard"
+import RatingCard from "./ratingCard"
+import SignOutButton from "./signOutButton"
+import LikeButton from "../(listing)/study-listings/likeButton"
+import { useAuth } from "../../authProvider"
 
 function EditProfile() {
   return <h2> Edit Profile </h2>;
@@ -49,6 +52,7 @@ function EmailCard({ email }: { email: string }) {
 }
 
 function ProfilePage() {
+  const auth = useAuth()
   const [fields, setFields] = useState({
     email: "",
     fullName: "",
@@ -57,42 +61,56 @@ function ProfilePage() {
     course: "",
     telegramHandle: "@",
     rating: 0,
-  });
+  })
 
+  // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/profile-page");
-        const data = await response.json();
-        setFields(data);
+        console.log(auth.user.uid)
+        const response = await fetch("http://localhost:5000/get-profile", {
+          method: 'POST',
+          headers : {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({uid: window.localStorage.getItem("uid")})
+        })
+        const data = await response.json()
+        setFields(data)
       } catch (error) {
-        console.log("gg");
+        console.log("user not found")
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
+  // Function to handle change on the Editable Card.
+  // Triggered by save changes button.
   const handleFieldChange = ({
     fieldToUpdate,
     value,
   }: {
-    fieldToUpdate: string;
-    value: string | number;
+    fieldToUpdate: string
+    value: string | number
   }) => {
     // immediately update the state
-    setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }));
+    setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }))
 
-    const updatedProfileData = { [fieldToUpdate]: value };
+    const updatedProfileData = { [fieldToUpdate]: value }
 
-    fetch("/profile-page", {
+    fetch("http://localhost:5000/update-profile", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedProfileData),
-    });
-  };
+      body : JSON.stringify({
+        uid: window.localStorage.getItem('uid'),
+        fieldToUpdate: fieldToUpdate,
+        value: value
+      })
+    })
+  }
 
   return (
     <div className="profile-page">
@@ -134,7 +152,7 @@ function ProfilePage() {
       <RatingCard rating={fields.rating} />
       <SignOutButton />
     </div>
-  );
+  )
 }
 
-export default ProfilePage;
+export default ProfilePage

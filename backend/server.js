@@ -5,18 +5,20 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 // const nodemailer = require("nodemailer");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
+// const Cookies = require('universal-cookie')
 
 const app = express();
 const { db, fireAuth } = require("./firebase");
 const authUtil = require("./authentication")
+const { getLikedListings, getCreatedListings } = require("./listing-db")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
+//app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
-app.use(cookieParser());
 
 // app.post("/auth", (req, res) => {
 //   const formData = req.body;
@@ -42,17 +44,21 @@ app.get("/firebase", async (req, res) => {
 app.post("/sign-up", async (req, res) => {
   /*
     Creates a user profile with the full-name and email 
-    Uses default values for bio and rating 
+    Uses placeholder values for bio, course, telegramHandle, year and rating
+    Posts is an array of doc ref to the listings that the user has created
+    Likes is an array of doc ref to the listings that the user has liked 
     DOES NOT contain plaintext password as this will be handled by Firebase Auth
   */
   const user = {
     fullName: req.body.fullName,
     email: req.body.email,
-    bio: "",
-    year: 0,
+    bio: "Hello!",
     course: "",
-    telegramHandle: "@",
+    teleHandle: "@",
+    year: 0,
     rating: 0,
+    listings: [],
+    likes: []
   };
 
   /*
@@ -93,15 +99,51 @@ app.post("/sign-in", async (req, res) => {
     If sign in is successful a 200 OK HTTP status code is returned
   */
   const signInRes = await authUtil.signInUser(email, password)
-  const idToken = signInRes.data.idToken;
-  res.cookie("idToken", idToken, {httpOnly: true});
+  // Retrieves the ID token that Firebase Auth returns when the user is signed in
+  const tokenID = signInRes.data.idToken;
 
   if (signInRes.status == 200) {
-    res.status(200).send()
+    res.status(200).json({tokenID: tokenID}).send()
   } else {
     res.status(400).send()
   }
 });
+
+app.post("/validate-token", async (req, res) => {
+  const { tokenID } = req.body
+  const decodedToken = await fireAuth
+    .verifyIdToken(tokenID)
+    .then((decodedToken) => {
+      return decodedToken.email
+    })
+    .catch((error) => {
+      console.log(error)
+      return ""
+    })
+  
+  if (decodedToken != "") {
+    const snapshot = await db.collection("users").where("email", "==", decodedToken).get()
+    const users = []
+    snapshot.forEach(doc => {
+      const data = doc.data()
+      users.push(({uid: doc.id, fullName: data.fullName}))
+    })
+
+    if (users.length != 1) {
+      console.log("Null array for user UID query")
+      res.status(400).send()
+    } else if (users.length > 1) {
+      // Under no circumstance should this happen.
+      // But if our database has duplicate emails, then we log the "error"
+      console.log("Error with query for user UID")
+    }
+    // If all goes well, we send back the first (and only) user extracted
+    console.log(users)
+    res.status(200).json(users[0]).send()
+  } else {
+    res.status(400).send()
+  }
+})
 
 // async function sendEmail(to, subject, htmlContent) {
 //   try {
@@ -187,18 +229,6 @@ app.post('/reset-password', async (req, res) => {
   }
 })
 
-// function deleteCurrentUser(user, res) {
-//   user.delete()
-//     .then(() => {
-//       res.status(200).send();
-//       console.log("User data successfully deleted");
-//     })
-//     .catch((error) => {
-//       res.status(400).send();
-//       console.log("User data couldn't be deleted", error);
-//     });
-// }
-
 app.delete("/delete-account", async (req, res) => {
   const { email, password } = req.body
 
@@ -235,55 +265,66 @@ app.delete("/delete-account", async (req, res) => {
 });
 
 // middleware to extract token from cookie and verify it before use 
-const verifyIdToken = async (req, res, next) => {
-  const idToken = req.cookies.idToken;
+// const verifyIdToken = async (req, res, next) => {
+//   const idToken = req.cookies.idToken;
 
-  if (!idToken) {
-    return res.status(401).send("Unauthorised");
-  }
+//   if (!idToken) {
+//     return res.status(401).send("Unauthorised");
+//   }
 
-  try {
-    const decodedToken = await fireAuth.verifyIdToken(idToken);
-    const userId = decodedToken.uid;
-    const email = decodedToken.email;
+//   try {
+//     const decodedToken = await fireAuth.verifyIdToken(idToken);
+//     const userId = decodedToken.uid;
+//     const email = decodedToken.email;
     
-    // we will attach the user object to the req object to be passed around 
-    req.user = { userId, email }
-    next(); 
-  } catch (error) {
-    console.log('Failed to verify idToken:', error);
-    res.status(401).send('Unauthorized');
-  }
-}
+//     // we will attach the user object to the req object to be passed around 
+//     req.user = { userId, email }
+//     next(); 
+//   } catch (error) {
+//     console.log('Failed to verify idToken:', error);
+//     res.status(401).send('Unauthorized');
+//   }
+// }
 
 // Get the data of the specific user to be displayed in the profile page
-app.get("/profile-page", verifyIdToken, async (req, res) => {
-  try {
-    const uid = req.user.userId;
-    const snapshot = await db.collection("users").doc(uid).get();
+// app.get("/profile-page", verifyIdToken, async (req, res) => {
+//   try {
+//     const uid = req.user.userId;
+//     const snapshot = await db.collection("users").doc(uid).get();
 
-    if (!snapshot.exists) {
-      console.log("no data found regarding particular user");
-      res.status(404).send();
-      return;
-    }
+//     if (!snapshot.exists) {
+//       console.log("no data found regarding particular user");
+//       res.status(404).send();
+//       return;
+//     }
 
-    const userData = snapshot.data()
-    console.log("i successfully sent the data");
-    res.send(userData);
-  } catch (error) {
-    console.log("no data for you");
-    res.status(500).send();
+//     const userData = snapshot.data()
+//     console.log("i successfully sent the data");
+//     res.send(userData);
+//   } catch (error) {
+//     console.log("no data for you");
+//     res.status(500).send();
+//   }
+// })
+
+app.post("/get-profile", async (req, res) => {
+  const {uid} = req.body
+  if (uid == "") res.status(400).json({}).send()
+  const docRef = await db.collection("users").doc(uid).get()
+  if (docRef.exists) {
+    const userData = docRef.data()
+    res.status(200).json(userData).send()
+  } else {
+    res.status(400).json({}).send()
   }
 })
 
 // Update the database when the user modifies a field in the profile page
-app.post("/profile-page", async (req, res) => {
+app.post("/update-profile", async (req, res) => {
   try {
-    const userId = req.user.userId;
-    const updatedData = req.body;
+    const { uid, fieldToUpdate, value } = req.body
     
-    await db.collection("users").doc(userId).update(updatedData);
+    await db.collection("users").doc(uid).update({[fieldToUpdate] : value});
 
     console.log("updated successfully");
     res.status(200).send();
@@ -305,35 +346,82 @@ app.get("/sign-out", async (req, res) => {
   })
 })
 
-// app.post("/create-listing", async (req, res) => {
-//   const listing = {
-//     "title": req.body.,
-//     "description": req.body.,
-//     "modules": req.body.,
-//     "location": req.body,
-//     "date": ,
-//     "frequency":
-//   };
+// API Endpoint to create listing
+app.post("/create-listing", async (req, res) => {
+  const listing = {
+    createdBy: req.body.userID,
+    title: req.body.title,
+    desc : req.body.desc,
+    tags : {
+      modules: req.body.tags.modules,
+      locations: req.body.tags.locations,
+      faculties: req.body.tags.faculties
+    },
+    date : req.body.date,
+    freq : req.body.freq,
+    interest: 0,
+    likes: []
+  }
 
-//   try {
-//     await fireAuth.createUser({
-//       email: user.email,
-//       emailVerified: true,
-//       password: user.password,
-//       displayName: user.fullName,
-//       disabled: false,
-//     }).then(async () => {
-//       await db.collection("users").add(user).then(() => {
-//         console.log("Listing successfully created")
-//         res.send(200)
-//       })
-//     })
-//   } catch (error) {
-//     console.error("Error occurred while saving data to Firebase: ", error);
-//     res.status(500)
-//     return
-//   }
-// });
+  const docRef = await db.collection("listings").add(listing)
+  console.log("New listing added with ID:", docRef.id)
+  if (!docRef.empty) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post('/get-listings', async (req, res) => {  
+  const snapshot = await db
+    .collection("listings")
+    .orderBy("date")
+    .get()
+  
+  if (!snapshot.empty) {
+    const results = []
+    // Note: Have to use a for... of loop for async 
+    for (const doc of snapshot.docs) {
+      let docData = doc.data()
+      const user = await db.collection('users').doc(docData.createdBy).get()
+      const userData = user.data()
+      if (!user.exists) {
+        docData = {
+          ...docData,
+          id: doc.id,
+          createdBy: "Annonymous"
+        }
+      } else 
+        docData = {
+          ...docData,
+          id: doc.id,
+          createdBy: userData.fullName
+        }
+      results.push(docData)
+    }
+    //console.log(results)
+    res.json(results).send()
+  } else {
+    res.status(400).send()
+  }
+  res.status(200).send()
+})
+
+app.post('/delete-listing', async (req, res) => {
+  const { userID, postID } = req.body
+
+
+})
+
+app.post('/get-dashboard-listings', async (req, res) => {
+  const { userID } = req.query
+  console.log(userID)
+  const likedListings = getLikedListings(userID)
+  const createdListings = getCreatedListings(userID)
+  const results = await Promise.all([likedListings, createdListings])
+  console.log(results)
+  return res.json(results).send()
+})
 
 const port = 5000;
 
