@@ -10,6 +10,7 @@ import ConfirmPassword from "../confirmPassword"
 import Email from "../email";
 import CreateStatus from "../createStatus";
 import ValidatePassword from "../validatePassword"
+import { useAuth } from "../../authProvider"
 
 import * as pc from "./passwordChecks.js";
 
@@ -55,6 +56,7 @@ function AlreadyHaveAccount() {
 
 function SignUpPage() {
   const router = useRouter()
+  const auth = useAuth()
 
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");

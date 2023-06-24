@@ -10,6 +10,8 @@ admin.initializeApp({
 
 const db = getFirestore();
 const fireAuth = admin.auth();
+const EmailAuthProvider = admin.auth.EmailAuthProvider;
+
 module.exports = {
-  db, fireAuth
+  db, fireAuth, EmailAuthProvider
 }
