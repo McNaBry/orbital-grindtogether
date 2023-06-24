@@ -10,8 +10,22 @@ const axios = require("axios");
 
 const app = express();
 const { db, fireAuth } = require("./firebase");
-const authUtil = require("./authentication")
-const { getLikedListings, getCreatedListings } = require("./listing-db")
+import {
+  signInUser,
+  deleteAccount,
+  sendResetLink,
+  validateOob,
+  validateToken
+} from "./authentication"
+import { 
+  getListing,
+  getListings,
+  createListing,
+  updateListing,
+  deleteListing,
+  getLikedListings, 
+  getCreatedListings
+} from "./listing-db"
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
@@ -98,7 +112,7 @@ app.post("/sign-in", async (req, res) => {
     Sends a POST request with user credentials to Firebase Auth API
     If sign in is successful a 200 OK HTTP status code is returned
   */
-  const signInRes = await authUtil.signInUser(email, password)
+  const signInRes = await signInUser(email, password)
   // Retrieves the ID token that Firebase Auth returns when the user is signed in
   const tokenID = signInRes.data.idToken;
 
@@ -111,37 +125,14 @@ app.post("/sign-in", async (req, res) => {
 
 app.post("/validate-token", async (req, res) => {
   const { tokenID } = req.body
-  const decodedToken = await fireAuth
-    .verifyIdToken(tokenID)
-    .then((decodedToken) => {
-      return decodedToken.email
-    })
-    .catch((error) => {
-      console.log(error)
-      return ""
-    })
-  
-  if (decodedToken != "") {
-    const snapshot = await db.collection("users").where("email", "==", decodedToken).get()
-    const users = []
-    snapshot.forEach(doc => {
-      const data = doc.data()
-      users.push(({uid: doc.id, fullName: data.fullName}))
-    })
-
-    if (users.length != 1) {
-      console.log("Null array for user UID query")
-      res.status(400).send()
-    } else if (users.length > 1) {
-      // Under no circumstance should this happen.
-      // But if our database has duplicate emails, then we log the "error"
-      console.log("Error with query for user UID")
-    }
-    // If all goes well, we send back the first (and only) user extracted
-    console.log(users)
-    res.status(200).json(users[0]).send()
-  } else {
+  const users = await validateToken(tokenID)
+  if (users.length == 0) {
+    console.log("Null array for user UID query")
     res.status(400).send()
+  } else if (users.length >= 1) {
+    // If all goes well, only one user will be returned
+    // If not we still return the first user in the array
+    res.status(200).json(users[0]).send()
   }
 })
 
@@ -181,14 +172,8 @@ app.post("/validate-token", async (req, res) => {
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
   const { email } = req.body;
-  const resetEmailRes = await axios.post(
-    `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`,
-    { requestType :"PASSWORD_RESET", email: email }
-  ).catch(err => {
-    return res.status(400)
-  })
-
-  if (resetEmailRes.status == 200) {
+  const resetEmailRes = await sendResetLink(email)
+  if (resetEmailRes) {
     res.status(200).send()
   } else {
     res.status(400).send()
@@ -198,14 +183,8 @@ app.post("/input-email-for-reset", async (req, res) => {
 // API Endpoint to validate oob code for password reset
 app.post('/validate-oob', async (req, res) => {
   const { oobCode } = req.body;
-  const validateOobRes = await axios.post(
-    `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
-    { oobCode: oobCode }
-  ).catch(err => {
-    return res.status(400)
-  })
-
-  if (validateOobRes.status == 200) {
+  const validateOobRes = await validateOob(oobCode)
+  if (validateOobRes) {
     res.status(200).send()
   } else {
     res.status(400).send()
@@ -233,7 +212,7 @@ app.delete("/delete-account", async (req, res) => {
   const { email, password } = req.body
 
   // Check if details given are valid by signing in
-  const signInRes = await authUtil.signInUser(email, password)
+  const signInRes = await signInUser(email, password)
   // Either email/password not valid or user is not in Firebase Auth
   if (signInRes.status != 200) {
     res.status(401).send();
@@ -247,7 +226,7 @@ app.delete("/delete-account", async (req, res) => {
   }
 
   // Delete user from Firebase Auth
-  const deleteAccAuth = await authUtil.deleteAccount(userRecord.uid)
+  const deleteAccAuth = await deleteAccount(userRecord.uid)
   if (!deleteAccAuth) {
     console.log("Deletion error")
     return res.status(400).send()
@@ -323,10 +302,7 @@ app.post("/get-profile", async (req, res) => {
 app.post("/update-profile", async (req, res) => {
   try {
     const { uid, fieldToUpdate, value } = req.body
-    
     await db.collection("users").doc(uid).update({[fieldToUpdate] : value});
-
-    console.log("updated successfully");
     res.status(200).send();
   } catch (error) {
     console.log("cannot update");
@@ -348,78 +324,35 @@ app.get("/sign-out", async (req, res) => {
 
 // API Endpoint to create listing
 app.post("/create-listing", async (req, res) => {
-  const listing = {
-    createdBy: req.body.userID,
-    title: req.body.title,
-    desc : req.body.desc,
-    tags : {
-      modules: req.body.tags.modules,
-      locations: req.body.tags.locations,
-      faculties: req.body.tags.faculties
-    },
-    date : req.body.date,
-    freq : req.body.freq,
-    interest: 0,
-    likes: []
-  }
-
-  const docRef = await db.collection("listings").add(listing)
-  console.log("New listing added with ID:", docRef.id)
-  if (!docRef.empty) {
+  const createListingRes = await createListing(req.body.userID, req.body)
+  if (createListingRes) {
     res.status(200).send()
   } else {
     res.status(400).send()
   }
 })
 
-app.post('/get-listings', async (req, res) => {  
-  const snapshot = await db
-    .collection("listings")
-    .orderBy("date")
-    .get()
-  
-  if (!snapshot.empty) {
-    const results = []
-    // Note: Have to use a for... of loop for async 
-    for (const doc of snapshot.docs) {
-      let docData = doc.data()
-      const user = await db.collection('users').doc(docData.createdBy).get()
-      const userData = user.data()
-      if (!user.exists) {
-        docData = {
-          ...docData,
-          id: doc.id,
-          createdBy: "Annonymous"
-        }
-      } else 
-        docData = {
-          ...docData,
-          id: doc.id,
-          createdBy: userData.fullName
-        }
-      results.push(docData)
-    }
-    //console.log(results)
+app.post('/get-listings', async (req, res) => {    
+  const results = await getListings()
+  if (results.length > 0) {
     res.json(results).send()
   } else {
     res.status(400).send()
   }
-  res.status(200).send()
 })
 
 app.post('/delete-listing', async (req, res) => {
   const { userID, postID } = req.body
-
-
+  const deleteListingRes = await deleteListing(userID, postID)
+  res.status(200).send()
 })
 
 app.post('/get-dashboard-listings', async (req, res) => {
   const { userID } = req.query
-  console.log(userID)
   const likedListings = getLikedListings(userID)
   const createdListings = getCreatedListings(userID)
   const results = await Promise.all([likedListings, createdListings])
-  console.log(results)
+  // console.log(results)
   return res.json(results).send()
 })
 
