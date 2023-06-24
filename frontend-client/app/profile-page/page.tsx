@@ -59,8 +59,9 @@ function ProfilePage() {
     course: "",
     telegramHandle: "@",
     rating: 0
-  });
+  })
 
+  // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,27 +80,33 @@ function ProfilePage() {
       }
     }
 
-    fetchData();
+    fetchData()
   }, [])
 
+  // Function to handle change on the Editable Card.
+  // Triggered by save changes button.
   const handleFieldChange = ({
     fieldToUpdate,
     value,
   }: {
-    fieldToUpdate: string;
-    value: string | number;
+    fieldToUpdate: string
+    value: string | number
   }) => {
     // immediately update the state
     setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }))
 
     const updatedProfileData = { [fieldToUpdate]: value }
 
-    fetch("http://localhost:5000/get-profile", {
+    fetch("http://localhost:5000/update-profile", {
       method: "POST",
       headers : {
         "Content-Type": "application/json",
       },
-      body : JSON.stringify(updatedProfileData)
+      body : JSON.stringify({
+        uid: window.localStorage.getItem('uid'),
+        fieldToUpdate: fieldToUpdate,
+        value: value
+      })
     })
   };
 
@@ -142,7 +149,7 @@ function ProfilePage() {
       />
       <RatingCard rating = {fields.rating}/>
     </div>
-  );
+  )
 }
 
-export default ProfilePage;
+export default ProfilePage

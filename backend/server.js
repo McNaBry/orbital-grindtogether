@@ -308,7 +308,6 @@ app.post("/get-profile", async (req, res) => {
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
     const userData = docRef.data()
-    console.log(userData)
     res.status(200).json(userData).send()
   } else {
     res.status(400).json({}).send()
@@ -318,10 +317,9 @@ app.post("/get-profile", async (req, res) => {
 // Update the database when the user modifies a field in the profile page
 app.post("/update-profile", async (req, res) => {
   try {
-    const userId = req.user.userId;
-    const updatedData = req.body;
+    const { uid, fieldToUpdate, value } = req.body
     
-    await db.collection("users").doc(userId).update(updatedData);
+    await db.collection("users").doc(uid).update({[fieldToUpdate] : value});
 
     console.log("updated successfully");
     res.status(200).send();

@@ -45,6 +45,7 @@ const authContext = createContext<authProvider>(defaultAuthObj)
 export default function AuthProvider({children} : {children : any}) {
   const auth = useAuthProvider()
   let validate = false
+  // TODO: Trigger validation and reroute
   useEffect(() => {
     const valUser = async () => await validateUser(window.localStorage.getItem("tokenID")).then(data => validate = true)
     valUser()
@@ -76,21 +77,17 @@ async function validateUser(tokenID: string | null) {
   })
   // If request is successful, server returns...
   // User's firestore document UID and full name.
-  .then(payload => {
-    payload.json().then(data => {
-      window.localStorage.setItem("uid", data.uid)
-      window.localStorage.setItem("fullName", data.fullName)
-      console.log("User data from backend: ", data)
-      return true
-    })
-  })
-  // If not successful, we log the error and do nothing
-  .catch(err => {
-    console.log(err)
+  if (res.ok) {
+    const data = await res.json()
+    window.localStorage.setItem("uid", data.uid)
+    window.localStorage.setItem("fullName", data.fullName)
+    console.log("User data from backend: ", data)
+    return true
+  } else {
+    window.localStorage.removeItem("uid")
+    window.localStorage.removeItem("fullName")
     return false
-  })
-  
-  return !res ? false : true
+  }
 }
 
 function getStoredUser() {
