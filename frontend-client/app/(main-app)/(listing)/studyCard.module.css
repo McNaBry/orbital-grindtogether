@@ -33,3 +33,19 @@
 .faculties {
   background-color: #9cecfb;
 }
+
+.like-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #ed2553;
+  border-radius: 5px;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px 12px 8px 12px;
+}
+
+.like-button-text {
+  margin: 0px 0px 0px 6px;
+}

@@ -11,14 +11,28 @@ import {
 } from "./select"
 import StudyCard, { StudyListing } from '../studyCard'
 import { Container, Form, Button, Toast, ToastContainer } from 'react-bootstrap'
-import styles from './create-listing.module.css'
+import styles from './create-listing.module.css' 
 
 import { tagData } from '../study-listings/data'
 
-const modules:Option[] = [
-  { value: "CS2040S", label: "CS2040S" },
-  { value: "CS1231S", label: "CS1231S" },
-  { value: "CS2030S", label: "CS2030S" }
+const titles:Option[] = [
+  { value: "Serious Sesh", label: "Serious Title" },
+  { value: "Chill sesh", label: "Chill Title" },
+  { value: "Grind & Chill", label: "Mixed Title" }
+]
+
+const desc:Option[] = [
+  { value: "No chat. Just study and help each other.", label: "Serious Title" },
+  { value: "Just want to make friends while studying", label: "Chill Title" },
+  { value: "Let's study as hard as we can and make some friends!", label: "Mixed Title" }
+]
+
+const freq:Option[] = [
+  { value: "Once a week", label: "Once a week" },
+  { value: "Every weekday", label: "Every weekday" },
+  { value: "Weekends", label: "Weekends" },
+  { value: "One time only", label: "One time only" },
+  { value: "Some weekdays", label: "Some weekdays" }
 ]
 
 function SingleOption({ name, type, options, handleChange } : SelectFreeOptionProps) {
@@ -139,16 +153,21 @@ export default function CreateListing() {
         ...demoOptions,
         userID: 'hxASjzp8fZz3GyekGHhO' // For testing
       }),
-    })
-
-    if (res.ok) {
+    }).then(data => {
+      if (!data.ok) {
+        setSuccess(false)
+        setMsg("Sorry! Listing was not created successfully. Try again.")
+        return false
+      }
       setSuccess(true)
       setMsg("Listing has been created! View it on your Dashboard or View Listings")
-      console.log("submission success")
-    } else {
+      console.log("Submission success")
+      return true
+    }).catch(error => {
       setSuccess(false)
       setMsg("Sorry! Listing was not created successfully. Try again.")
-    }
+      return false
+    })
   }
 
   return (
@@ -162,29 +181,29 @@ export default function CreateListing() {
           <SingleOption
             name="Title"
             type="title"
-            options={modules}
+            options={titles}
             handleChange={handleSingleOptionChange}/>
           <SingleOption
             name="Description"
             type="desc"
-            options={modules}
+            options={desc}
             handleChange={handleSingleOptionChange}/>
         </Container>
         <Container className={styles["options-subcontainer"]}>
           <MultiOption
             name="Modules"
             type="modules"
-            options={modules}
+            options={tagData["modules"].map(tag => ({value: tag, label: tag}))}
             handleChange={handleMultipleOptionChange}/>
           <MultiOption
             name="Location"
             type="locations"
-            options={modules}
+            options={tagData["locations"].map(tag => ({value: tag, label: tag}))}
             handleChange={handleMultipleOptionChange}/>
           <MultiOption
             name="Faculty"
             type="faculties"
-            options={modules}
+            options={tagData["faculties"].map(tag => ({value: tag, label: tag}))}
             handleChange={handleMultipleOptionChange}/>
         </Container>
         <Container className={styles["options-subcontainer"]}>
@@ -195,7 +214,7 @@ export default function CreateListing() {
           <SingleOption
             name="Frequency"
             type="freq"
-            options={modules}
+            options={freq}
             handleChange={handleSingleOptionChange}/>
         </Container>
         <Button variant="success" type="submit">Create Listing</Button>

@@ -7,7 +7,7 @@ import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
-import LikeButton from "../(listing)/study-listings/likeButton"
+import LikeButton from "../(listing)/likeButton"
 import { useAuth } from "../../authProvider"
 
 function EditProfile() {

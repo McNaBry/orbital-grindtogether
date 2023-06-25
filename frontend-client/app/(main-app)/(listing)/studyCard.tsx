@@ -1,7 +1,7 @@
 import cardStyles from "./studyCard.module.css"
 import { Row, Card } from 'react-bootstrap'
 import dayjs from 'dayjs'
-import LikeButton from './study-listings/likeButton'
+import LikeButton from './likeButton'
 
 export type StudyListing = {
   createdBy: string,
@@ -59,7 +59,7 @@ export default function StudyCard(listingData : StudyListing) {
                 interested
               </small>
               <small>Created by {createdBy}</small>
-              {/* <LikeButton /> */}
+              <small style={{marginTop: "5px"}}><LikeButton /></small>
             </Card.Text>
           </Card.Body>
         </div>
