@@ -26,7 +26,7 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
           ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
           : data[0].length == 0
             ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} />}
+            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} variant="display" />}
     </>
   )
 }
@@ -41,7 +41,7 @@ function CreatedListings({ data, error, isLoading, emptyFilters } : ListingProps
           ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
           : data[1].length == 0
             ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            :<StudyListings page={-1} limit={0} filters={emptyFilters} data={data[1]} />}
+            :<StudyListings page={-1} limit={0} filters={emptyFilters} data={data[1]} variant="modify" />}
     </>
   )
 }

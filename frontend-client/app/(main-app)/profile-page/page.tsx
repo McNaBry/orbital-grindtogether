@@ -11,7 +11,7 @@ import LikeButton from "../(listing)/likeButton"
 import { useAuth } from "../../authProvider"
 
 function EditProfile() {
-  return <h2> Edit Profile </h2>;
+  return <h1 style={{color: "white"}}> Profile Page </h1>;
 }
 
 function UploadProfilePic() {
@@ -113,7 +113,7 @@ function ProfilePage() {
   }
 
   return (
-    <div className="profile-page">
+    <div className="profile-page-container">
       <EditProfile />
       <ProfilePic />
       <UploadProfilePic />

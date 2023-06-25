@@ -9,6 +9,7 @@ import useSWR from 'swr'
 import { ActionMeta } from "react-select"
 import { testData } from "./data"
 
+import {Row, Container} from "react-bootstrap"
 import './studyListings.css'
 
 export default function ListingsPage() {
@@ -43,17 +44,22 @@ export default function ListingsPage() {
   }
 
   return (
-    <div className="container">
+    <Container>
       <h1 style={{color:"white"}}>Status: {error ? "error" : (isLoading ? "loading..." : "done")}</h1>
       <div id="header-container">
         <h1>Study Listings</h1>
         <ListingPageControl page={page} setPage={setPage} />
       </div>
-      <div className="row">
-        <StudyListings page={page} limit={5} filters={filters} data={error ? testData : (isLoading ? testData : data)} />
+      <Row>
+        <StudyListings 
+          page={page} 
+          limit={5} 
+          filters={filters} 
+          data={error ? testData : (isLoading ? testData : data)}
+          variant="display" />
         <FilterPanel handleChange={handleMultipleOptionChange} />
-      </div>
+      </Row>
       <ListingPageControl page={page} setPage={setPage} />
-    </div>
+    </Container>
   )
 }

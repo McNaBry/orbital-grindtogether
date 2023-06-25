@@ -64,7 +64,7 @@ function MultiOption({ name, type, options, handleChange } : SelectMultiOptionPr
 // Typescript has a weird error where you can't index the object with string keys
 // Hence instead of giving it a StudyListing type, it is given a dict type
 const defaultOptions:{[key:string]: any} = {
-  "createdBy": "Bryan Lee",
+  "createdBy": "Xiao Ming",
   "title":     "Title",
   "desc":      "Description",
   "tags":      {"modules":[], "locations":[], "faculties":[]},
@@ -174,7 +174,7 @@ export default function CreateListing() {
     <div id={styles["create-listing-container"]}>
       <h1 style={{color: "white"}}>Create Listing</h1>
       <div id={styles["demo-card-container"]}>
-        <StudyCard {...demoOptions}/>
+        <StudyCard listingData={demoOptions} variant="demo" />
       </div>
       <Form id={styles["options-container"]} onSubmit={handleSubmit}>
         <Container className={styles["options-subcontainer"]}>
