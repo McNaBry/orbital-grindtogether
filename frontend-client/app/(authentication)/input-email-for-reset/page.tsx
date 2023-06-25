@@ -6,7 +6,7 @@ import SuddenlyRemember from '../suddenlyRemember';
 import CreateStatus from '../createStatus';
 
 import { Container, Button, Card, Form } from 'react-bootstrap'
-import './inputEmailForReset.css'
+import "../reusable.css"
 
 function SendRequestForReset() {
   return (

@@ -6,8 +6,9 @@ import { Container, Row } from 'react-bootstrap'
 import useSWR from 'swr'
 import StudyListings from '../(listing)/study-listings/studyListings'
 import { StudyListing } from '../(listing)/studyCard'
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import { useAuth } from "../../authProvider"
+ 
 type ListingProps = {
   data: Array<StudyListing[]>, 
   error: any, 
@@ -65,13 +66,18 @@ function ListingViewer({ option, data, error, isLoading } : ListingViewerProps) 
 }
 
 export default function Dashboard() {
-  const fetcher = async (url:string) => fetch(url, {method: 'POST'}).then(res => res.json())
-  const userID = "hxASjzp8fZz3GyekGHhO"
-  const { data, isLoading, error } = useSWR(`http://localhost:5000/get-dashboard-listings?userID=${userID}`, 
+  const fetcher = async (url:string) => {
+    const userID = window.localStorage.getItem("uid")
+    if (userID == null || userID == "") return [[], []]
+    return await fetch(url + `?userID=${userID}`, { method: "POST" }).then(res => res.json())
+  }
+
+  const { data, isLoading, error } = useSWR(`http://localhost:5000/get-dashboard-listings`, 
     fetcher,  {
       revalidateIfStale: false,
       revalidateOnFocus: false,
     })
+  
   const [viewState, setViewState] = useState<string>("liked")
   
   return (

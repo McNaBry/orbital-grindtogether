@@ -10,7 +10,7 @@ import SuddenlyRemember from "../suddenlyRemember"
 import LoadingForm from "./loadingForm"
 
 import { Button, Card, Form } from "react-bootstrap"
-import "./resetPassword.css"
+import "../reusable.css"
 import Link from "next/link";
 
 function ResetPassword() {
@@ -124,7 +124,7 @@ function ResetPasswordPage() {
                 </>
               : <>
                   <Card.Text> Invalid Code: <i>{searchParams.get('oobCode') ?? "Missing Code"}.</i> </Card.Text>
-                  <Card.Text> Please request a new one <Link href="/input-email-for-reset">here</Link> </Card.Text>
+                  <Card.Text> Please request a new one <Link href="/input-email-for-reset" className = "request-new-one">here</Link> </Card.Text>
                 </>
           }
           <CreateStatus msg={msg} success={success} dismissAlert={dismissAlert} />
