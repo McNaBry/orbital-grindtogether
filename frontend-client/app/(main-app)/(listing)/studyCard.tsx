@@ -1,7 +1,9 @@
+"use client"
+
 import cardStyles from "./studyCard.module.css"
-import { Row, Card } from 'react-bootstrap'
-import dayjs from 'dayjs'
-import LikeButton from './likeButton'
+import { Row, Card } from "react-bootstrap"
+import dayjs from "dayjs"
+import CardActionBar from "./cardActionBar"
 
 export type StudyListing = {
   createdBy: string,
@@ -14,7 +16,7 @@ export type StudyListing = {
   id:        string
 }
 
-function Tags({ tags } : Pick<StudyListing, 'tags'>) {
+function Tags({ tags } : Pick<StudyListing, "tags">) {
   const keys = ["modules", "locations", "faculties"]
   let tagBoxes = keys.map((key) => {
     return tags[key].map(tag => {
@@ -29,7 +31,7 @@ function Tags({ tags } : Pick<StudyListing, 'tags'>) {
   )
 }
   
-export default function StudyCard(listingData : StudyListing) {
+export default function StudyCard({ listingData, variant } : { listingData: StudyListing, variant: string }) {
   const {createdBy, title, desc, tags, date, freq, interest, id} = listingData
   return (
     <Card key={id} style={{color:"black"}}>
@@ -49,7 +51,7 @@ export default function StudyCard(listingData : StudyListing) {
               <small className="text-body-secondary"> 
                 <img src="/images/date.svg" 
                   className={cardStyles["card-icon"]} /> 
-                {date ? dayjs(date).format('DD/MM/YYYY') : "No date given"}
+                {date ? dayjs(date).format("DD/MM/YYYY") : "No date given"}
               </small>
               <small className="text-body-secondary">{freq}</small>
               <small className="text-body-secondary">
@@ -59,7 +61,7 @@ export default function StudyCard(listingData : StudyListing) {
                 interested
               </small>
               <small>Created by {createdBy}</small>
-              <small style={{marginTop: "5px"}}><LikeButton /></small>
+              <CardActionBar variant={variant} listingData={listingData} />
             </Card.Text>
           </Card.Body>
         </div>
