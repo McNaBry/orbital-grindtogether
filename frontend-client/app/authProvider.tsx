@@ -63,7 +63,7 @@ export const useAuth = () => {
 
 // Function that POST a request to validate stored Firebase tokenID
 async function validateUser(tokenID: string | null) {
-  console.log("Token to be validated: ", tokenID)
+  // console.log("Token to be validated: ", tokenID)
   if (tokenID == null) return false
   // By right, this request should be send to a proxy API using Next.js
   // This will allow us to access httpOnly cookies and is more secure

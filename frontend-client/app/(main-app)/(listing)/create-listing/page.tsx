@@ -10,7 +10,7 @@ import {
   DateOption 
 } from "./select"
 import StudyCard, { StudyListing } from '../studyCard'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Toast, ToastContainer } from 'react-bootstrap'
 import styles from './create-listing.module.css'
 
 import { tagData } from '../study-listings/data'
@@ -60,6 +60,17 @@ const defaultOptions:{[key:string]: any} = {
   "id":        "invitedefault"
 }
 
+function Notif(
+  { msg, success } : { msg: string, success: boolean }) {
+  return (
+    <ToastContainer position="bottom-end" style={{position: "fixed", margin: "20px"}}>
+      <Toast bg={success ? "success" : "danger"} autohide={true} show={msg == "" ? false : true}>
+          <Toast.Body style={{color: "white"}}>{msg}</Toast.Body>
+      </Toast>
+    </ToastContainer>
+  )
+}
+
 export default function CreateListing() {
   const [demoOptions, setDemoOptions] = useState<StudyListing>({
     createdBy: defaultOptions['createdBy'],
@@ -72,8 +83,10 @@ export default function CreateListing() {
     id: defaultOptions['id']
   })
 
+  const [ msg, setMsg ] = useState<string>("")
+  const [ success, setSuccess ] = useState<boolean>(false)
+
   function handleDateOptionChange(date: Date | null) {
-    console.log(date)
     if (date == null) setDemoOptions(prevOptions => ({
       ...prevOptions,
       date: new Date()
@@ -111,7 +124,12 @@ export default function CreateListing() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    console.log("Form submit triggered")
+    const userID = window.localStorage.getItem("uid")
+    if (userID == null || userID == "") {
+      setSuccess(false)
+      setMsg("Cannot find user. Sign in again.")
+      return
+    }
     const res = await fetch('http://localhost:5000/create-listing', {
       method: 'POST',
       headers: {
@@ -124,9 +142,12 @@ export default function CreateListing() {
     })
 
     if (res.ok) {
+      setSuccess(true)
+      setMsg("Listing has been created! View it on your Dashboard or View Listings")
       console.log("submission success")
     } else {
-      console.log("submission error")
+      setSuccess(false)
+      setMsg("Sorry! Listing was not created successfully. Try again.")
     }
   }
 
@@ -179,6 +200,7 @@ export default function CreateListing() {
         </Container>
         <Button variant="success" type="submit">Create Listing</Button>
       </Form>
+      <Notif msg={msg} success={success} />
     </div>
   )
 }
