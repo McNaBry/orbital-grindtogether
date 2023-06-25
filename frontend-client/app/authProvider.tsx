@@ -125,6 +125,7 @@ function useAuthProvider() {
     window.localStorage.removeItem("uid")
     window.localStorage.removeItem("fullName")
     window.localStorage.removeItem("tokenID")
+    setUser(defaultUser)
   }
 
   return {

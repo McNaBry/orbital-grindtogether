@@ -10,14 +10,15 @@ const axios = require("axios");
 
 const app = express();
 const { db, fireAuth } = require("./firebase");
-import {
+const {
   signInUser,
+  createAccount,
   deleteAccount,
   sendResetLink,
   validateOob,
   validateToken
-} from "./authentication"
-import { 
+} = require("./authentication")
+const { 
   getListing,
   getListings,
   createListing,
@@ -25,7 +26,7 @@ import {
   deleteListing,
   getLikedListings, 
   getCreatedListings
-} from "./listing-db"
+} = require("./listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY;
 
@@ -34,74 +35,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
 
-// app.post("/auth", (req, res) => {
-//   const formData = req.body;
-//   console.log(formData);
-//   res.redirect("http://localhost:3000/study-listings");
-// });
-
 async function getUserByEmail(email) {
   return await fireAuth.getUserByEmail(email).catch(err => null)
 }
 
-app.get("/firebase", async (req, res) => {
-  const snapshot = await db.collection("users").get();
-  const data = {};
-  snapshot.forEach((doc) => {
-    data[doc.id] = doc.data();
-  });
-  console.log("Data prepared and ready to be delivered");
-  res.send(JSON.stringify(data));
-});
-
 // API endpoint for Signing Up
 app.post("/sign-up", async (req, res) => {
-  /*
-    Creates a user profile with the full-name and email 
-    Uses placeholder values for bio, course, telegramHandle, year and rating
-    Posts is an array of doc ref to the listings that the user has created
-    Likes is an array of doc ref to the listings that the user has liked 
-    DOES NOT contain plaintext password as this will be handled by Firebase Auth
-  */
-  const user = {
-    fullName: req.body.fullName,
-    email: req.body.email,
-    bio: "Hello!",
-    course: "",
-    teleHandle: "@",
-    year: 0,
-    rating: 0,
-    listings: [],
-    likes: []
-  };
-
-  /*
-    Attempts to sign up the user with email and password on Firebase Auth
-    Upon success, a new user document/profile is created on Firestore
-    If the user's email already exists, Firebase Auth will throw an error
-  */
-  try {
-    await fireAuth
-      .createUser({
-        email: user.email,
-        emailVerified: true,
-        password: req.body.password,
-        displayName: user.fullName,
-        disabled: false,
-      })
-      .then(async () => {
-        await db
-          .collection("users")
-          .add(user)
-          .then(() => {
-            console.log("Account successfully created");
-            res.status(200).send();
-          });
-      });
-  } catch (error) {
-    console.error("Error occurred while saving data to Firebase: ", error);
-    res.status(400).send();
-    return;
+  const createAccountRes = createAccount(req.body)
+  if (createAccountRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
   }
 });
 
@@ -135,39 +79,6 @@ app.post("/validate-token", async (req, res) => {
     res.status(200).json(users[0]).send()
   }
 })
-
-// async function sendEmail(to, subject, htmlContent) {
-//   try {
-//     // Create a transporter using SMTP settings
-//     const transporter = nodemailer.createTransport({
-//       host: "smtp.gmail.com",
-//       port: 587,
-//       secure: false,
-//       auth: {
-//         user: "",
-//         pass: "",
-//       },
-//       tls: {
-//         rejectUnauthorized: false,
-//       },
-//     });
-
-//     // Create the email message
-//     const message = {
-//       from: process.env.SMTP_FROM_EMAIL,
-//       to,
-//       subject,
-//       html: htmlContent,
-//     };
-
-//     // Send the email
-//     const info = await transporter.sendMail(message);
-//     console.log("Email sent:", info.response);
-//   } catch (error) {
-//     console.error("Error sending email:", error);
-//     throw error;
-//   }
-// }
 
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -310,12 +221,20 @@ app.post("/update-profile", async (req, res) => {
   }
 })
 
-app.get("/sign-out", async (req, res) => {
+app.post("/sign-out", async (req, res) => {
+  const { uid } = req.body
+  const userRef = await db.collection("users").doc(uid).get()
+  if (!userRef.exists) {
+    res.status(400).send()
+    return
+  }
+  const user = userRef.data()
+  const email = user.email
+  const authUser = await fireAuth.getUserByEmail(email).then(auth => auth.uid)
   // forces users to sign out from all devices
-  fireAuth.revokeRefreshTokens(req.user.uid).then(() => {
-    res.clearCookie("session");
+  await fireAuth.revokeRefreshTokens(authUser).then(() => {
+    console.log("Sign out successful")
     res.status(200).send();
-    // res.redirect("/")
   }).catch((error) => {
     console.log("no logging out for you you are stuck here forever");
     res.status(500).send();

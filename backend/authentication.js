@@ -12,6 +12,54 @@ async function signInUser(email, password) {
   })
 }
 
+async function createAccount(data) {
+  /*
+    Creates a user profile with the full-name and email 
+    Uses placeholder values for bio, course, telegramHandle, year and rating
+    Posts is an array of doc ref to the listings that the user has created
+    Likes is an array of doc ref to the listings that the user has liked 
+    DOES NOT contain plaintext password as this will be handled by Firebase Auth
+  */
+  const user = {
+    fullName: data.fullName,
+    email: data.email,
+    bio: "Hello!",
+    course: "",
+    teleHandle: "@",
+    year: 0,
+    rating: 0,
+    listings: [],
+    likes: []
+  }
+
+  /*
+    Attempts to sign up the user with email and password on Firebase Auth
+    Upon success, a new user document/profile is created on Firestore
+    If the user's email already exists, Firebase Auth will throw an error
+  */
+  return await fireAuth
+    .createUser({
+      email: user.email,
+      emailVerified: true,
+      password: req.body.password,
+      displayName: user.fullName,
+      disabled: false,
+    })
+    .then(async () => {
+      await db
+        .collection("users")
+        .add(user)
+        .then(() => {
+          console.log("Account successfully created")
+          return true
+        })
+    })
+    .catch(err => {
+      console.error("Error occurred while saving data to Firebase: ", err)
+      return false
+    })
+}
+
 async function deleteAccount(tokenID) {
   return await fireAuth.deleteUser(tokenID)
   .then(payload => true)
@@ -67,6 +115,7 @@ async function validateToken(tokenID) {
 
 module.exports = {
   signInUser,
+  createAccount,
   deleteAccount,
   sendResetLink,
   validateOob,

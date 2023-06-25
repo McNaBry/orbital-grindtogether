@@ -1,20 +1,27 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../authProvider"
 
 const logoutIcon = "/images/logout.png";
 
 function SignOutButton() {
   const router = useRouter();
+  const auth = useAuth()
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch("/sign-out", {
-        method: "GET",
+      const res = await fetch("http://localhost:5000/sign-out", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uid: auth.user.uid })
       });
 
       if (res.ok) {
-        console.log("successfully logged out");
+        console.log("Successfully logged out");
+        await auth.signOut()
         router.push("/");
       } else {
         console.log("welp");
