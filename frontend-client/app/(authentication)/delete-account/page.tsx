@@ -6,7 +6,7 @@ import Password from "../password";
 import Email from "../email"
 
 import { Button, Card, Modal } from "react-bootstrap";
-import "./deleteaccount.css";
+import "../reusable.css"
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 

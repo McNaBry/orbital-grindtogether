@@ -1,11 +1,12 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import "./profilepage.css"
 import "./nonEditableCard"
 import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
+import SignOutButton from "./signOutButton"
 import LikeButton from "../(listing)/study-listings/likeButton"
 import { useAuth } from "../../authProvider"
 
@@ -35,14 +36,14 @@ function ProfilePic() {
   return <div className="profile-pic"></div>;
 }
 
-function NameCard({ name }: {name: string}) {
+function NameCard({ name }: { name: string }) {
   return (
     <NonEditableCard title="Full Name">
       <p className="card-text"> {name} </p>
     </NonEditableCard>
   );
 }
-function EmailCard({ email }: {email: string}) {
+function EmailCard({ email }: { email: string }) {
   return (
     <NonEditableCard title="Email">
       <p className="card-text"> {email} </p>
@@ -59,7 +60,7 @@ function ProfilePage() {
     year: 0,
     course: "",
     telegramHandle: "@",
-    rating: 0
+    rating: 0,
   })
 
   // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
@@ -100,7 +101,7 @@ function ProfilePage() {
 
     fetch("http://localhost:5000/update-profile", {
       method: "POST",
-      headers : {
+      headers: {
         "Content-Type": "application/json",
       },
       body : JSON.stringify({
@@ -109,25 +110,25 @@ function ProfilePage() {
         value: value
       })
     })
-  };
+  }
 
   return (
     <div className="profile-page">
       <EditProfile />
       <ProfilePic />
       <UploadProfilePic />
-      <NameCard name= {fields.fullName} />
+      <NameCard name={fields.fullName} />
       <EmailCard email={fields.email} />
       <EditableCard
         field="Bio"
         value={fields.bio}
-        maxChars= {150}
+        maxChars={150}
         onSave={(value) => handleFieldChange({ fieldToUpdate: "bio", value })}
       />
       <EditableCard
         field="Year"
         value={fields.year}
-        maxChars= {1}
+        maxChars={1}
         onSave={(value) =>
           handleFieldChange({ fieldToUpdate: "year", value: Number(value) })
         }
@@ -135,7 +136,7 @@ function ProfilePage() {
       <EditableCard
         field="Course"
         value={fields.course}
-        maxChars= {50}
+        maxChars={50}
         onSave={(value) =>
           handleFieldChange({ fieldToUpdate: "course", value })
         }
@@ -143,12 +144,13 @@ function ProfilePage() {
       <EditableCard
         field="Telegram Handle"
         value={fields.telegramHandle}
-        maxChars= {32}
+        maxChars={32}
         onSave={(value) =>
           handleFieldChange({ fieldToUpdate: "telegramHandle", value })
         }
       />
-      <RatingCard rating = {fields.rating}/>
+      <RatingCard rating={fields.rating} />
+      <SignOutButton />
     </div>
   )
 }
