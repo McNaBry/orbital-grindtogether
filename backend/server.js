@@ -1,42 +1,42 @@
 // Firebase REST API: https://firebase.google.com/docs/reference/rest/auth
 
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const axios = require("axios");
+require("dotenv").config()
+const express = require("express")
+const cors = require("cors")
+const axios = require("axios")
 // const nodemailer = require("nodemailer");
 // const cookieParser = require("cookie-parser");
 // const Cookies = require('universal-cookie')
 
-const app = express();
-const { db, fireAuth } = require("./firebase");
+const app = express()
+const { db, fireAuth } = require("./firebase")
 const {
   signInUser,
   createAccount,
   deleteAccount,
   sendResetLink,
   validateOob,
-  validateToken
+  validateToken,
 } = require("./authentication")
-const { 
+const {
   getListing,
   getListings,
   createListing,
   updateListing,
   deleteListing,
-  getLikedListings, 
-  getCreatedListings
+  getLikedListings,
+  getCreatedListings,
 } = require("./listingDb")
 
-const apiKey = process.env.FIREBASE_API_KEY;
+const apiKey = process.env.FIREBASE_API_KEY
 
 //app.use(cookieParser());
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // To parse form data
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // To parse form data
 
 async function getUserByEmail(email) {
-  return await fireAuth.getUserByEmail(email).catch(err => null)
+  return await fireAuth.getUserByEmail(email).catch((err) => null)
 }
 
 // API endpoint for Signing Up
@@ -47,7 +47,7 @@ app.post("/sign-up", async (req, res) => {
   } else {
     res.status(400).send()
   }
-});
+})
 
 // API endpoint for Signing In
 app.post("/sign-in", async (req, res) => {
@@ -58,14 +58,14 @@ app.post("/sign-in", async (req, res) => {
   */
   const signInRes = await signInUser(email, password)
   // Retrieves the ID token that Firebase Auth returns when the user is signed in
-  const tokenID = signInRes.data.idToken;
+  const tokenID = signInRes.data.idToken
 
   if (signInRes.status == 200) {
-    res.status(200).json({tokenID: tokenID}).send()
+    res.status(200).json({ tokenID: tokenID }).send()
   } else {
     res.status(400).send()
   }
-});
+})
 
 app.post("/validate-token", async (req, res) => {
   const { tokenID } = req.body
@@ -82,18 +82,18 @@ app.post("/validate-token", async (req, res) => {
 
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.body
   const resetEmailRes = await sendResetLink(email)
   if (resetEmailRes) {
     res.status(200).send()
   } else {
     res.status(400).send()
   }
-});
+})
 
 // API Endpoint to validate oob code for password reset
-app.post('/validate-oob', async (req, res) => {
-  const { oobCode } = req.body;
+app.post("/validate-oob", async (req, res) => {
+  const { oobCode } = req.body
   const validateOobRes = await validateOob(oobCode)
   if (validateOobRes) {
     res.status(200).send()
@@ -103,14 +103,16 @@ app.post('/validate-oob', async (req, res) => {
 })
 
 // API Endpoint to reset password with valid oob code
-app.post('/reset-password', async (req, res) => {
-  const { oobCode, newPassword } = req.body;
-  const resetPasswordRes = await axios.post(
-    `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
-    { oobCode: oobCode, newPassword: newPassword }
-  ).catch(err => {
-    return res.status(400)
-  })
+app.post("/reset-password", async (req, res) => {
+  const { oobCode, newPassword } = req.body
+  const resetPasswordRes = await axios
+    .post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
+      { oobCode: oobCode, newPassword: newPassword }
+    )
+    .catch((err) => {
+      return res.status(400)
+    })
 
   if (resetPasswordRes.status == 200) {
     res.status(200).send()
@@ -126,7 +128,7 @@ app.delete("/delete-account", async (req, res) => {
   const signInRes = await signInUser(email, password)
   // Either email/password not valid or user is not in Firebase Auth
   if (signInRes.status != 200) {
-    res.status(401).send();
+    res.status(401).send()
   }
 
   // Get the user record to retrieve the UID for deletion
@@ -145,16 +147,19 @@ app.delete("/delete-account", async (req, res) => {
 
   // Delete user from Firestore
   try {
-    const snapshot = await db.collection("users").where("email", "==", email).get()
-    snapshot.forEach(doc => doc.ref.delete())
+    const snapshot = await db
+      .collection("users")
+      .where("email", "==", email)
+      .get()
+    snapshot.forEach((doc) => doc.ref.delete())
     res.status(200).send()
   } catch (error) {
     console.log(error)
     res.status(400).send()
   }
-});
+})
 
-// middleware to extract token from cookie and verify it before use 
+// middleware to extract token from cookie and verify it before use
 // const verifyIdToken = async (req, res, next) => {
 //   const idToken = req.cookies.idToken;
 
@@ -166,10 +171,10 @@ app.delete("/delete-account", async (req, res) => {
 //     const decodedToken = await fireAuth.verifyIdToken(idToken);
 //     const userId = decodedToken.uid;
 //     const email = decodedToken.email;
-    
-//     // we will attach the user object to the req object to be passed around 
+
+//     // we will attach the user object to the req object to be passed around
 //     req.user = { userId, email }
-//     next(); 
+//     next();
 //   } catch (error) {
 //     console.log('Failed to verify idToken:', error);
 //     res.status(401).send('Unauthorized');
@@ -198,7 +203,7 @@ app.delete("/delete-account", async (req, res) => {
 // })
 
 app.post("/get-profile", async (req, res) => {
-  const {uid} = req.body
+  const { uid } = req.body
   if (uid == "") res.status(400).json({}).send()
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
@@ -213,11 +218,14 @@ app.post("/get-profile", async (req, res) => {
 app.post("/update-profile", async (req, res) => {
   try {
     const { uid, fieldToUpdate, value } = req.body
-    await db.collection("users").doc(uid).update({[fieldToUpdate] : value});
-    res.status(200).send();
+    await db
+      .collection("users")
+      .doc(uid)
+      .update({ [fieldToUpdate]: value })
+    res.status(200).send()
   } catch (error) {
-    console.log("cannot update");
-    res.status(500).send();
+    console.log("cannot update")
+    res.status(500).send()
   }
 })
 
@@ -230,15 +238,18 @@ app.post("/sign-out", async (req, res) => {
   }
   const user = userRef.data()
   const email = user.email
-  const authUser = await fireAuth.getUserByEmail(email).then(auth => auth.uid)
+  const authUser = await fireAuth.getUserByEmail(email).then((auth) => auth.uid)
   // forces users to sign out from all devices
-  await fireAuth.revokeRefreshTokens(authUser).then(() => {
-    console.log("Sign out successful")
-    res.status(200).send();
-  }).catch((error) => {
-    console.log("no logging out for you you are stuck here forever");
-    res.status(500).send();
-  })
+  await fireAuth
+    .revokeRefreshTokens(authUser)
+    .then(() => {
+      console.log("Sign out successful")
+      res.status(200).send()
+    })
+    .catch((error) => {
+      console.log("Sign out unsuccessful")
+      res.status(500).send()
+    })
 })
 
 // API Endpoint to create listing
@@ -251,7 +262,7 @@ app.post("/create-listing", async (req, res) => {
   }
 })
 
-app.post('/get-listings', async (req, res) => {    
+app.post("/get-listings", async (req, res) => {
   const results = await getListings()
   if (results.length > 0) {
     res.json(results).send()
@@ -260,13 +271,13 @@ app.post('/get-listings', async (req, res) => {
   }
 })
 
-app.post('/delete-listing', async (req, res) => {
+app.post("/delete-listing", async (req, res) => {
   const { userID, postID } = req.body
   const deleteListingRes = await deleteListing(userID, postID)
   res.status(200).send()
 })
 
-app.post('/get-dashboard-listings', async (req, res) => {
+app.post("/get-dashboard-listings", async (req, res) => {
   const { userID } = req.query
   const likedListings = getLikedListings(userID)
   const createdListings = getCreatedListings(userID)
@@ -275,6 +286,6 @@ app.post('/get-dashboard-listings', async (req, res) => {
   return res.json(results).send()
 })
 
-const port = 5000;
+const port = 5000
 
-app.listen(port, () => console.log("Listening on " + port));
+app.listen(port, () => console.log("Listening on " + port))

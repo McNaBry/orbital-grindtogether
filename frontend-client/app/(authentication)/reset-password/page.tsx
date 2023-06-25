@@ -104,7 +104,7 @@ function ResetPasswordPage() {
 
   return (
     <div className="reset-password-page">
-      <Card style={{ width: "18rem" }}>
+      <Card style={{ width: "22rem" }}>
         <Card.Img variant="top" src="images/padlock.png" alt="padlock" />
         <Card.Body>
           <Card.Text>Email: <i>{searchParams.get('email') ?? "No email provided"}</i></Card.Text>

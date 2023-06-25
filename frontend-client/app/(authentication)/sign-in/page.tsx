@@ -8,7 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import CreateStatus from "../createStatus"
 import { useAuth } from '../../authProvider'
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+// import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 function WelcomeBack() {
   return <h2 className="welcome-back"> Welcome Back! </h2>;
