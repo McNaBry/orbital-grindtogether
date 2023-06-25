@@ -34,17 +34,15 @@ function RatingCard({rating} : {rating: number}) {
     }
 
     return (
-      <div className="col-sm-6 non-editable-card">
-        <Card>
-          <Card.Body>
-            <Card.Title> Rating </Card.Title>
-            <p> {rating} / 5 </p>
-            <div className="stars-container">
-              {getStars(rating)}
-            </div>
-          </Card.Body>
-        </Card>
-      </div>
+      <Card>
+        <Card.Body>
+          <Card.Title> Rating </Card.Title>
+          <p> {rating} / 5 </p>
+          <div className="stars-container">
+            {getStars(rating)}
+          </div>
+        </Card.Body>
+      </Card>
     );
 }
 
