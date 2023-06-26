@@ -45,7 +45,7 @@ export default function ListingsPage() {
 
   return (
     <Container>
-      <h1 style={{color:"white"}}>Status: {error ? "error" : (isLoading ? "loading..." : "done")}</h1>
+      {/* <h1 style={{color:"white"}}>Status: {error ? "error" : (isLoading ? "loading..." : "done")}</h1> */}
       <div id="header-container">
         <h1>Study Listings</h1>
         <ListingPageControl page={page} setPage={setPage} />

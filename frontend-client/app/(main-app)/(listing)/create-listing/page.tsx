@@ -22,9 +22,9 @@ const titles:Option[] = [
 ]
 
 const desc:Option[] = [
-  { value: "No chat. Just study and help each other.", label: "Serious Title" },
-  { value: "Just want to make friends while studying", label: "Chill Title" },
-  { value: "Let's study as hard as we can and make some friends!", label: "Mixed Title" }
+  { value: "No chat. Just study and help each other.", label: "Serious Description" },
+  { value: "Just want to make friends while studying", label: "Chill Description" },
+  { value: "Let's study as hard as we can and make some friends!", label: "Mixed Description" }
 ]
 
 const freq:Option[] = [
