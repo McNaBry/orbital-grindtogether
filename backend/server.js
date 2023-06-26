@@ -271,10 +271,14 @@ app.post("/get-listings", async (req, res) => {
   }
 })
 
-app.post("/delete-listing", async (req, res) => {
-  const { userID, postID } = req.body
-  const deleteListingRes = await deleteListing(userID, postID)
-  res.status(200).send()
+app.delete("/delete-listing", async (req, res) => {
+  const { userID, listingUID } = req.body
+  const deleteListingRes = await deleteListing(userID, listingUID)
+  if (deleteListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
 })
 
 app.post("/get-dashboard-listings", async (req, res) => {

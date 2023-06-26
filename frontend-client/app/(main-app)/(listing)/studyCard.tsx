@@ -30,15 +30,15 @@ function Tags({ tags } : Pick<StudyListing, "tags">) {
     </div>
   )
 }
-  
+
 export default function StudyCard({ listingData, variant } : { listingData: StudyListing, variant: string }) {
   const {createdBy, title, desc, tags, date, freq, interest, id} = listingData
   return (
-    <Card key={id} style={{color:"black"}}>
+    <Card key={id} style={{color:"black"}} className={cardStyles["card-container"]}>
       <Row className="g-0">
         <div className="col-6 col-md-3">
           <Card.Img 
-            src="images/terrace_pic.png" 
+            src="/images/terrace_pic.png" 
             className={"img-fluid rounded-start " + cardStyles["card-img"]} 
             alt="No Image Available"/>
         </div>

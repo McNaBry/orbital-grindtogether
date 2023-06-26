@@ -14,6 +14,7 @@ import { Container, Form, Button, Toast, ToastContainer } from 'react-bootstrap'
 import styles from './create-listing.module.css' 
 
 import { tagData } from '../study-listings/data'
+import { useRouter } from 'next/navigation'
 
 const titles:Option[] = [
   { value: "Serious Sesh", label: "Serious Title" },
@@ -86,6 +87,8 @@ function Notif(
 }
 
 export default function CreateListing() {
+  const router = useRouter()
+  
   const [demoOptions, setDemoOptions] = useState<StudyListing>({
     createdBy: defaultOptions['createdBy'],
     title: defaultOptions['title'],
@@ -162,8 +165,10 @@ export default function CreateListing() {
       setSuccess(true)
       setMsg("Listing has been created! View it on your Dashboard or View Listings")
       console.log("Submission success")
+      router.push("/dashboard")
       return true
     }).catch(error => {
+      console.log(error)
       setSuccess(false)
       setMsg("Sorry! Listing was not created successfully. Try again.")
       return false
