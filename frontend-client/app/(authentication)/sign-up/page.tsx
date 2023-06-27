@@ -87,9 +87,9 @@ function SignUpPage() {
       setMsg: setMsg, 
       setSuccess: setSuccess})
     ) return
-    let res: Response;
+
     try {
-      res = await fetch('http://localhost:5000/sign-up', {
+      const res = await fetch('http://localhost:5000/sign-up', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,20 +100,23 @@ function SignUpPage() {
           password: formData.get('password')
         })
       })
+
+      if (res.status == 200) {
+        setMsg("Account has been successfully created!")
+        setSuccess(true)
+        await new Promise(r => setTimeout(r, 2000))
+        router.push("/sign-in")
+      } else {
+        setMsg("Account not created. Issue with server")
+        setSuccess(false)
+        router.push("/sign-up")
+      }
+
     } catch (error) {
+      console.log(error)
       setMsg("Account not created. Issue with server connection.")
       setSuccess(false)
       return
-    }
-
-    if (res.ok) {
-      setMsg("Account has been successfully created!")
-      setSuccess(true)
-      router.push("/dashboard")
-    } else {
-      setMsg("Account not created. Issue with server")
-      setSuccess(false)
-      router.push("/sign-up")
     }
   }
 

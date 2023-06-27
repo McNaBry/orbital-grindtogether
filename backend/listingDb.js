@@ -40,7 +40,19 @@ async function updateListing(userID, listingUID, fieldToUpdate, newValue) {
 }
 
 async function deleteListing(userID, listingUID) {
-  // TODO
+  console.log("userID: ", userID, " listingID: ", listingUID)
+  const docRef = await db.collection("listings").doc(listingUID).get()
+  if (!docRef.exists) {
+    return false
+  }
+  const listingData = docRef.data()
+  if (listingData.createdBy != userID) {
+    return false
+  }
+  return await db.collection("listings").doc(listingUID)
+    .delete()
+    .then(res => true)
+    .catch(err => false)
 }
 
 // Function that processes listings obtained from a Firestore Query snapshot

@@ -6,8 +6,9 @@ import { Container, Row } from 'react-bootstrap'
 import useSWR from 'swr'
 import StudyListings from '../(listing)/study-listings/studyListings'
 import { StudyListing } from '../(listing)/studyCard'
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import { useAuth } from "../../authProvider"
+ 
 type ListingProps = {
   data: Array<StudyListing[]>, 
   error: any, 
@@ -25,7 +26,7 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
           ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
           : data[0].length == 0
             ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} />}
+            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} variant="display" />}
     </>
   )
 }
@@ -40,7 +41,7 @@ function CreatedListings({ data, error, isLoading, emptyFilters } : ListingProps
           ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
           : data[1].length == 0
             ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            :<StudyListings page={-1} limit={0} filters={emptyFilters} data={data[1]} />}
+            :<StudyListings page={-1} limit={0} filters={emptyFilters} data={data[1]} variant="modify" />}
     </>
   )
 }
@@ -65,13 +66,18 @@ function ListingViewer({ option, data, error, isLoading } : ListingViewerProps) 
 }
 
 export default function Dashboard() {
-  const fetcher = async (url:string) => fetch(url, {method: 'POST'}).then(res => res.json())
-  const userID = "hxASjzp8fZz3GyekGHhO"
-  const { data, isLoading, error } = useSWR(`http://localhost:5000/get-dashboard-listings?userID=${userID}`, 
+  const fetcher = async (url:string) => {
+    const userID = window.localStorage.getItem("uid")
+    if (userID == null || userID == "") return [[], []]
+    return await fetch(url + `?userID=${userID}`, { method: "POST" }).then(res => res.json())
+  }
+
+  const { data, isLoading, error } = useSWR(`http://localhost:5000/get-dashboard-listings`, 
     fetcher,  {
       revalidateIfStale: false,
       revalidateOnFocus: false,
     })
+  
   const [viewState, setViewState] = useState<string>("liked")
   
   return (

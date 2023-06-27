@@ -1,4 +1,4 @@
-.page404 {
+#page404 {
     background-image: url("/images/404-background.png");
     background-repeat: no-repeat;
     background-size: cover;
@@ -9,11 +9,11 @@
     justify-content: center;
 }
 
-.page404 h2 {
+#page404 h2 {
     font-size: 100px;
 }
 
-.page404 p {
+#page404 p {
     font-size: 50px;
 }
 
@@ -30,4 +30,9 @@
     margin-top: 20px;
     width: 250px;
     display: inline-block;
+}
+
+#return:hover {
+    background-color: purple;
+    box-shadow: none;
 }

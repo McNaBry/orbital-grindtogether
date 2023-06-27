@@ -20,6 +20,7 @@ type user = {
 
 type authProvider = {
   user: user,
+  signUp: (tokenID: string, email: string, uid: string) => Promise<void>,
   signIn: (tokenID: string) => Promise<void>,
   signOut: () => Promise<void>
 }
@@ -32,6 +33,7 @@ const defaultUser: user = {
 
 const defaultAuthObj: authProvider = {
   user: defaultUser,
+  signUp: async (tokenID: string, email: string, uid: string) => console.log(tokenID),
   signIn: async (tokenID: string) => console.log(tokenID),
   signOut: async () => {}
 }
@@ -63,7 +65,7 @@ export const useAuth = () => {
 
 // Function that POST a request to validate stored Firebase tokenID
 async function validateUser(tokenID: string | null) {
-  console.log("Token to be validated: ", tokenID)
+  // console.log("Token to be validated: ", tokenID)
   if (tokenID == null) return false
   // By right, this request should be send to a proxy API using Next.js
   // This will allow us to access httpOnly cookies and is more secure
@@ -81,7 +83,7 @@ async function validateUser(tokenID: string | null) {
     const data = await res.json()
     window.localStorage.setItem("uid", data.uid)
     window.localStorage.setItem("fullName", data.fullName)
-    console.log("User data from backend: ", data)
+    //console.log("User data from backend: ", data)
     return true
   } else {
     window.localStorage.removeItem("uid")
@@ -115,6 +117,12 @@ function useAuthProvider() {
     setUser(userProfile)
   }, [])
 
+  async function signUp(tokenID: string, email: string, uid: string) {
+    window.localStorage.setItem("uid", uid)
+    window.localStorage.setItem("fullName", email)
+    window.localStorage.setItem("tokenID", tokenID)
+  }
+
   async function signIn(tokenID: string) {
     window.localStorage.setItem("tokenID", tokenID)
     const res = await validateUser(tokenID)
@@ -129,7 +137,7 @@ function useAuthProvider() {
   }
 
   return {
-    user, signIn, signOut
+    user, signUp, signIn, signOut
   }
 }
 
