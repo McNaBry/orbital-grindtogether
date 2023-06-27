@@ -41,12 +41,12 @@ async function createAccount(data) {
     .createUser({
       email: user.email,
       emailVerified: true,
-      password: user.password,
+      password: data.password,
       displayName: user.fullName,
       disabled: false,
     })
     .then(async () => {
-      await db
+      return await db
         .collection("users")
         .add(user)
         .then(() => {
