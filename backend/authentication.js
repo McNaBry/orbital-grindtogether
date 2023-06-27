@@ -41,7 +41,7 @@ async function createAccount(data) {
     .createUser({
       email: user.email,
       emailVerified: true,
-      password: req.body.password,
+      password: user.password,
       displayName: user.fullName,
       disabled: false,
     })
