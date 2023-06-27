@@ -82,7 +82,7 @@ function SignInPage() {
         setMsg("Sign in successful! Please wait...")
         setSuccess(true)
         // Store sign in token ID for future reference
-        res.json().then(async data => {
+        await res.json().then(async data => {
           await auth.signIn(data.tokenID)
         })
         router.push("/dashboard")

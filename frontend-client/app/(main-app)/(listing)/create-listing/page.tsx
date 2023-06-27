@@ -147,6 +147,7 @@ export default function CreateListing() {
       setMsg("Cannot find user. Sign in again.")
       return
     }
+    
     const res = await fetch('http://localhost:5000/create-listing', {
       method: 'POST',
       headers: {
@@ -154,24 +155,26 @@ export default function CreateListing() {
       },
       body: JSON.stringify({
         ...demoOptions,
-        userID: 'hxASjzp8fZz3GyekGHhO' // For testing
+        userID: userID // For testing
       }),
-    }).then(data => {
+    })
+    .then(async data => {
       if (!data.ok) {
         setSuccess(false)
         setMsg("Sorry! Listing was not created successfully. Try again.")
-        return false
+        return
       }
+
       setSuccess(true)
       setMsg("Listing has been created! View it on your Dashboard or View Listings")
-      console.log("Submission success")
+      await new Promise(r => setTimeout(r, 2000))
       router.push("/dashboard")
-      return true
-    }).catch(error => {
+
+    })
+    .catch(error => {
       console.log(error)
       setSuccess(false)
       setMsg("Sorry! Listing was not created successfully. Try again.")
-      return false
     })
   }
 

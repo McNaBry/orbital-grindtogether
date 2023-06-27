@@ -45,18 +45,22 @@ async function createAccount(data) {
       displayName: user.fullName,
       disabled: false,
     })
-    .then(async () => {
+    .then(async payload => {
       return await db
         .collection("users")
         .add(user)
-        .then(() => {
-          console.log("Account successfully created")
+        .then(doc => {
+          console.log("Firestore account successfully created")
           return true
+        })
+        .catch(err => {
+          console.log("Firestore account creation err\n", err)
+          return false
         })
     })
     .catch(err => {
-      console.error("Error occurred while saving data to Firebase: ", err)
-      return false
+      console.error("Auth account creation err\n", err)
+      return true
     })
 }
 
