@@ -68,7 +68,7 @@ function ProfilePage() {
     const fetchData = async () => {
       try {
         console.log(auth.user.uid)
-        const response = await fetch(`${process.env.API_URL}/get-profile`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-profile`, {
           method: 'POST',
           headers : {
             "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function ProfilePage() {
 
     const updatedProfileData = { [fieldToUpdate]: value }
 
-    fetch(`${process.env.API_URL}/update-profile`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-profile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

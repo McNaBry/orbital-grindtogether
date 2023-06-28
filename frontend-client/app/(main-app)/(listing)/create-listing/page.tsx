@@ -148,7 +148,7 @@ export default function CreateListing() {
       return
     }
     
-    const res = await fetch('${process.env.API_URL}/create-listing', {
+    const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/create-listing', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

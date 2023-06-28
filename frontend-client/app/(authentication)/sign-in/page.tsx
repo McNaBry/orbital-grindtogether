@@ -64,7 +64,7 @@ function SignInPage() {
     const formData = new FormData(event.currentTarget)
   
     try {
-      const res = await fetch(`${process.env.API_URL}/sign-in`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

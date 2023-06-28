@@ -11,7 +11,7 @@ function SignOutButton() {
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch(`${process.env.API_URL}/sign-out`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-out`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // export async function POST(request: NextRequest) {  
 //   const cookies = new Cookies()
 //   console.log("Token ID: ", cookies.get("tokenID"))
-//   const res = await fetch(`${process.env.API_URL}/validate-token`, {
+//   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-token`, {
 //     method: 'POST',
 //   }).then(response => {
 //     console.log(response.headers)

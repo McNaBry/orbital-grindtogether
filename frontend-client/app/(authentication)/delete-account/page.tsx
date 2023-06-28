@@ -90,7 +90,7 @@ function DeleteAccountPage() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const res = await fetch(`${process.env.API_URL}/delete-account`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
