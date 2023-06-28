@@ -4,12 +4,13 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
+const serverless = require("serverless-http")
 // const nodemailer = require("nodemailer");
 // const cookieParser = require("cookie-parser");
 // const Cookies = require('universal-cookie')
 
 const app = express()
-const { db, fireAuth } = require("./firebase")
+const { db, fireAuth } = require("../firebase")
 const {
   signInUser,
   createAccount,
@@ -17,7 +18,7 @@ const {
   sendResetLink,
   validateOob,
   validateToken,
-} = require("./authentication")
+} = require("../authentication")
 const {
   getListing,
   getListings,
@@ -26,7 +27,7 @@ const {
   deleteListing,
   getLikedListings,
   getCreatedListings,
-} = require("./listingDb")
+} = require("../listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
