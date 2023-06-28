@@ -9,7 +9,7 @@ const axios = require("axios")
 // const Cookies = require('universal-cookie')
 
 const app = express()
-const { db, fireAuth } = require("./firebase")
+const { db, fireAuth, storage, bucket } = require("./firebase")
 const {
   signInUser,
   createAccount,
@@ -225,6 +225,46 @@ app.post("/update-profile", async (req, res) => {
     res.status(200).send()
   } catch (error) {
     console.log("cannot update")
+    res.status(500).send()
+  }
+})
+
+app.post("/get-profile-pic", async (req, res) => {
+  const { uid } = req.body
+
+  if (!uid) {
+    console.log("No user ID detected")
+    res.status(400).send()
+    return 
+  }
+
+  const fileName = 
+  
+})
+
+app.post("/upload-profile-pic", async (req, res) => {
+  const { uid } = req.body
+  if (!uid) {
+    console.log("No user ID detected")
+    res.status(400).send()
+    return 
+  }
+
+  const file = req.files && req.files.profilePic
+  if (!file) {
+    console.log("No file detected")
+    res.status(400).send()
+    return
+  }
+
+  try {
+    const storageRef = storage.ref()
+    const profilePicRef = storageRef.child("profile-pics/${uid}")
+    await profilePicRef.put(file)
+    console.log("successfully uploaded profile pic")
+    res.status(200).send()
+  } catch (error) {
+    console.log("no profile pic uploaded")
     res.status(500).send()
   }
 })

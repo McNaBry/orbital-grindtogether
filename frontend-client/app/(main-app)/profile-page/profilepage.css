@@ -48,12 +48,23 @@
     margin-top: 2px;
 }
 
-.profile-pic {
-    height: 200px;
-    width: 200px;
+.no-profile-pic {
+    height: 400px;
+    width: 400px;
     background-color: black;
     border-radius: 50%;
-    border: 2px solid white;
+    border: 2px solid #c5c6d0;
+    overflow: hidden;
+}
+
+.profile-pic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 400px;
+    border-radius: 50%;
+    border: 2px solid #c5c6d0;
     overflow: hidden;
 }
 
