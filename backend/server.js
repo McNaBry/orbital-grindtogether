@@ -10,7 +10,7 @@ const serverless = require("serverless-http")
 // const Cookies = require('universal-cookie')
 
 const app = express()
-const { db, fireAuth } = require("../firebase")
+const { db, fireAuth } = require("./firebase")
 const {
   signInUser,
   createAccount,
@@ -18,7 +18,7 @@ const {
   sendResetLink,
   validateOob,
   validateToken,
-} = require("../authentication")
+} = require("./authentication")
 const {
   getListing,
   getListings,
@@ -27,7 +27,7 @@ const {
   deleteListing,
   getLikedListings,
   getCreatedListings,
-} = require("../listingDb")
+} = require("./listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
