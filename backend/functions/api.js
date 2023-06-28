@@ -27,9 +27,9 @@ const {
 const apiKey = process.env.FIREBASE_API_KEY
 const app = express.Router()
 
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true })) // To parse form data
+api.use(cors())
+api.use(express.json())
+api.use(express.urlencoded({ extended: true })) // To parse form data
 
 async function getUserByEmail(email) {
   return await fireAuth.getUserByEmail(email).catch((err) => null)

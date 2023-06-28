@@ -7,7 +7,7 @@ const key = new NodeRSA()
 // Import private key for decryption
 key.importKey(process.env.RSA_PRIVATE_KEY, process.env.DECRYPT_SCHEME)
 // Retrieve encrypted string
-const encryptedString = fs.readFileSync(`./${process.env.SERVICE_ACC_PATH}`, 'utf-8')
+const encryptedString = fs.readFileSync(__dirname + `/${process.env.SERVICE_ACC_PATH}`, 'utf-8')
 // Decrypt the string and parse it into a JSON object
 const serviceAccount = JSON.parse(key.decrypt(encryptedString, 'utf8'))
 
