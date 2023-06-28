@@ -132,6 +132,7 @@ app.delete("/delete-account", async (req, res) => {
   }
 
   // Get the user record to retrieve the UID for deletion
+  console.log(email)
   const userRecord = await getUserByEmail(email)
   if (!userRecord) {
     console.log("No user record found with the email provided")
@@ -238,7 +239,7 @@ app.post("/get-profile-pic", async (req, res) => {
     return 
   }
 
-  const fileName = 
+  // const fileName = 
   
 })
 

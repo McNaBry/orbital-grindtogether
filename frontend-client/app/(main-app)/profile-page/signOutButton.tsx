@@ -20,14 +20,14 @@ function SignOutButton() {
       });
 
       if (res.ok) {
-        console.log("Successfully logged out");
+        console.log("Successfully logged out.");
         await auth.signOut()
         router.push("/");
       } else {
-        console.log("welp");
+        console.log("Unfortunately logging out was unsuccessful.");
       }
     } catch (error) {
-      console.log("idk what to write here at this point");
+      console.log("Some unknown error appeared.");
     }
   };
 

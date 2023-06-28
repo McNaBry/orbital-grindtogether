@@ -8,8 +8,12 @@ import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { useAuth } from "../../authProvider"
 import { profile } from "console"
+
+const deleteAccountIcon = "/images/delete-account.png"
 
 function EditProfile() {
   return <h1 style={{ color: "white" }}> Profile Page </h1>
@@ -71,13 +75,16 @@ function ProfilePage() {
         setFields(data)
 
         // Fetch the profile page picture separately
-        const profilePicResponse = await fetch("http://localhost:5000/get-profile-pic", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body : JSON.stringify({uid: window.localStorage.getItem("uid")}),
-        })
+        const profilePicResponse = await fetch(
+          "http://localhost:5000/get-profile-pic",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
+          }
+        )
 
         // server sends the URL of the profile picture if it does exist
         const profileData = await profilePicResponse.json()
@@ -89,6 +96,27 @@ function ProfilePage() {
 
     fetchData()
   }, [])
+
+  // this button is different from the one in delete-account; it just redirects to the page
+  function DeleteAccount() {
+    const router = useRouter()
+    const onClick = () => {
+      router.push(`/delete-account?email=${fields.email}`)
+    }
+
+    return (
+      <button id="profile-delete-account" onClick={onClick}>
+        <Image
+          width={20}
+          height={20}
+          src={deleteAccountIcon}
+          style={{ marginRight: "5px" }}
+          alt="Delete Account"
+        />
+        Delete Account
+      </button>
+    )
+  }
 
   // Function to handle change on the Editable Card.
   // Triggered by save changes button.
@@ -117,7 +145,9 @@ function ProfilePage() {
     })
   }
 
-  const handleProfilePicUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePicUpload = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     // check if the file does exist; if it does then take the first file
     const file = event.target.files && event.target.files[0]
     const userId = auth.user.uid
@@ -127,13 +157,13 @@ function ProfilePage() {
       setProfilePic(generatedURL)
 
       const formData = new FormData()
-      formData.append("uid", userId) 
+      formData.append("uid", userId)
       formData.append("profilePic", file)
 
       try {
         await fetch("/upload-profile-pic", {
           method: "POST",
-          body: formData
+          body: formData,
         })
         console.log("profile picture uploaded?")
       } catch (error) {
@@ -180,7 +210,10 @@ function ProfilePage() {
         }
       />
       <RatingCard rating={fields.rating} />
-      <SignOutButton />
+      <div className="button-containers">
+        <SignOutButton />
+        <DeleteAccount />
+      </div>
     </div>
   )
 }
