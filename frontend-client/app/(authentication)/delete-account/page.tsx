@@ -31,17 +31,23 @@ function AbortDelete() {
   );
 }
 
-function SuccessDialog(props) {
+type ModalProps = {
+  show: boolean,
+  onHide: () => void
+}
+
+function SuccessDialog({ show, onHide } : ModalProps) {
   const router = useRouter();
 
   const handleClose = () => {
     router.push("/");
-    props.onHide();
+    onHide();
   }
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -84,7 +90,7 @@ function DeleteAccountPage() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const res = await fetch('http://localhost:5000/delete-account', {
+      const res = await fetch(`${process.env.API_URL}/delete-account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

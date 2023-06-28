@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   const data = await request.json()
   
-  const res = await fetch('http://localhost:5000/sign-in', {
+  const res = await fetch(`${process.env.API_URL}/sign-in`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

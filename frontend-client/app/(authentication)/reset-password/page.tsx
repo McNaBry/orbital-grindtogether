@@ -23,7 +23,7 @@ function ResetPassword() {
 
 async function validateOobCode(oobCode: string | null) {
   try {
-    const res = await fetch('http://localhost:5000/validate-oob', {
+    const res = await fetch(`${process.env.API_URL}/validate-oob`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function ResetPasswordPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    const res = await fetch('http://localhost:5000/reset-password', {
+    const res = await fetch(`${process.env.API_URL}/reset-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
