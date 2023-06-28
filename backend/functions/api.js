@@ -5,7 +5,7 @@ const axios = require("axios")
 const serverless = require("serverless-http")
 
 const api = express()
-const { db, fireAuth } = require("./firebase")
+const { db, fireAuth } = require("../firebase")
 const {
   signInUser,
   createAccount,
@@ -13,7 +13,7 @@ const {
   sendResetLink,
   validateOob,
   validateToken,
-} = require("./authentication")
+} = require("../authentication")
 const {
   getListing,
   getListings,
@@ -22,7 +22,7 @@ const {
   deleteListing,
   getLikedListings,
   getCreatedListings,
-} = require("./listingDb")
+} = require("../listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
 const app = express.Router()

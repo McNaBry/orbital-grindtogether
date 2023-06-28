@@ -1,6 +1,5 @@
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies'
 import { NextRequest, NextResponse } from 'next/server'
-import cookies from 'universal-cookie'
 
 // Using Next.js API routes to act as a proxy
 // httpOnly cookies cannot be accessed on the browser using JS
