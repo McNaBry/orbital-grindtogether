@@ -58,7 +58,7 @@ function SuccessDialog({ show, onHide } : ModalProps) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4> Don't worry, all your data have also been deleted. </h4>
+        <h4> Don&apos;t worry, all your data have also been deleted. </h4>
         <p>
           We are sorry to see you go... See you soon!
         </p>
