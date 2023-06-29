@@ -35,3 +35,4 @@ yarn-error.log*
 # typescript
 /frontend-client/*.tsbuildinfo
 /frontend-client/next-env.d.ts
+frontend-client/.env
