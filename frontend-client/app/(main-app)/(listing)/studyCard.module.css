@@ -1,0 +1,109 @@
+.card-container {
+  border: none;
+  margin: 5px;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.card-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+
+.tag {
+  margin-right: 5px;
+}
+
+.modules {
+  background-color: #0052d4;
+}
+
+.locations {
+  background-color: #65c7f7;
+}
+
+.faculties {
+  background-color: #9cecfb;
+}
+
+.like-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #ed2553;
+  border-radius: 5px;
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  margin-right: 4px;
+  padding: 8px 12px 8px 12px;
+}
+
+.like-button-text {
+  margin: 0px 0px 0px 6px;
+}
+
+#action-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2px;
+}
+
+#delete-button {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #EC9F05 0, #FF4E00 100%) border-box;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  padding: 5px;
+  margin-right: 4px;
+  color: black;
+  padding: 6px 12px 6px 12px;
+}
+
+#delete-button:hover {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #EC9F05 0, #FF4E00 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #EC9F05 0, #FF4E00 100%) border-box;
+  color: white;
+}
+
+#edit-button {
+  background-color: transparent;
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #C33764 0, #1D2671 100%) border-box;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  padding: 5px;
+  margin-right: 4px;
+  color: black;
+  padding: 6px 18px 6px 18px;
+}
+
+#edit-button:hover {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #C33764 0, #1D2671 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #C33764 0, #1D2671 100%) border-box;
+  color: white;
+}
+
+#delete-button p,
+#edit-button p {
+  margin: 0px;
+}

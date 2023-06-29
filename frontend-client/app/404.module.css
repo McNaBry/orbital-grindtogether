@@ -1,0 +1,38 @@
+#page404 {
+    background-image: url("/images/404-background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#page404 h2 {
+    font-size: 100px;
+}
+
+#page404 p {
+    font-size: 50px;
+}
+
+#return {
+    background-color: transparent;
+    color: white;
+    box-shadow: 0 2px 4px rgba(100, 149, 237, 1);
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 250px;
+    display: inline-block;
+}
+
+#return:hover {
+    background-color: purple;
+    box-shadow: none;
+}

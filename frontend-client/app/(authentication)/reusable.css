@@ -1,0 +1,67 @@
+.delete-account-page .card,
+.reset-password-page .card,
+.input-email-for-reset-page .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+.delete-account-page label,
+.reset-password-page label,
+.input-email-for-reset-page label,
+.delete-account-page p,
+.reset-password-page p {
+  color: black;
+}
+
+.suddenly-remember-link,
+.request-new-one,
+.abort-delete-link {
+  text-decoration: none;
+}
+
+.delete-account-page,
+.reset-password-page,
+.input-email-for-reset-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.reset-password-page {
+  width: 100vw;
+}
+
+.suddenly-remember {
+  margin-top: 20px;
+}
+
+#delete-account,
+#reset-password,
+#request-for-reset {
+  color: white;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  display: inline-block;
+  font-size: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  cursor: pointer;
+  width: 200px;
+}
+
+#delete-account {
+  background-color: #e3242b;
+  border-color: #e3242b;
+  margin-bottom: 20px;
+}
+
+#reset-password {
+  background-color: #3944bc;
+}
+
+#request-for-reset {
+  background-color: #ffc30b;
+  border-color: #ffc30b;
+}

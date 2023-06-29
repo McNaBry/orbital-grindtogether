@@ -1,209 +1,295 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const axios = require("axios");
-const nodemailer = require("nodemailer");
+// Firebase REST API: https://firebase.google.com/docs/reference/rest/auth
 
-const app = express();
-const { db, fireAuth } = require("./firebase");
+require("dotenv").config()
+const express = require("express")
+const cors = require("cors")
+const axios = require("axios")
+// const nodemailer = require("nodemailer");
+// const cookieParser = require("cookie-parser");
+// const Cookies = require('universal-cookie')
 
-const apiKey = process.env.FIREBASE_API_KEY;
+const app = express()
+const { db, fireAuth } = require("./firebase")
+const {
+  signInUser,
+  createAccount,
+  deleteAccount,
+  sendResetLink,
+  validateOob,
+  validateToken,
+} = require("./authentication")
+const {
+  getListing,
+  getListings,
+  createListing,
+  updateListing,
+  deleteListing,
+  getLikedListings,
+  getCreatedListings,
+} = require("./listingDb")
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // To parse form data
+const apiKey = process.env.FIREBASE_API_KEY
 
-// app.post("/auth", (req, res) => {
-//   const formData = req.body;
-//   console.log(formData);
-//   res.redirect("http://localhost:3000/study-listings");
-// });
+//app.use(cookieParser());
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // To parse form data
 
-app.get("/firebase", async (req, res) => {
-  const snapshot = await db.collection("users").get();
-  const data = {};
-  snapshot.forEach((doc) => {
-    data[doc.id] = doc.data();
-  });
-  console.log("Data prepared and ready to be delivered");
-  res.send(JSON.stringify(data));
-});
-
-app.post("/sign-up", async (req, res) => {
-  const user = {
-    fullName: req.body.fullName,
-    email: req.body.email,
-    password: req.body.password,
-    bio: "Hello!",
-    rating: 0,
-  };
-
-  try {
-    await fireAuth
-      .createUser({
-        email: user.email,
-        emailVerified: true,
-        password: user.password,
-        displayName: user.fullName,
-        disabled: false,
-      })
-      .then(async () => {
-        await db
-          .collection("users")
-          .add(user)
-          .then(() => {
-            console.log("Account successfully created");
-            res.send(200);
-          });
-      });
-  } catch (error) {
-    console.error("Error occurred while saving data to Firebase: ", error);
-    res.status(500);
-    return;
-  }
-});
-
-app.post("/sign-in", async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const snapshot = await db
-      .collection("users")
-      .where("email", "==", email)
-      .get();
-    if (snapshot.empty) {
-      console.log("Email not found in database");
-      res.status(404).send();
-      return;
-    }
-
-    // assumes that there is only one record that matches the email
-    const userData = snapshot.docs[0].data();
-    const storedPassword = userData.password;
-
-    if (password != storedPassword) {
-      console.log("Passwords do not match");
-      res.status(401).send();
-      return;
-    }
-
-    const signInResponse = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
-      {
-        email,
-        password,
-        returnSecureToken: true,
-      }
-    );
-    console.log("Login successful");
-    res.status(200).send();
-    return;
-  } catch (error) {
-    console.log("god help us ", error);
-    res.status(500).send();
-    return;
-  }
-});
-
-async function sendEmail(to, subject, htmlContent) {
-  try {
-    // Create a transporter using SMTP settings
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "",
-        pass: "",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    // Create the email message
-    const message = {
-      from: process.env.SMTP_FROM_EMAIL,
-      to,
-      subject,
-      html: htmlContent,
-    };
-
-    // Send the email
-    const info = await transporter.sendMail(message);
-    console.log("Email sent:", info.response);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
+async function getUserByEmail(email) {
+  return await fireAuth.getUserByEmail(email).catch((err) => null)
 }
 
-app.post("/input-email-for-reset", async (req, res) => {
-  const { email } = req.body;
+// API endpoint for Signing Up
+app.post("/sign-up", async (req, res) => {
+  const createAccountRes = createAccount(req.body)
+  if (createAccountRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
 
+// API endpoint for Signing In
+app.post("/sign-in", async (req, res) => {
+  const { email, password } = req.body
+  /* 
+    Sends a POST request with user credentials to Firebase Auth API
+    If sign in is successful a 200 OK HTTP status code is returned
+  */
+  const signInRes = await signInUser(email, password)
+  // Retrieves the ID token that Firebase Auth returns when the user is signed in
+  const tokenID = signInRes.data.idToken
+
+  if (signInRes.status == 200) {
+    res.status(200).json({ tokenID: tokenID }).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post("/validate-token", async (req, res) => {
+  const { tokenID } = req.body
+  const users = await validateToken(tokenID)
+  if (users.length == 0) {
+    console.log("Null array for user UID query")
+    res.status(400).send()
+  } else if (users.length >= 1) {
+    // If all goes well, only one user will be returned
+    // If not we still return the first user in the array
+    res.status(200).json(users[0]).send()
+  }
+})
+
+// API Endpoint to receive email to send password reset link
+app.post("/input-email-for-reset", async (req, res) => {
+  const { email } = req.body
+  const resetEmailRes = await sendResetLink(email)
+  if (resetEmailRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+// API Endpoint to validate oob code for password reset
+app.post("/validate-oob", async (req, res) => {
+  const { oobCode } = req.body
+  const validateOobRes = await validateOob(oobCode)
+  if (validateOobRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+// API Endpoint to reset password with valid oob code
+app.post("/reset-password", async (req, res) => {
+  const { oobCode, newPassword } = req.body
+  const resetPasswordRes = await axios
+    .post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
+      { oobCode: oobCode, newPassword: newPassword }
+    )
+    .catch((err) => {
+      return res.status(400)
+    })
+
+  if (resetPasswordRes.status == 200) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.delete("/delete-account", async (req, res) => {
+  const { email, password } = req.body
+
+  // Check if details given are valid by signing in
+  const signInRes = await signInUser(email, password)
+  // Either email/password not valid or user is not in Firebase Auth
+  if (signInRes.status != 200) {
+    res.status(401).send()
+  }
+
+  // Get the user record to retrieve the UID for deletion
+  const userRecord = await getUserByEmail(email)
+  if (!userRecord) {
+    console.log("No user record found with the email provided")
+    return res.status(400).send()
+  }
+
+  // Delete user from Firebase Auth
+  const deleteAccAuth = await deleteAccount(userRecord.uid)
+  if (!deleteAccAuth) {
+    console.log("Deletion error")
+    return res.status(400).send()
+  }
+
+  // Delete user from Firestore
   try {
     const snapshot = await db
       .collection("users")
       .where("email", "==", email)
-      .get();
-    if (snapshot.empty) {
-      console.log("Email not found in database");
-      res.status(404).send();
-      return;
-    }
-
-    const userData = snapshot.docs[0].data();
-    // send request to firebase to automate email and customise email automation
-    const customUserToken = await fireAuth.createCustomToken(email);
-    const subject = "reset your password lad";
-    const emailContent = `
-      <p>Click <a href="../reset-password?token=${customUserToken}"> here </a> to reset your password</p>
-    `;
-
-    sendEmail(email, subject, emailContent)
-      .then(() => {
-        console.log("Email sent successfully");
-      })
-      .catch((error) => {
-        console.error("Failed to send email:", error);
-      });
+      .get()
+    snapshot.forEach((doc) => doc.ref.delete())
+    res.status(200).send()
   } catch (error) {
-    console.log("god help us ", error);
-    res.status(500).send();
-    return;
+    console.log(error)
+    res.status(400).send()
   }
-});
+})
 
-// app.post("/create-listing", async (req, res) => {
-//   const listing = {
-//     "title": req.body.,
-//     "description": req.body.,
-//     "modules": req.body.,
-//     "location": req.body,
-//     "date": ,
-//     "frequency":
-//   };
+// middleware to extract token from cookie and verify it before use
+// const verifyIdToken = async (req, res, next) => {
+//   const idToken = req.cookies.idToken;
+
+//   if (!idToken) {
+//     return res.status(401).send("Unauthorised");
+//   }
 
 //   try {
-//     await fireAuth.createUser({
-//       email: user.email,
-//       emailVerified: true,
-//       password: user.password,
-//       displayName: user.fullName,
-//       disabled: false,
-//     }).then(async () => {
-//       await db.collection("users").add(user).then(() => {
-//         console.log("Listing successfully created")
-//         res.send(200)
-//       })
-//     })
+//     const decodedToken = await fireAuth.verifyIdToken(idToken);
+//     const userId = decodedToken.uid;
+//     const email = decodedToken.email;
+
+//     // we will attach the user object to the req object to be passed around
+//     req.user = { userId, email }
+//     next();
 //   } catch (error) {
-//     console.error("Error occurred while saving data to Firebase: ", error);
-//     res.status(500)
-//     return
+//     console.log('Failed to verify idToken:', error);
+//     res.status(401).send('Unauthorized');
 //   }
-// });
+// }
 
-const port = 5000;
+// Get the data of the specific user to be displayed in the profile page
+// app.get("/profile-page", verifyIdToken, async (req, res) => {
+//   try {
+//     const uid = req.user.userId;
+//     const snapshot = await db.collection("users").doc(uid).get();
 
-app.listen(port, () => console.log("Listening on " + port));
+//     if (!snapshot.exists) {
+//       console.log("no data found regarding particular user");
+//       res.status(404).send();
+//       return;
+//     }
+
+//     const userData = snapshot.data()
+//     console.log("i successfully sent the data");
+//     res.send(userData);
+//   } catch (error) {
+//     console.log("no data for you");
+//     res.status(500).send();
+//   }
+// })
+
+app.post("/get-profile", async (req, res) => {
+  const { uid } = req.body
+  if (uid == "") res.status(400).json({}).send()
+  const docRef = await db.collection("users").doc(uid).get()
+  if (docRef.exists) {
+    const userData = docRef.data()
+    res.status(200).json(userData).send()
+  } else {
+    res.status(400).json({}).send()
+  }
+})
+
+// Update the database when the user modifies a field in the profile page
+app.post("/update-profile", async (req, res) => {
+  try {
+    const { uid, fieldToUpdate, value } = req.body
+    await db
+      .collection("users")
+      .doc(uid)
+      .update({ [fieldToUpdate]: value })
+    res.status(200).send()
+  } catch (error) {
+    console.log("cannot update")
+    res.status(500).send()
+  }
+})
+
+app.post("/sign-out", async (req, res) => {
+  const { uid } = req.body
+  const userRef = await db.collection("users").doc(uid).get()
+  if (!userRef.exists) {
+    res.status(400).send()
+    return
+  }
+  const user = userRef.data()
+  const email = user.email
+  const authUser = await fireAuth.getUserByEmail(email).then((auth) => auth.uid)
+  // forces users to sign out from all devices
+  await fireAuth
+    .revokeRefreshTokens(authUser)
+    .then(() => {
+      console.log("Sign out successful")
+      res.status(200).send()
+    })
+    .catch((error) => {
+      console.log("Sign out unsuccessful")
+      res.status(500).send()
+    })
+})
+
+// API Endpoint to create listing
+app.post("/create-listing", async (req, res) => {
+  const createListingRes = await createListing(req.body.userID, req.body)
+  if (createListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post("/get-listings", async (req, res) => {
+  const results = await getListings()
+  if (results.length > 0) {
+    res.json(results).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.delete("/delete-listing", async (req, res) => {
+  const { userID, listingUID } = req.body
+  const deleteListingRes = await deleteListing(userID, listingUID)
+  if (deleteListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post("/get-dashboard-listings", async (req, res) => {
+  const { userID } = req.query
+  const likedListings = getLikedListings(userID)
+  const createdListings = getCreatedListings(userID)
+  const results = await Promise.all([likedListings, createdListings])
+  // console.log(results)
+  return res.json(results).send()
+})
+
+const port = 5000
+
+app.listen(port, () => console.log("Listening on " + port))
