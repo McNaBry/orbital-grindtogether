@@ -1,3 +1,6 @@
+"use client"
+
+import { Card } from "react-bootstrap"
 import aboutStyles from "./about.module.css"
 
 interface ImageData {
@@ -67,7 +70,12 @@ function TechLogoBar() {
     );
   });
 
-  return <div className={aboutStyles["tech-container"]}>{logos}</div>;
+  return (
+    <div className={aboutStyles["tech-container"]}>
+      <Card id={aboutStyles["tech-card"]}>{logos}
+      </Card>
+    </div>
+  );
 }
 
 export default function TechStack() {
