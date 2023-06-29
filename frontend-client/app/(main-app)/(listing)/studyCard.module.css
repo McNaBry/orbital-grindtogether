@@ -44,8 +44,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  color: #ed2553;
+  background-color: #ed2553;
+  color: white;
   border-radius: 5px;
   border: none;
   width: fit-content;
@@ -55,7 +55,7 @@
 }
 
 .like-active {
-  background-color: #ed2553;
+  background-color: #af69ed;
   color: white;
 }
 
