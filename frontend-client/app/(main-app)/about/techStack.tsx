@@ -18,13 +18,13 @@ function TechLogo({ imgLink, imgAlt, imgID, webLink }: ImageData) {
 
 function TechLogoBar() {
   const imgData = [
-    [
-      "images/html5-logo.png",
-      "HTML 5",
-      "html-logo",
-      "https://developer.mozilla.org/en-US/docs/Web/HTML",
-    ],
     ["images/react-logo.png", "React JS", "react-logo", "https://reactjs.org"],
+    [
+      "images/nextjs-logo.svg",
+      "Next JS",
+      "nextjs-logo",
+      "https://vercel.com/solutions/nextjs",
+    ],
     [
       "images/bootstrap-logo.png",
       "BootStrap 5",
@@ -38,13 +38,11 @@ function TechLogoBar() {
       "https://nodejs.org/en/about",
     ],
     [
-      "images/nextjs-logo.png",
-      "Next JS",
-      "nextjs-logo",
-      "https://vercel.com/solutions/nextjs",
+      "images/expressjs-logo.png", "Express JS", "expressjs-logo", "https://expressjs.com/",
     ],
+    
     [
-      "images/firebase-logo.png",
+      "images/firebase-logo.svg",
       "Firebase",
       "firebase-logo",
       "https://firebase.google.com/",

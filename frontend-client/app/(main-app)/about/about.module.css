@@ -4,7 +4,7 @@
 }
 
 #about-bg {
-  background-image: url("../../public/images/about-background.gif");
+  background-image: url("/images/about-background.gif");
   background-size: cover;
   background-repeat: no-repeat;
   width: 100vw;
