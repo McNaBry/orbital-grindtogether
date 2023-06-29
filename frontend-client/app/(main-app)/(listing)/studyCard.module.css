@@ -47,7 +47,7 @@
   background-color: #ed2553;
   color: white;
   border-radius: 5px;
-  border: none;
+  border: 1px solid #ed2553;
   width: fit-content;
   height: fit-content;
   margin-right: 4px;

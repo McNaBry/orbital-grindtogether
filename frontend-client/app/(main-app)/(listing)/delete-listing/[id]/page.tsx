@@ -52,7 +52,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
       setMsg("User ID not found. Please sign in.")
     }
 
-    const deleteListingRes = await fetch("http://localhost:5000/delete-listing", {
+    const deleteListingRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-listing`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',

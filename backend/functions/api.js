@@ -1,16 +1,11 @@
-// Firebase REST API: https://firebase.google.com/docs/reference/rest/auth
-
-require("dotenv").config()
+// require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
 const serverless = require("serverless-http")
-// const nodemailer = require("nodemailer");
-// const cookieParser = require("cookie-parser");
-// const Cookies = require('universal-cookie')
 
-const app = express()
-const { db, fireAuth } = require("./firebase")
+const api = express()
+const { db, fireAuth } = require("../firebase")
 const {
   signInUser,
   createAccount,
@@ -18,7 +13,7 @@ const {
   sendResetLink,
   validateOob,
   validateToken,
-} = require("./authentication")
+} = require("../authentication")
 const {
   getListing,
   getListings,
@@ -27,11 +22,11 @@ const {
   deleteListing,
   getLikedListings,
   getCreatedListings,
-} = require("./listingDb")
+} = require("../listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
+const app = express.Router()
 
-//app.use(cookieParser());
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // To parse form data
@@ -160,49 +155,6 @@ app.delete("/delete-account", async (req, res) => {
   }
 })
 
-// middleware to extract token from cookie and verify it before use
-// const verifyIdToken = async (req, res, next) => {
-//   const idToken = req.cookies.idToken;
-
-//   if (!idToken) {
-//     return res.status(401).send("Unauthorised");
-//   }
-
-//   try {
-//     const decodedToken = await fireAuth.verifyIdToken(idToken);
-//     const userId = decodedToken.uid;
-//     const email = decodedToken.email;
-
-//     // we will attach the user object to the req object to be passed around
-//     req.user = { userId, email }
-//     next();
-//   } catch (error) {
-//     console.log('Failed to verify idToken:', error);
-//     res.status(401).send('Unauthorized');
-//   }
-// }
-
-// Get the data of the specific user to be displayed in the profile page
-// app.get("/profile-page", verifyIdToken, async (req, res) => {
-//   try {
-//     const uid = req.user.userId;
-//     const snapshot = await db.collection("users").doc(uid).get();
-
-//     if (!snapshot.exists) {
-//       console.log("no data found regarding particular user");
-//       res.status(404).send();
-//       return;
-//     }
-
-//     const userData = snapshot.data()
-//     console.log("i successfully sent the data");
-//     res.send(userData);
-//   } catch (error) {
-//     console.log("no data for you");
-//     res.status(500).send();
-//   }
-// })
-
 app.post("/get-profile", async (req, res) => {
   const { uid } = req.body
   if (uid == "") res.status(400).json({}).send()
@@ -291,6 +243,6 @@ app.post("/get-dashboard-listings", async (req, res) => {
   return res.json(results).send()
 })
 
-const port = 5000
+api.use('/api', app);
 
-app.listen(port, () => console.log("Listening on " + port))
+export const handler = serverless(api);

@@ -72,7 +72,7 @@ export default function Dashboard() {
     return await fetch(url + `?userID=${userID}`, { method: "POST" }).then(res => res.json())
   }
 
-  const { data, isLoading, error } = useSWR(`http://localhost:5000/get-dashboard-listings`, 
+  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/get-dashboard-listings`, 
     fetcher,  {
       revalidateIfStale: false,
       revalidateOnFocus: false,

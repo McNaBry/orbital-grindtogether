@@ -70,7 +70,7 @@ async function validateUser(tokenID: string | null) {
   // By right, this request should be send to a proxy API using Next.js
   // This will allow us to access httpOnly cookies and is more secure
   // However, for now this will do.
-  const res = await fetch("http://localhost:5000/validate-token", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-token`, {
     method: 'POST',
     headers : {
       "Content-Type": "application/json",

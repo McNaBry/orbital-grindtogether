@@ -31,17 +31,23 @@ function AbortDelete() {
   );
 }
 
-function SuccessDialog(props) {
+type ModalProps = {
+  show: boolean,
+  onHide: () => void
+}
+
+function SuccessDialog({ show, onHide } : ModalProps) {
   const router = useRouter();
 
   const handleClose = () => {
     router.push("/");
-    props.onHide();
+    onHide();
   }
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -52,7 +58,7 @@ function SuccessDialog(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4> Don't worry, all your data have also been deleted. </h4>
+        <h4> Don&apos;t worry, all your data have also been deleted. </h4>
         <p>
           We are sorry to see you go... See you soon!
         </p>
@@ -84,7 +90,7 @@ function DeleteAccountPage() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const res = await fetch('http://localhost:5000/delete-account', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
