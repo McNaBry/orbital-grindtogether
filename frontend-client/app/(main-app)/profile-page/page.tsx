@@ -74,21 +74,23 @@ function ProfilePage() {
         const data = await response.json()
         setFields(data)
 
-        // Fetch the profile page picture separately
-        const profilePicResponse = await fetch(
-          "http://localhost:5000/get-profile-pic",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
-          }
-        )
+        setProfilePic(data.profilePic)
 
-        // server sends the URL of the profile picture if it does exist
-        const profileData = await profilePicResponse.json()
-        setProfilePic(profileData.profilePic || "")
+        // // Fetch the profile page picture separately
+        // const profilePicResponse = await fetch(
+        //   "http://localhost:5000/get-profile-pic",
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
+        //   }
+        // )
+
+        // // server sends the URL of the profile picture if it does exist
+        // const profileData = await profilePicResponse.json()
+        // setProfilePic(profileData.profilePic || "")
       } catch (error) {
         console.log("user not found")
       }

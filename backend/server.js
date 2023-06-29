@@ -206,9 +206,23 @@ app.delete("/delete-account", async (req, res) => {
 app.post("/get-profile", async (req, res) => {
   const { uid } = req.body
   if (uid == "") res.status(400).json({}).send()
+
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
-    const userData = docRef.data()
+    let userData = docRef.data()
+    // Sets a file object to point to the user's profile pic in Firebase Storage
+    const file = bucket.file("firebase-logo.png")
+    // Retrieve the download URL for frontend to fetch from
+    const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
+    const signedUrl = await file.getSignedUrl({
+      action: 'read',
+      expires: expiresAtMs,
+    });
+    console.log(signedUrl)
+    userData = {
+      ...userData,
+      profilePic: signedUrl
+    }
     res.status(200).json(userData).send()
   } else {
     res.status(400).json({}).send()
@@ -228,19 +242,6 @@ app.post("/update-profile", async (req, res) => {
     console.log("cannot update")
     res.status(500).send()
   }
-})
-
-app.post("/get-profile-pic", async (req, res) => {
-  const { uid } = req.body
-
-  if (!uid) {
-    console.log("No user ID detected")
-    res.status(400).send()
-    return 
-  }
-
-  // const fileName = 
-  
 })
 
 app.post("/upload-profile-pic", async (req, res) => {
