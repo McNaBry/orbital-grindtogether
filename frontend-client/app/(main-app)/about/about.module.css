@@ -1,0 +1,163 @@
+#about-page {
+  width: 100%;
+  height: 100%;
+}
+
+#about-bg {
+  background-image: 
+    linear-gradient(to top, transparent, rgba(35, 32, 32, 0.2), rgba(0, 0, 0, 0.8)),
+    url("/images/about-background.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+}
+
+#about-header {
+  font-weight: bold;
+  font-size: 50px;
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  color: #D7D7D7;
+}
+
+.header {
+  font-weight: bold;
+  font-size: 40px;
+}
+
+/* CSS styling for Brains Component */
+
+#brains-container {
+  text-align: center;
+  margin: 20px;
+}
+
+#brains-header {
+  color: #A45EE5;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+#creators-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.brains-card {
+  margin: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px; 
+  border: none;
+}
+
+.brains-card-title {
+  color: #AF69EF;
+  font-weight: bold;
+}
+
+.brains-card-text {
+  font-size: 16px;
+  text-align: left;
+}
+
+/* CSS Styling for Tech Stack */
+
+.tech-stacks {
+  text-align: center;
+}
+
+.tech-header {
+  font-family: 'Dale Adventure', sans-serif;
+  font-size: 50px;
+  color: rgb(135, 162, 235);
+  margin-bottom: 0px;
+}
+
+.tech-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 32px;
+}
+
+#tech-card {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px 10px 10px;
+  width: fit-content;
+}
+
+#react-logo {
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* CSS Styling for Mission Component */
+
+.mission {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  margin: 50px;
+  color: #A45EE5;
+}
+
+.mission-text {
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #D7D7D7
+}
+
+/* CSS Styling for Motivation */
+
+#motivation-container {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  margin: 50px;
+}
+
+#motivation-pic {
+  margin: 0rem 0rem 1rem 0rem;
+  width: 720px;
+  max-width: 1200px;
+  height: auto;
+}
+
+#motivation-header {
+  text-align: center;
+  color: #AF69EF;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+#motivation-text-container {
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#motivation-text-container * {
+  word-wrap: normal;
+  color: #D7D7D7;
+}
