@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from "react"
 import Password from "../password"
 import Email from "../email"
-import "./signin.css"
+import styles from "./signin.module.css"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import CreateStatus from "../createStatus"
@@ -11,12 +11,12 @@ import { useAuth } from '../../authProvider'
 // import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 function WelcomeBack() {
-  return <h2 className="welcome-back"> Welcome Back! </h2>;
+  return <h2 id={styles["welcome-back"]}> Welcome Back! </h2>;
 }
 
 function Login() {
   return (
-    <button type="submit" className="btn mb-3" id="login">
+    <button type="submit" className="btn mb-3" id={styles["login"]}>
       Login
     </button>
   );
@@ -24,10 +24,12 @@ function Login() {
 
 function NoAccount() {
   return (
-    <p>
+    <p style={{color: "white"}}>
       {" "}
       Don&#39;t have an account?{" "}
-      <Link className="sign-up-link" href="sign-up">
+      <Link 
+        className={styles["sign-up-link"]}
+        href="sign-up">
         Sign up
       </Link>
     </p>
@@ -36,8 +38,11 @@ function NoAccount() {
 
 function ForgetPassword() {
   return (
-    <p>
-      Forgot your password? <Link className = "reset-password-link" href = "input-email-for-reset"> Reset </Link>
+    <p style={{color: "white"}}>
+      Forgot your password? 
+      <Link 
+        className={styles["reset-password-link"]} 
+        href = "input-email-for-reset"> Reset </Link>
     </p>
   )
 }
@@ -105,9 +110,9 @@ function SignInPage() {
   };
 
   return (
-    <div className="signinpage row">
-      <div className="left-half col-1 col-md-6"/>
-      <div className="right-half col-10 col-md-5">
+    <div className={"row " + styles["sign-in-page"]}>
+      <div className={styles["left-half"] + " col-1 col-md-6"}/>
+      <div className={styles["right-half"] + " col-10 col-md-5"}>
         <form onSubmit = {submitForm}>
           <WelcomeBack />
           <Email />
