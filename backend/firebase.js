@@ -7,7 +7,7 @@ const serviceAccount = require("./grindtogether-a123b-firebase-adminsdk-r5k9c-ab
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://grindtogether-a123b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  storageBucket: "gs://grindtogether-a123b.appspot.com"
+  storageBucket: "grindtogether-a123b.appspot.com"
 });
 
 const db = getFirestore();

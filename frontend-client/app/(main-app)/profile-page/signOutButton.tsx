@@ -32,18 +32,16 @@ function SignOutButton() {
   };
 
   return (
-    <div>
-      <button type="submit" className="btn mb-3" id="logout" onClick = {handleSignOut}>
-        <Image
-          width={20}
-          height={20}
-          src={logoutIcon}
-          style={{ marginRight: "5px" }}
-          alt="Log out"
-        />
-        Logout
-      </button>
-    </div>
+    <button type="submit" className="btn mb-3" id="logout" onClick = {handleSignOut}>
+      <Image
+        width={20}
+        height={20}
+        src={logoutIcon}
+        style={{ marginRight: "5px" }}
+        alt="Log out"
+      />
+      Logout
+    </button>
   );
 }
 

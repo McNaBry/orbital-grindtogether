@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useAuth } from "../../authProvider"
 import { profile } from "console"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 const deleteAccountIcon = "/images/delete-account.png"
 
@@ -23,7 +24,7 @@ function NoProfilePic() {
   return <div className="no-profile-pic"></div>
 }
 
-function ProfilePic({ profilePic }) {
+function ProfilePic({ profilePic }: {profilePic: string}) {
   return (
     <div className="profile-pic">
       {profilePic ? <img src={profilePic}></img> : <NoProfilePic />}
@@ -38,6 +39,7 @@ function NameCard({ name }: { name: string }) {
     </NonEditableCard>
   )
 }
+
 function EmailCard({ email }: { email: string }) {
   return (
     <NonEditableCard title="Email">
@@ -46,8 +48,30 @@ function EmailCard({ email }: { email: string }) {
   )
 }
 
-function ProfilePage() {
+  // This button is different from the one in delete-account; it just redirects to the page
+  function DeleteAccount({ email, router } : { email: string, router: AppRouterInstance}) {
+    const onClick = () => {
+      router.push(`/delete-account?email=${email}`)
+    }
+
+    return (
+      <button id="profile-delete-account" className="btn mb-3" onClick={onClick}>
+        <Image
+          width={20}
+          height={20}
+          src={deleteAccountIcon}
+          style={{ marginRight: "5px" }}
+          alt="Delete Account"
+        />
+        Delete Account
+      </button>
+    )
+  }
+
+export default function ProfilePage() {
   const auth = useAuth()
+  const router = useRouter()
+
   const [fields, setFields] = useState({
     email: "",
     fullName: "",
@@ -73,24 +97,7 @@ function ProfilePage() {
         })
         const data = await response.json()
         setFields(data)
-
-        setProfilePic(data.profilePic)
-
-        // // Fetch the profile page picture separately
-        // const profilePicResponse = await fetch(
-        //   "http://localhost:5000/get-profile-pic",
-        //   {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
-        //   }
-        // )
-
-        // // server sends the URL of the profile picture if it does exist
-        // const profileData = await profilePicResponse.json()
-        // setProfilePic(profileData.profilePic || "")
+        setProfilePic(data.profilePic || "")
       } catch (error) {
         console.log("user not found")
       }
@@ -99,30 +106,9 @@ function ProfilePage() {
     fetchData()
   }, [])
 
-  // this button is different from the one in delete-account; it just redirects to the page
-  function DeleteAccount() {
-    const router = useRouter()
-    const onClick = () => {
-      router.push(`/delete-account?email=${fields.email}`)
-    }
-
-    return (
-      <button id="profile-delete-account" onClick={onClick}>
-        <Image
-          width={20}
-          height={20}
-          src={deleteAccountIcon}
-          style={{ marginRight: "5px" }}
-          alt="Delete Account"
-        />
-        Delete Account
-      </button>
-    )
-  }
-
   // Function to handle change on the Editable Card.
   // Triggered by save changes button.
-  const handleFieldChange = ({
+  const handleFieldChange = async ({
     fieldToUpdate,
     value,
   }: {
@@ -132,9 +118,7 @@ function ProfilePage() {
     // immediately update the state
     setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }))
 
-    const updatedProfileData = { [fieldToUpdate]: value }
-
-    fetch("http://localhost:5000/update-profile", {
+    const uploadRes = await fetch("http://localhost:5000/update-profile", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -145,6 +129,10 @@ function ProfilePage() {
         value: value,
       }),
     })
+
+    if (uploadRes.status == 200) {
+      console.log("Update successful")
+    }
   }
 
   const handleProfilePicUpload = async (
@@ -157,13 +145,14 @@ function ProfilePage() {
     if (file) {
       const generatedURL = URL.createObjectURL(file)
       setProfilePic(generatedURL)
+      console.log(generatedURL)
 
       const formData = new FormData()
       formData.append("uid", userId)
       formData.append("profilePic", file)
 
       try {
-        await fetch("/upload-profile-pic", {
+        await fetch("http://localhost:5000/upload-profile-pic", {
           method: "POST",
           body: formData,
         })
@@ -212,12 +201,13 @@ function ProfilePage() {
         }
       />
       <RatingCard rating={fields.rating} />
-      <div className="button-containers">
+      <div className="button-container">
         <SignOutButton />
-        <DeleteAccount />
+        <DeleteAccount 
+          email={fields.email}
+          router={router}
+        />
       </div>
     </div>
   )
 }
-
-export default ProfilePage

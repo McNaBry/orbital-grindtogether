@@ -4,11 +4,11 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
+const multer = require("multer")
 // const nodemailer = require("nodemailer");
 // const cookieParser = require("cookie-parser");
 // const Cookies = require('universal-cookie')
 
-const app = express()
 const { db, fireAuth, storage, bucket } = require("./firebase")
 const {
   signInUser,
@@ -30,6 +30,8 @@ const {
 
 const apiKey = process.env.FIREBASE_API_KEY
 
+const app = express()
+const upload = multer({ storage: multer.memoryStorage() }) // Handling file transfers
 //app.use(cookieParser());
 app.use(cors())
 app.use(express.json())
@@ -211,19 +213,38 @@ app.post("/get-profile", async (req, res) => {
   if (docRef.exists) {
     let userData = docRef.data()
     // Sets a file object to point to the user's profile pic in Firebase Storage
-    const file = bucket.file("firebase-logo.png")
-    // Retrieve the download URL for frontend to fetch from
-    const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
-    const signedUrl = await file.getSignedUrl({
-      action: 'read',
-      expires: expiresAtMs,
-    });
-    console.log(signedUrl)
-    userData = {
-      ...userData,
-      profilePic: signedUrl
-    }
-    res.status(200).json(userData).send()
+    const file = bucket.file(`${uid}.png`)
+    // Check if file exists
+    file.exists()
+      .then(async ([exists]) => {
+        if (exists) {
+          console.log("Profile pic exists. Retrieving signed URL...")
+          // Retrieve the download URL for frontend to fetch from
+          const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
+          const signedUrl = await file.getSignedUrl({
+            action: 'read',
+            expires: expiresAtMs,
+          });
+          // console.log(signedUrl)
+          userData = {
+            ...userData,
+            profilePic: signedUrl
+          }
+          res.status(200).json(userData).send()
+        } else {
+          console.log("Profile pic does not exist")
+          userData = {
+            ...userData,
+            profilePic: ""
+          }
+          res.status(200).json(userData).send()
+        }
+      })
+      .catch(error => {
+        console.log("Error checking if file exists:\n")
+        console.log(error)
+        res.status(400).send()
+      })
   } else {
     res.status(400).json({}).send()
   }
@@ -244,15 +265,15 @@ app.post("/update-profile", async (req, res) => {
   }
 })
 
-app.post("/upload-profile-pic", async (req, res) => {
-  const { uid } = req.body
+app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
+  const uid = req.body.uid
   if (!uid) {
     console.log("No user ID detected")
     res.status(400).send()
     return 
   }
 
-  const file = req.files && req.files.profilePic
+  const file = req.file
   if (!file) {
     console.log("No file detected")
     res.status(400).send()
@@ -260,13 +281,28 @@ app.post("/upload-profile-pic", async (req, res) => {
   }
 
   try {
-    const storageRef = storage.ref()
-    const profilePicRef = storageRef.child("profile-pics/${uid}")
-    await profilePicRef.put(file)
-    console.log("successfully uploaded profile pic")
-    res.status(200).send()
+    const fileRef = bucket.file(`${uid}.png`)
+    const uploadStream = fileRef.createWriteStream({
+      metadata: {
+        contentType: file.mimetype
+      }
+    })
+    
+    uploadStream.on('error', (error) => {
+      console.error('Error uploading file:', error);
+      res.status(500).json({ error: 'Error uploading file' });
+    })
+    uploadStream.on('finish', () => {
+      console.log('File uploaded successfully');
+      res.status(200).json({ message: 'File uploaded successfully' });
+    })
+  
+    // Pipe the file stream from Multer to the write stream
+    // end basically allows one last write before it closes the stream
+    uploadStream.end(file.buffer)
   } catch (error) {
-    console.log("no profile pic uploaded")
+    console.log("Profile Pic Upload Error:\n")
+    console.log(error)
     res.status(500).send()
   }
 })
