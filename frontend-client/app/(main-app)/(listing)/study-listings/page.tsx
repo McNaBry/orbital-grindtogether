@@ -5,6 +5,8 @@ import { Option } from "../create-listing/select"
 import StudyListings from "./studyListings"
 import FilterPanel from "./filterPanel"
 import ListingPageControl from "./listingPageControl"
+import SortOptionsButton from "./sortOptionsButton"
+import SortDirectionButton from "./sortDirectionButton"
 import useSWR from 'swr'
 import { ActionMeta } from "react-select"
 import { testData } from "./data"
@@ -58,6 +60,8 @@ export default function ListingsPage() {
           data={error ? testData : (isLoading ? testData : data)}
           variant="display" />
         <FilterPanel handleChange={handleMultipleOptionChange} />
+        <SortOptionsButton />
+        <SortDirectionButton />
       </Row>
       <ListingPageControl page={page} setPage={setPage} />
     </Container>
