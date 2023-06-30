@@ -1,7 +1,6 @@
 import SortDropdownButton from "./sortDropdownButton"
 
 function SortOptionsButton() {
-
   const handleOptionSelect = (option: string) => {
     
   }
