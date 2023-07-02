@@ -1,18 +1,14 @@
 import SortDropdownButton from "./sortDropdownButton"
 
-function SortOptionsButton() {
-  const handleOptionSelect = (option: string) => {
-    
-  }
-
+function SortOptionsButton({handleOptionSelect}) {
   const optionsList = [
-    "Sort by date when study session takes place",
-    "Sort by date when study listing was created"
+    {label : "Sort by date when study session takes place"},
+    {label: "Sort by date when study listing was created"}
   ]
 
   return (
     <SortDropdownButton
-      optionsList={optionsList}
+      optionsList={optionsList.map((option) => option.label)}
       handleOptionSelect={handleOptionSelect}
       title="Sort by"
     />

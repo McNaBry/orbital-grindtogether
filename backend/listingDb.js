@@ -28,7 +28,8 @@ async function createListing(userID, data) {
     date : data.date,
     freq : data.freq,
     interest: 0,
-    likes: []
+    likes: [],
+    createdListingDate: data.dateCreatedListing
   }
   const docRef = await db.collection("listings").add(listing)
   console.log("New listing added with ID:", docRef.id)
@@ -68,7 +69,7 @@ async function processListings(listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Annonymous" : userData.fullName
+      createdBy: !user.exists ? "Anonymous" : userData.fullName
     }
     results.push(docData)
   }

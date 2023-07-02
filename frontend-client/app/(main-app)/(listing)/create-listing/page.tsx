@@ -155,7 +155,8 @@ export default function CreateListing() {
       },
       body: JSON.stringify({
         ...demoOptions,
-        userID: userID // For testing
+        userID: userID, // For testing
+        createdListingDate: new Date()
       }),
     })
     .then(async data => {
