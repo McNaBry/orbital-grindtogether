@@ -24,6 +24,7 @@ const {
   createListing,
   updateListing,
   deleteListing,
+  likeListing,
   getLikedListings,
   getCreatedListings,
 } = require("./listingDb")
@@ -366,6 +367,19 @@ app.post("/get-dashboard-listings", async (req, res) => {
   const results = await Promise.all([likedListings, createdListings])
   // console.log(results)
   return res.json(results).send()
+})
+
+app.post("/like-listing", async (req, res) => {
+  const { userID, listingUID, action } = req.body
+  if (action != "like" && action != "unlike") {
+    res.status(500).json({ error: "Invalid action" }).send()
+  }
+  const likeListingRes = await likeListing(userID, listingUID, action)
+  if (likeListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
 })
 
 const port = 5000
