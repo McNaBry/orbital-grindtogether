@@ -229,6 +229,19 @@ app.post("/update-profile", async (req, res) => {
   }
 })
 
+// Update the database when the user clicks on the switch 
+app.post("/update-opt-in-status", async (req, res) => {
+  try {
+    const {uid, optInStatus} = req.body
+    console.log(optInStatus)
+    await db.collection("users").doc(uid).update({["optInStatus"]: optInStatus})
+    res.status(200).send()
+  } catch (error) {
+    console.log("opt in status is not updated")
+    res.status(500).send()
+  }
+})
+
 app.post("/sign-out", async (req, res) => {
   const { uid } = req.body
   const userRef = await db.collection("users").doc(uid).get()

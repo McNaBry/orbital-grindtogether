@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
+import Form from "react-bootstrap/Form"
 import "./profilepage.css"
 import "./nonEditableCard"
 import NonEditableCard from "./nonEditableCard"
@@ -11,7 +12,7 @@ import LikeButton from "../(listing)/likeButton"
 import { useAuth } from "../../authProvider"
 
 function EditProfile() {
-  return <h1 style={{color: "white"}}> Profile Page </h1>;
+  return <h1 style={{ color: "white" }}> Profile Page </h1>
 }
 
 function UploadProfilePic() {
@@ -29,11 +30,11 @@ function UploadProfilePic() {
         />
       </label>
     </div>
-  );
+  )
 }
 
 function ProfilePic() {
-  return <div className="profile-pic"></div>;
+  return <div className="profile-pic"></div>
 }
 
 function NameCard({ name }: { name: string }) {
@@ -41,14 +42,51 @@ function NameCard({ name }: { name: string }) {
     <NonEditableCard title="Full Name">
       <p className="card-text"> {name} </p>
     </NonEditableCard>
-  );
+  )
 }
+
 function EmailCard({ email }: { email: string }) {
   return (
     <NonEditableCard title="Email">
       <p className="card-text"> {email} </p>
     </NonEditableCard>
-  );
+  )
+}
+
+function OptInForListings({ optInStatus }: { optInStatus: boolean }) {
+  const [optIn, setOptIn] = useState(optInStatus)
+
+  // everytime user clicks it will update the server
+  const handleClick = async (event: ChangeEvent<HTMLInputElement>) => {
+    setOptIn(!optIn)
+
+    fetch("http://localhost:5000/update-opt-in-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uid: window.localStorage.getItem("uid"),
+        optInStatus: !optIn
+      }),
+    })
+  }
+
+  const inOrOut = optIn ? "in" : "out"
+  const switchText = `Opt ${inOrOut} to receive email notifications whenever a listing is created.`
+
+  return (
+    <Form>
+      <Form.Check
+        type="switch"
+        id="custom-switch"
+        label={switchText}
+        checked={optIn}
+        onChange={handleClick}
+        className="opt-in-switch"
+      />
+    </Form>
+  )
 }
 
 function ProfilePage() {
@@ -61,6 +99,7 @@ function ProfilePage() {
     course: "",
     telegramHandle: "@",
     rating: 0,
+    optInStatus: false
   })
 
   // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
@@ -69,16 +108,16 @@ function ProfilePage() {
       try {
         console.log(auth.user.uid)
         const response = await fetch("http://localhost:5000/get-profile", {
-          method: 'POST',
-          headers : {
+          method: "POST",
+          headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({uid: window.localStorage.getItem("uid")})
+          body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
         })
         const data = await response.json()
         setFields(data)
       } catch (error) {
-        console.log("user not found")
+        console.log("User not found.")
       }
     }
 
@@ -104,11 +143,11 @@ function ProfilePage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body : JSON.stringify({
-        uid: window.localStorage.getItem('uid'),
+      body: JSON.stringify({
+        uid: window.localStorage.getItem("uid"),
         fieldToUpdate: fieldToUpdate,
-        value: value
-      })
+        value: value,
+      }),
     })
   }
 
@@ -151,6 +190,7 @@ function ProfilePage() {
       />
       <RatingCard rating={fields.rating} />
       <SignOutButton />
+      <OptInForListings optInStatus = {fields.optInStatus}/>
     </div>
   )
 }

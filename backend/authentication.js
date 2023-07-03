@@ -29,7 +29,8 @@ async function createAccount(data) {
     year: 0,
     rating: 0,
     listings: [],
-    likes: []
+    likes: [],
+    optInStatus: false
   }
 
   /*
