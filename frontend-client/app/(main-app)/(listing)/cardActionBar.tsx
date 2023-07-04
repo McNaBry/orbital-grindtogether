@@ -1,11 +1,10 @@
-import { useRouter } from "next/navigation"
 import LikeButton from "./likeButton"
 import cardStyles from "./studyCard.module.css"
 import { StudyListing } from "./studyCard"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
-function DeleteButton({ listingData } : { listingData: StudyListing }) {
-  const router = useRouter()
-  let flattenedData = {
+function listingToURLParam(listingData: StudyListing) {
+  const flattenedData = {
     ...listingData,
     tags: [
       "modules," + listingData.tags.modules.join(","),
@@ -13,7 +12,13 @@ function DeleteButton({ listingData } : { listingData: StudyListing }) {
       "faculties," + listingData.tags.faculties.join(","),
     ].join("|")
   }
-  const query = new URLSearchParams(JSON.parse(JSON.stringify(flattenedData))).toString()
+  return new URLSearchParams(JSON.parse(JSON.stringify(flattenedData))).toString()
+}
+
+function DeleteButton(
+  { listingData, router } : 
+  { listingData: StudyListing, router: AppRouterInstance }) {
+  const query = listingToURLParam(listingData)
   return (
     <button 
       id={cardStyles["delete-button"]}
@@ -23,7 +28,10 @@ function DeleteButton({ listingData } : { listingData: StudyListing }) {
   )
 }
 
-function EditButton() {
+function EditButton(
+  { listingData, router } : 
+  { listingData: StudyListing, router: AppRouterInstance }) {
+  const query = listingToURLParam(listingData)
   return (
     <button id={cardStyles["edit-button"]}>
       <p>Edit</p>
@@ -36,7 +44,9 @@ function EditButton() {
   2. Modify. For modification only. No like button.
   3. Delete. For deletion. No buttons.
 */
-function CardActionBar({ variant, listingData } : { variant: string, listingData: StudyListing }) {
+function CardActionBar(
+  { variant, listingData, router } : 
+  { variant: string, listingData: StudyListing, router: AppRouterInstance }) {
   return (
     <small id={cardStyles["action-bar"]}>
       { variant == "display"
@@ -45,8 +55,8 @@ function CardActionBar({ variant, listingData } : { variant: string, listingData
       }
       { variant == "modify"
         ? <>
-            <EditButton />
-            <DeleteButton listingData={listingData}/>
+            <EditButton listingData={listingData} router={router} />
+            <DeleteButton listingData={listingData} router={router} />
           </>
         : <></>
       }

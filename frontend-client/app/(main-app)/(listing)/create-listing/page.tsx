@@ -182,7 +182,7 @@ export default function CreateListing() {
     <div id={styles["create-listing-container"]}>
       <h1 style={{color: "white"}}>Create Listing</h1>
       <div id={styles["demo-card-container"]}>
-        <StudyCard listingData={demoOptions} variant="demo" />
+        <StudyCard listingData={demoOptions} variant="demo" router={router}/>
       </div>
       <Form id={styles["options-container"]} onSubmit={handleSubmit}>
         <Container className={styles["options-subcontainer"]}>
