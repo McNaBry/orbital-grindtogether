@@ -33,7 +33,9 @@ function EditButton(
   { listingData: StudyListing, router: AppRouterInstance }) {
   const query = listingToURLParam(listingData)
   return (
-    <button id={cardStyles["edit-button"]}>
+    <button 
+      id={cardStyles["edit-button"]}
+      onClick={(event) => router.push(`/create-listing?edit=true&${query}`)}>
       <p>Edit</p>
     </button>
   )
