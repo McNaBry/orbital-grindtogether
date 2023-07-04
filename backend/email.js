@@ -1,3 +1,13 @@
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: "",
+        pass: ""
+    }
+})
+
 // async function sendEmail(to, subject, htmlContent) {
 //   try {
 //     // Create a transporter using SMTP settings
@@ -30,3 +40,5 @@
 //     throw error;
 //   }
 // }
+
+module.exports = transporter

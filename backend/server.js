@@ -27,6 +27,8 @@ const {
   getLikedListings,
   getCreatedListings,
 } = require("./listingDb")
+const { firestore } = require("firebase-admin")
+const { transporter } = require("./email")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
@@ -229,12 +231,15 @@ app.post("/update-profile", async (req, res) => {
   }
 })
 
-// Update the database when the user clicks on the switch 
+// Update the database when the user clicks on the switch
 app.post("/update-opt-in-status", async (req, res) => {
   try {
-    const {uid, optInStatus} = req.body
+    const { uid, optInStatus } = req.body
     console.log(optInStatus)
-    await db.collection("users").doc(uid).update({["optInStatus"]: optInStatus})
+    await db
+      .collection("users")
+      .doc(uid)
+      .update({ ["optInStatus"]: optInStatus })
     res.status(200).send()
   } catch (error) {
     console.log("opt in status is not updated")
@@ -269,7 +274,48 @@ app.post("/sign-out", async (req, res) => {
 app.post("/create-listing", async (req, res) => {
   const createListingRes = await createListing(req.body.userID, req.body)
   if (createListingRes) {
-    res.status(200).send()
+    // we will send an email to all users with optInStatus true
+    const users = await db.collection("users").where("optInStatus", "==", true).get()
+
+    if (users.docs.length > 0) {
+      const recipientsEmails = users.docs.map((doc) => doc.data().email)
+
+      const promises = recipientsEmails.map((email) => {
+        const emailOptions = {
+          from: "tzejie.c@gmail.com",
+          to: email,
+          subject: "sexy new listing dropped",
+          text: "Check out the new listing on GrindTogether!",
+        }
+
+        // return fireAuth.getUserByEmail(email).then(user => {
+        //   emailOptions.message.uid = user.uid
+        //   return firestore.collection("emailQueue").add(emailOptions)
+        // })
+
+        console.log(transporter)
+        return transporter
+          .sendMail(emailOptions)
+          .then(() => {
+            console.log(`email sent to ${email}`)
+            // we just store the email we sent out for now
+            return firestore.collection("emailQueue").add(emailOptions)
+          })
+          .catch((error) => {
+            console.error(`An error occurred when sending email to ${email}`)
+          })
+      })
+
+      Promise.all(promises)
+        .then(() => res.status(200).send())
+        .catch((error) => {
+          console.error("An error occurred when sending emails")
+          res.status(500).send()
+        })
+    } else {
+      console.log("No users with optInStatus true found.")
+      res.status(200).send()
+    }
   } else {
     res.status(400).send()
   }
