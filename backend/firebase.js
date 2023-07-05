@@ -1,5 +1,5 @@
 const admin = require('firebase-admin')
-const { getFirestore } = require('firebase-admin/firestore')
+const { getFirestore, FieldValue } = require('firebase-admin/firestore')
 const { getStorage } = require("firebase-admin/storage")
 
 const serviceAccount = require("./grindtogether-a123b-firebase-adminsdk-r5k9c-abc27d783a.json")
@@ -17,5 +17,8 @@ const storage = getStorage();
 const bucket = storage.bucket();
 
 module.exports = {
-  db, fireAuth, EmailAuthProvider, storage, bucket
+  db, 
+  fireAuth, FieldValue,
+  EmailAuthProvider, 
+  storage, bucket
 }
