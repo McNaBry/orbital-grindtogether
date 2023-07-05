@@ -35,8 +35,18 @@ async function createListing(userID, data) {
   return !docRef.empty
 }
 
-async function updateListing(userID, listingUID, fieldToUpdate, newValue) {
+async function updateListing(listingUID, data) {
   // TODO
+  const docRef = await db.collection("listings").doc(listingUID)
+  console.log(docRef)
+  try {
+    await docRef.update(data)
+    console.log("Successfully updated record")
+    return true
+  } catch (error) {
+    console.error("Error occurred when updating record", error)
+    return false
+  }
 }
 
 async function deleteListing(userID, listingUID) {

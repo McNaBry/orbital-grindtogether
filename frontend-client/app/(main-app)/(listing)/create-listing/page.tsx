@@ -73,7 +73,11 @@ export default function CreateListing({ searchParams } : any) {
       return
     }
     
-    await fetch('http://localhost:5000/create-listing', {
+    const endpoint = editMode ? 'http://localhost:5000/edit-listing' : 
+    'http://localhost:5000/create-listing'
+    const action = editMode ? "updated" : "created"
+
+    await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -86,12 +90,12 @@ export default function CreateListing({ searchParams } : any) {
     .then(async data => {
       if (!data.ok) {
         setSuccess(false)
-        setMsg("Sorry! Listing was not created successfully. Try again.")
+        setMsg(`Sorry! Listing was not ${action} successfully. Try again.`)
         return
       }
 
       setSuccess(true)
-      setMsg("Listing has been created! View it on your Dashboard or View Listings")
+      setMsg(`Listing has been ${action}! View it on your Dashboard or View Listings`)
       await new Promise(r => setTimeout(r, 2000))
       router.push("/dashboard")
 
@@ -116,7 +120,7 @@ export default function CreateListing({ searchParams } : any) {
           demoOptions={demoOptions}
           setDemoOptions={setDemoOptions}
         />
-        <Button variant="success" type="submit">Create Listing</Button>
+        <Button variant="success" type="submit">{editMode ? "Edit Listing" : "Create Listing"}</Button>
       </Form>
       <Notif msg={msg} success={success} />
     </div>

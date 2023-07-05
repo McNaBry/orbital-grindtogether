@@ -341,6 +341,15 @@ app.post("/create-listing", async (req, res) => {
   }
 })
 
+app.post("/edit-listing", async (req, res) => {
+  const editListingRes = await updateListing(req.body.id, req.body)
+  if (editListingRes) {
+    res.send(200).send()
+  } else {
+    res.send(400).send()
+  }
+})
+
 app.post("/get-listings", async (req, res) => {
   const results = await getListings()
   if (results.length > 0) {
