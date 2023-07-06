@@ -28,7 +28,7 @@ const {
   getCreatedListings,
 } = require("./listingDb")
 const { firestore } = require("firebase-admin")
-const { transporter } = require("./email")
+const { sendToReceivers } = require("./email")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
@@ -206,7 +206,7 @@ app.delete("/delete-account", async (req, res) => {
 
 app.post("/get-profile", async (req, res) => {
   const { uid } = req.body
-  if (uid == "") res.status(400).json({}).send()
+  if (!uid || uid == "") res.status(400).json({}).send()
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
     const userData = docRef.data()
@@ -275,7 +275,13 @@ app.post("/create-listing", async (req, res) => {
   const createListingRes = await createListing(req.body.userID, req.body)
   if (createListingRes) {
     // we will send an email to all users with optInStatus true
-    const users = await db.collection("users").where("optInStatus", "==", true).get()
+    const usersSnapshot = await db.collection("users").where("optInStatus", "==", true).get()
+    const emailList = []
+    usersSnapshot.forEach(doc => {
+      emailList.push(doc.data().email)
+    })
+
+    sendToReceivers(emailList, "GrindTogether: New Listing Created!", )
 
     if (users.docs.length > 0) {
       const recipientsEmails = users.docs.map((doc) => doc.data().email)
@@ -283,7 +289,7 @@ app.post("/create-listing", async (req, res) => {
       const promises = recipientsEmails.map((email) => {
         const emailOptions = {
           from: "tzejie.c@gmail.com",
-          to: email,
+          to: "mcnabry123@gmail.com",
           subject: "sexy new listing dropped",
           text: "Check out the new listing on GrindTogether!",
         }

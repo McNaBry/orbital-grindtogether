@@ -53,26 +53,29 @@ function EmailCard({ email }: { email: string }) {
   )
 }
 
-function OptInForListings({ optInStatus }: { optInStatus: boolean }) {
-  const [optIn, setOptIn] = useState(optInStatus)
+// optInStatus is part of the profile fields variable
+// setOptInStatus is a method to handle the change in optInStatus
+function OptInForListings(
+  { optInStatus, setOptInStatus }: 
+  { optInStatus: boolean, setOptInStatus: (optInStatus: boolean) => void }) {
 
-  // everytime user clicks it will update the server
+  // Everytime user clicks it will update the server
   const handleClick = async (event: ChangeEvent<HTMLInputElement>) => {
-    setOptIn(!optIn)
-
-    fetch("http://localhost:5000/update-opt-in-status", {
+    await fetch("http://localhost:5000/update-opt-in-status", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         uid: window.localStorage.getItem("uid"),
-        optInStatus: !optIn
+        optInStatus: !optInStatus
       }),
     })
+
+    setOptInStatus(!optInStatus)
   }
 
-  const inOrOut = optIn ? "in" : "out"
+  const inOrOut = optInStatus ? "in" : "out"
   const switchText = `Opt ${inOrOut} to receive email notifications whenever a listing is created.`
 
   return (
@@ -81,7 +84,7 @@ function OptInForListings({ optInStatus }: { optInStatus: boolean }) {
         type="switch"
         id="custom-switch"
         label={switchText}
-        checked={optIn}
+        checked={optInStatus}
         onChange={handleClick}
         className="opt-in-switch"
       />
@@ -114,7 +117,8 @@ function ProfilePage() {
           },
           body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
         })
-        const data = await response.json()
+        let data = await response.json()
+        console.log(data)
         setFields(data)
       } catch (error) {
         console.log("User not found.")
@@ -190,7 +194,12 @@ function ProfilePage() {
       />
       <RatingCard rating={fields.rating} />
       <SignOutButton />
-      <OptInForListings optInStatus = {fields.optInStatus}/>
+      <OptInForListings 
+        optInStatus = {fields.optInStatus}
+        setOptInStatus={(optInStatus: boolean) => setFields({
+          ...fields,
+          optInStatus: optInStatus
+        })}/>
     </div>
   )
 }
