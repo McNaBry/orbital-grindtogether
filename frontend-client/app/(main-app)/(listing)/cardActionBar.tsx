@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation"
 import LikeButton from "./likeButton"
 import cardStyles from "./studyCard.module.css"
 import { StudyListing } from "./studyCard"
+import { MouseEvent } from "react"
 
 function DeleteButton({ listingData } : { listingData: StudyListing }) {
   const router = useRouter()
@@ -31,6 +32,42 @@ function EditButton() {
   )
 }
 
+function InterestedUsersButton({listingData} : {listingData: StudyListing}) {
+  const router = useRouter()
+
+  const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
+    try {
+      const response = await fetch("http://localhost:5000/get-interested-users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(listingData.id)
+      })
+
+      if (!response.ok) {
+        throw new Error("flag1")
+      }
+
+      const interestedUsers = await response.json()
+
+      const query = new URLSearchParams();
+      query.append("interestedUsers", JSON.stringify(interestedUsers));
+      const queryString = query.toString();
+      const url = `/interested-users/${listingData.id}?${queryString}`;
+      router.push(url);
+    } catch (error) {
+      console.error("Could not get list of interested users", error)
+    }
+  }
+
+  return (
+    <button id = {cardStyles["interested-users-button"]} onClick = {handleClick}>
+      <p> Interested Users </p>
+    </button>
+  )
+}
+
 /* Variants:
   1. Display. For display only. No edit or delete button.
   2. Modify. For modification only. No like button.
@@ -47,6 +84,7 @@ function CardActionBar({ variant, listingData } : { variant: string, listingData
         ? <>
             <EditButton />
             <DeleteButton listingData={listingData}/>
+            <InterestedUsersButton listingData={listingData}/>
           </>
         : <></>
       }

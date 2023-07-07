@@ -97,6 +97,23 @@ async function getCreatedListings(userID) {
   return await processListings(snapshot)
 }
 
+async function getListingLikers(listingID) {
+  const snapshot = await db.collection("listings").doc(listingID).get()
+  const nameOfLikers = []
+  
+  if (snapshot.exists) {
+    const likers = snapshot.data.likes;
+    
+    for (liker in likers) {
+      const userSnapshot = await db.collection("users").doc(liker).get()
+      const username = userSnapshot.data.fullName;
+      nameOfLikers.add(username)
+    }
+  } 
+
+  return nameOfLikers
+}
+
 module.exports = {
   getListing,
   getListings,
@@ -105,5 +122,6 @@ module.exports = {
   deleteListing,
   processListings,
   getLikedListings, 
-  getCreatedListings
+  getCreatedListings,
+  getListingLikers
 }

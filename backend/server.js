@@ -26,6 +26,7 @@ const {
   deleteListing,
   getLikedListings,
   getCreatedListings,
+  getListingLikers,
 } = require("./listingDb")
 const { firestore } = require("firebase-admin")
 const { sendToReceivers } = require("./email")
@@ -226,7 +227,7 @@ app.post("/update-profile", async (req, res) => {
       .update({ [fieldToUpdate]: value })
     res.status(200).send()
   } catch (error) {
-    console.log("cannot update")
+    console.log("cannot update profile")
     res.status(500).send()
   }
 })
@@ -353,6 +354,12 @@ app.post("/get-dashboard-listings", async (req, res) => {
   const results = await Promise.all([likedListings, createdListings])
   // console.log(results)
   return res.json(results).send()
+})
+
+app.post("/get-interested-users", async (req, res) => {
+  const { listingUID } = req.body
+  const users = await getListingLikers(listingUID);
+  res.status(200).json(users)
 })
 
 const port = 5000
