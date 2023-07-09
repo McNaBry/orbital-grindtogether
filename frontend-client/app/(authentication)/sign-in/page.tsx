@@ -69,7 +69,7 @@ function SignInPage() {
     const formData = new FormData(event.currentTarget)
   
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,23 +78,26 @@ function SignInPage() {
           email: formData.get('email'),
           password: formData.get('password'),
         }),
+        credentials: "include"
       }).then(response => {
         console.log(response.headers)
         return response
       })
   
-      if (res.status == 200) {
-        setMsg("Sign in successful! Please wait...")
-        setSuccess(true)
-        // Store sign in token ID for future reference
-        await res.json().then(async data => {
-          await auth.signIn(data.tokenID)
-        })
-        router.push("/dashboard")
-        return
-      } else {
-        setMsg("Cannot login. Please try again.")
-      }
+      // if (res.status == 200) {
+      //   setMsg("Sign in successful! Please wait...")
+      //   setSuccess(true)
+      //   // Store sign in token ID for future reference
+      //   await res.json().then(async data => {
+      //     await auth.signIn(data.tokenID)
+      //   })
+      //   router.push("/dashboard")
+      //   return
+      // } else {
+      //   setMsg("Cannot login. Please try again.")
+      // }
+
+
       // else if (res.status === 404) {
       //   setMsg("Email cannot be found in the database. Please create an account.");
       // } else if (res.status === 401) {

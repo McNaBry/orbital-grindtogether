@@ -6,7 +6,7 @@ const cors = require("cors")
 const axios = require("axios")
 const serverless = require("serverless-http")
 // const nodemailer = require("nodemailer");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 // const Cookies = require('universal-cookie')
 
 const app = express()
@@ -31,8 +31,13 @@ const {
 
 const apiKey = process.env.FIREBASE_API_KEY
 
-//app.use(cookieParser());
-app.use(cors())
+app.use(cookieParser())
+// Allow for cross-origin request since our backend and frontend are hosted on different domains(origins)
+// By specifying the origin, this allows us to transmit credentials via cookies in our requests
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // To parse form data
 
@@ -52,6 +57,7 @@ app.post("/sign-up", async (req, res) => {
 
 // API endpoint for Signing In
 app.post("/sign-in", async (req, res) => {
+  console.log(req.cookies.jwt)
   const { email, password } = req.body
   /* 
     Sends a POST request with user credentials to Firebase Auth API
@@ -61,8 +67,19 @@ app.post("/sign-in", async (req, res) => {
   // Retrieves the ID token that Firebase Auth returns when the user is signed in
   const tokenID = signInRes.data.idToken
 
+  const authJWT = await fireAuth.createCustomToken('102Aaha8Wh', { expiresIn: 60 * 24 }).catch(err => console.log(err))
+  console.log(authJWT)
+
   if (signInRes.status == 200) {
-    res.status(200).json({ tokenID: tokenID }).send()
+    res.cookie("jwt", authJWT, {
+      maxAge: 3600000 * 24, // 60 mins * 24 = 1 day
+      httpOnly: true,
+      secure: process.env.NODE_ENV == "production",
+    })
+    res
+      .status(200)
+      .json({ tokenID: tokenID })
+      .send()
   } else {
     res.status(400).send()
   }
