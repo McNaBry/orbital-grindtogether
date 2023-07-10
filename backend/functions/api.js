@@ -37,6 +37,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
 }))
+const upload = multer({ storage: multer.memoryStorage() }) // Handling file transfers
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // To parse form data
 
