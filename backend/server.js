@@ -48,6 +48,17 @@ async function getUserByEmail(email) {
   return await fireAuth.getUserByEmail(email).catch((err) => null)
 }
 
+function isValidUID(uid) {
+  // return !(
+  //   (uid == undefined) || (uid == "")
+  // )
+  if ((uid == undefined) || (uid == "")) {
+    console.log("invalid token")
+    return false
+  }
+  return true
+}
+
 // API endpoint for Signing Up
 app.post("/sign-up", async (req, res) => {
   const createAccountRes = createAccount(req.body)
@@ -71,7 +82,7 @@ app.post("/sign-in", async (req, res) => {
     // Retrieve the id token that Firebase Auth returns
     const idToken = signInRes.data.idToken
 
-    // Use this idToken to create a session cookie that will persist user sign-in for a week
+    // Use the idToken to create a session cookie that will persist user sign-in for a week
     const seshCookie = await fireAuth.createSessionCookie(idToken, { expiresIn: 60 * 60 * 24 * 7 * 1000 })
     
     // Retrieve user's Firestore UID and full name
@@ -80,9 +91,15 @@ app.post("/sign-in", async (req, res) => {
       console.log("Null array for user UID query")
       res.status(400).send()
     } else {
-      // Set httpOnly cookie on the frontend browser
-      res.cookie("authCookie", seshCookie, {
-        maxAge: 3600000 * 24, // 60 mins * 24 = 1 day
+      // Set httpOnly cookies on the frontend browser
+      res
+        .cookie("authCookie", seshCookie, {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+        .cookie("uid", users[0].uid, {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV == "production",
       })
@@ -213,30 +230,12 @@ app.delete("/delete-account", async (req, res) => {
 //   }
 // }
 
-// Get the data of the specific user to be displayed in the profile page
-// app.get("/profile-page", verifyIdToken, async (req, res) => {
-//   try {
-//     const uid = req.user.userId;
-//     const snapshot = await db.collection("users").doc(uid).get();
-
-//     if (!snapshot.exists) {
-//       console.log("no data found regarding particular user");
-//       res.status(404).send();
-//       return;
-//     }
-
-//     const userData = snapshot.data()
-//     console.log("i successfully sent the data");
-//     res.send(userData);
-//   } catch (error) {
-//     console.log("no data for you");
-//     res.status(500).send();
-//   }
-// })
-
 app.post("/get-profile", async (req, res) => {
-  const { uid } = req.body
-  if (uid == "") res.status(400).json({}).send()
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).json({}).send()
+    return
+  }
 
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
@@ -282,7 +281,12 @@ app.post("/get-profile", async (req, res) => {
 // Update the database when the user modifies a field in the profile page
 app.post("/update-profile", async (req, res) => {
   try {
-    const { uid, fieldToUpdate, value } = req.body
+    const { fieldToUpdate, value } = req.body
+    const uid = req.cookies.uid
+    if (!isValidUID(uid)) {
+      res.status(400).send()
+      return
+    }
     await db
       .collection("users")
       .doc(uid)
@@ -295,8 +299,8 @@ app.post("/update-profile", async (req, res) => {
 })
 
 app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
-  const uid = req.body.uid
-  if (!uid) {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
     console.log("No user ID detected")
     res.status(400).send()
     return 
@@ -337,7 +341,11 @@ app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) =>
 })
 
 app.post("/sign-out", async (req, res) => {
-  const { uid } = req.body
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
   const userRef = await db.collection("users").doc(uid).get()
   if (!userRef.exists) {
     res.status(400).send()
@@ -361,7 +369,12 @@ app.post("/sign-out", async (req, res) => {
 
 // API Endpoint to create listing
 app.post("/create-listing", async (req, res) => {
-  const createListingRes = await createListing(req.body.userID, req.body)
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const createListingRes = await createListing(uid, req.body)
   if (createListingRes) {
     res.status(200).send()
   } else {
@@ -370,7 +383,12 @@ app.post("/create-listing", async (req, res) => {
 })
 
 app.post("/get-listings", async (req, res) => {
-  const results = await getListings()
+  const uid = req.cookies.uid
+  if (!isValidUID) {
+    res.status(400).send()
+    return
+  }
+  const results = await getListings(uid)
   if (results.length > 0) {
     res.json(results).send()
   } else {
@@ -379,8 +397,13 @@ app.post("/get-listings", async (req, res) => {
 })
 
 app.delete("/delete-listing", async (req, res) => {
-  const { userID, listingUID } = req.body
-  const deleteListingRes = await deleteListing(userID, listingUID)
+  const { listingUID } = req.body
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const deleteListingRes = await deleteListing(uid, listingUID)
   if (deleteListingRes) {
     res.status(200).send()
   } else {
@@ -389,20 +412,30 @@ app.delete("/delete-listing", async (req, res) => {
 })
 
 app.post("/get-dashboard-listings", async (req, res) => {
-  const { userID } = req.query
-  const likedListings = getLikedListings(userID)
-  const createdListings = getCreatedListings(userID)
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    console.log(uid)
+    res.status(400).send()
+    return
+  }
+  const likedListings = getLikedListings(uid)
+  const createdListings = getCreatedListings(uid)
   const results = await Promise.all([likedListings, createdListings])
   // console.log(results)
   return res.json(results).send()
 })
 
 app.post("/like-listing", async (req, res) => {
-  const { userID, listingUID, action } = req.body
+  const { listingUID, action } = req.body
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  } 
   if (action != "like" && action != "unlike") {
     res.status(500).json({ error: "Invalid action" }).send()
   }
-  const likeListingRes = await likeListing(userID, listingUID, action)
+  const likeListingRes = await likeListing(uid, listingUID, action)
   if (likeListingRes) {
     res.status(200).send()
   } else {

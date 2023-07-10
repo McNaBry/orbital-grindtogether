@@ -10,8 +10,6 @@ import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { useAuth } from "../../authProvider"
-import { profile } from "console"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 const deleteAccountIcon = "/images/delete-account.png"
@@ -69,7 +67,6 @@ function EmailCard({ email }: { email: string }) {
   }
 
 export default function ProfilePage() {
-  const auth = useAuth()
   const router = useRouter()
 
   const [fields, setFields] = useState({
@@ -87,13 +84,12 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(auth.user.uid)
-        const response = await fetch("http://localhost:5000/get-profile", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-profile`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
+          credentials: "include"
         })
         const data = await response.json()
         setFields(data)
@@ -126,10 +122,10 @@ export default function ProfilePage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        uid: window.localStorage.getItem("uid"),
         fieldToUpdate: fieldToUpdate,
         value: value,
       }),
+      credentials: "include"
     })
 
     if (uploadRes.status == 200) {
@@ -142,7 +138,6 @@ export default function ProfilePage() {
   ) => {
     // check if the file does exist; if it does then take the first file
     const file = event.target.files && event.target.files[0]
-    const userId = auth.user.uid
 
     if (file) {
       const generatedURL = URL.createObjectURL(file)
@@ -150,13 +145,13 @@ export default function ProfilePage() {
       console.log(generatedURL)
 
       const formData = new FormData()
-      formData.append("uid", userId)
       formData.append("profilePic", file)
 
       try {
-        await fetch("http://localhost:5000/upload-profile-pic", {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
           method: "POST",
           body: formData,
+          credentials: "include"
         })
         console.log("profile picture uploaded?")
       } catch (error) {

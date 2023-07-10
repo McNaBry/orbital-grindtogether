@@ -88,7 +88,7 @@ function SignInPage() {
         setMsg("Sign in successful! Please wait...")
         setSuccess(true)
         await res.json().then(async data => {
-          await auth.signIn(data.uid, data.fullName)
+          await auth.signIn(data.fullName)
         })
         router.push("/dashboard")
         return

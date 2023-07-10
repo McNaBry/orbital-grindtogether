@@ -16,7 +16,7 @@ function SignOutButton() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ uid: auth.user.uid })
+        credentials: "include"
       });
 
       if (res.ok) {

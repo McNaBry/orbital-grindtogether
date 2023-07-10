@@ -104,6 +104,7 @@ function DeleteAccountPage({params, searchParams} : DeleteAccountProps) {
           email: email || "",
           password: formData.get('password'),
         }),
+        credentials: "include"
       });
       
       switch (res.status) {

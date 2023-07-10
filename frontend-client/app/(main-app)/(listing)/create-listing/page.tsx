@@ -72,7 +72,8 @@ const defaultOptions:{[key:string]: any} = {
   "date":      new Date(), // Set current timing
   "freq":      "Every day",
   "interest":  0,
-  "id":        "invitedefault"
+  "id":        "invitedefault",
+  "liked":     false
 }
 
 function Notif(
@@ -97,7 +98,8 @@ export default function CreateListing() {
     date: defaultOptions['date'],
     freq: defaultOptions['freq'],
     interest: defaultOptions['interest'],
-    id: defaultOptions['id']
+    id: defaultOptions['id'],
+    liked: false
   })
 
   const [ msg, setMsg ] = useState<string>("")
@@ -141,22 +143,14 @@ export default function CreateListing() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const userID = window.localStorage.getItem("uid")
-    if (userID == null || userID == "") {
-      setSuccess(false)
-      setMsg("Cannot find user. Sign in again.")
-      return
-    }
     
-    const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/create-listing', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/create-listing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        ...demoOptions,
-        userID: userID // For testing
-      }),
+      body: JSON.stringify(demoOptions),
+      credentials: "include"
     })
     .then(async data => {
       if (!data.ok) {

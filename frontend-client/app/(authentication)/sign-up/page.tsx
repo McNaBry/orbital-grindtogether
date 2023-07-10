@@ -98,7 +98,8 @@ function SignUpPage() {
           fullName: formData.get('fullName'),
           email: formData.get('email'),
           password: formData.get('password')
-        })
+        }),
+        credentials: "include"
       })
 
       if (res.status == 200) {

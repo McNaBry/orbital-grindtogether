@@ -24,7 +24,7 @@ function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {
   )
 }
 
-function LikeButton({ listingData } : { listingData: StudyListing }) {
+function LikeButton({ listingData, variant } : { listingData: StudyListing, variant: string }) {
   const [likeStatus, setLikeStatus] = useState(listingData.liked);
   const [loading, setLoading] = useState(false)
 
@@ -36,23 +36,37 @@ function LikeButton({ listingData } : { listingData: StudyListing }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userID: window.localStorage.getItem("uid"),
         listingUID: listingData.id,
         action: !listingData.liked ? "like" : "unlike"
-      })
+      }),
+      credentials: "include"
     })
     if (likeListingRes.status == 200) {
       console.log("Like/Liked success")
-      await mutate(`${process.env.NEXT_PUBLIC_API_URL}/get-listings`, (prevData: any) => {
-        const index = prevData.findIndex((item: any) => item.id == listingData.id)
-        const updatedData = prevData;
-        updatedData[index] = {
-          ...updatedData[index],
-          liked: !likeStatus
-        }
-
-        return updatedData
-      })
+      // Change swr mutate key depending on which API endpoint the data is fetched from
+      if (variant == "display") {
+        await mutate(`${process.env.NEXT_PUBLIC_API_URL}/get-listings`, (prevData: any) => {
+          const index = prevData.findIndex((item: any) => item.id == listingData.id)
+          const updatedData = prevData;
+          updatedData[index] = {
+            ...updatedData[index],
+            liked: !likeStatus
+          }
+  
+          return updatedData
+        })
+      } else if (variant == "dashboard-display") {
+        await mutate(`${process.env.NEXT_PUBLIC_API_URL}/get-dashboard-listings`, (prevData: any) => {
+          const index = prevData[0].findIndex((item: any) => item.id == listingData.id)
+          const updatedData = prevData;
+          updatedData[0][index] = {
+            ...updatedData[0][index],
+            liked: !likeStatus
+          }
+  
+          return updatedData
+        })
+      }
       setLikeStatus(!likeStatus)
       setLoading(false)
     } else {

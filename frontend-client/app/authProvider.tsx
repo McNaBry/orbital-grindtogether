@@ -13,7 +13,6 @@
 import { useState, useContext, createContext, useEffect } from "react"
 
 type user = {
-  uid: string,
   verified: boolean,
   fullName: string
 }
@@ -21,12 +20,11 @@ type user = {
 type authProvider = {
   user: user,
   signUp: (email: string, uid: string) => Promise<void>,
-  signIn: (uid: string, fullname: string) => Promise<void>,
+  signIn: (fullname: string) => Promise<void>,
   signOut: () => Promise<void>
 }
 
 const defaultUser: user = {
-  uid: "",
   verified: false,
   fullName: "Guest",
 }
@@ -34,7 +32,7 @@ const defaultUser: user = {
 const defaultAuthObj: authProvider = {
   user: defaultUser,
   signUp: async (email: string, uid: string) => console.log("sign up"),
-  signIn: async (uid: string, fullname: string) => console.log("sign in"),
+  signIn: async (fullname: string) => console.log("sign in"),
   signOut: async () => {}
 }
 
@@ -68,22 +66,18 @@ async function validateUser() {
   // User's firestore document UID and full name.
   if (res.ok) {
     const data = await res.json()
-    window.localStorage.setItem("uid", data.uid)
     window.localStorage.setItem("fullName", data.fullName)
     //console.log("User data from backend: ", data)
     return true
   } else {
-    window.localStorage.removeItem("uid")
     window.localStorage.removeItem("fullName")
     return false
   }
 }
 
 function getStoredUser() {
-  const uid = window.localStorage.getItem("uid")
   const fullName = window.localStorage.getItem("fullName")
   const profile: user = {
-    uid: uid != null ? uid : "",
     verified: true,
     fullName: fullName != null ? fullName : ""
   }
@@ -98,25 +92,22 @@ function useAuthProvider() {
   useEffect(() => {
     const storedUser = getStoredUser()
     const userProfile: user = 
-      storedUser.uid == null || storedUser.fullName == null 
+      storedUser.fullName == null 
       ? defaultUser
       : storedUser
     setUser(userProfile)
   }, [])
 
   async function signUp(email: string, uid: string) {
-    window.localStorage.setItem("uid", uid)
     window.localStorage.setItem("fullName", email)
   }
 
-  async function signIn(uid: string, fullName: string) {
-    window.localStorage.setItem("uid", uid)
+  async function signIn(fullName: string) {
     window.localStorage.setItem("fullName", fullName)
     setUser(getStoredUser())
   }
 
   async function signOut() {
-    window.localStorage.removeItem("uid")
     window.localStorage.removeItem("fullName")
     setUser(defaultUser)
   }
