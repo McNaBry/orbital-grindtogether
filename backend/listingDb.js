@@ -1,4 +1,4 @@
-const { db } = require("./firebase")
+const { db, FieldValue } = require("./firebase")
 
 async function getListing(listingUID) {
   const docRef = await db
@@ -21,7 +21,7 @@ async function createListing(userID, data) {
     title: data.title,
     desc : data.desc,
     tags : {
-      modules: data.tags.modules,
+      modules  : data.tags.modules,
       locations: data.tags.locations,
       faculties: data.tags.faculties
     },
@@ -40,7 +40,6 @@ async function updateListing(userID, listingUID, fieldToUpdate, newValue) {
 }
 
 async function deleteListing(userID, listingUID) {
-  console.log("userID: ", userID, " listingID: ", listingUID)
   const docRef = await db.collection("listings").doc(listingUID).get()
   if (!docRef.exists) {
     return false
@@ -53,6 +52,37 @@ async function deleteListing(userID, listingUID) {
     .delete()
     .then(res => true)
     .catch(err => false)
+}
+
+async function likeListing(userID, listingUID, action) {
+  console.log("User ID: ", userID, " Listing ID: ", listingUID, " action: ", action)
+  const listingRef = db.collection("listings").doc(listingUID)
+  const listingData = (await listingRef.get()).data()
+  // Limit max no. of users that like a listing to be 20
+  if (listingData.likes.length >= 20) return false
+  const updateListingRes = await listingRef
+    .update({
+      likes: action == "like" 
+        ? FieldValue.arrayUnion(userID)
+        : FieldValue.arrayRemove(userID)
+    })
+    .then(res => true)
+    .catch(err => {
+      console.log(err)
+      return false
+    })
+  if (!updateListingRes) return false
+  return await db.collection("users").doc(userID)
+    .update({
+      likes: action == "like" 
+        ? FieldValue.arrayUnion(listingUID)
+        : FieldValue.arrayRemove(listingUID)
+    })
+    .then(res => true)
+    .catch(err => {
+      console.log(err)
+      return false
+    })
 }
 
 // Function that processes listings obtained from a Firestore Query snapshot
@@ -68,7 +98,7 @@ async function processListings(listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Annonymous" : userData.fullName
+      createdBy: !user.exists ? "Anonymous" : userData.fullName
     }
     results.push(docData)
   }
@@ -103,6 +133,7 @@ module.exports = {
   createListing,
   updateListing,
   deleteListing,
+  likeListing,
   processListings,
   getLikedListings, 
   getCreatedListings

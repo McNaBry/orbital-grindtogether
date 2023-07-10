@@ -1,39 +1,35 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import "./profilepage.css"
 import "./nonEditableCard"
 import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
-import LikeButton from "../(listing)/likeButton"
+import UploadProfilePic from "./uploadProfilePic"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { useAuth } from "../../authProvider"
+import { profile } from "console"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+
+const deleteAccountIcon = "/images/delete-account.png"
 
 function EditProfile() {
-  return <h1 style={{color: "white"}}> Profile Page </h1>;
+  return <h1 style={{ color: "white" }}> Profile Page </h1>
 }
 
-function UploadProfilePic() {
+function NoProfilePic() {
+  return <div className="no-profile-pic"></div>
+}
+
+function ProfilePic({ profilePic }: {profilePic: string}) {
   return (
-    <div>
-      <label
-        htmlFor="pictureUpload"
-        className="btn btn-primary upload-profile-pic"
-      >
-        Upload Profile Picture
-        <input
-          type="file"
-          id="pictureUpload"
-          accept="image/png, image/jpeg, image/svg"
-        />
-      </label>
+    <div className="profile-pic">
+      {profilePic ? <img src={profilePic}></img> : <NoProfilePic />}
     </div>
-  );
-}
-
-function ProfilePic() {
-  return <div className="profile-pic"></div>;
+  )
 }
 
 function NameCard({ name }: { name: string }) {
@@ -41,18 +37,41 @@ function NameCard({ name }: { name: string }) {
     <NonEditableCard title="Full Name">
       <p className="card-text"> {name} </p>
     </NonEditableCard>
-  );
+  )
 }
+
 function EmailCard({ email }: { email: string }) {
   return (
     <NonEditableCard title="Email">
       <p className="card-text"> {email} </p>
     </NonEditableCard>
-  );
+  )
 }
 
-function ProfilePage() {
+  // This button is different from the one in delete-account; it just redirects to the page
+  function DeleteAccount({ email, router } : { email: string, router: AppRouterInstance}) {
+    const onClick = () => {
+      router.push(`/delete-account?email=${email}`)
+    }
+
+    return (
+      <button id="profile-delete-account" className="btn mb-3" onClick={onClick}>
+        <Image
+          width={20}
+          height={20}
+          src={deleteAccountIcon}
+          style={{ marginRight: "5px" }}
+          alt="Delete Account"
+        />
+        Delete Account
+      </button>
+    )
+  }
+
+export default function ProfilePage() {
   const auth = useAuth()
+  const router = useRouter()
+
   const [fields, setFields] = useState({
     email: "",
     fullName: "",
@@ -62,21 +81,23 @@ function ProfilePage() {
     telegramHandle: "@",
     rating: 0,
   })
+  const [profilePic, setProfilePic] = useState("")
 
   // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log(auth.user.uid)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-profile`, {
-          method: 'POST',
-          headers : {
+        const response = await fetch("http://localhost:5000/get-profile", {
+          method: "POST",
+          headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({uid: window.localStorage.getItem("uid")})
+          body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
         })
         const data = await response.json()
         setFields(data)
+        setProfilePic(data.profilePic || "")
       } catch (error) {
         console.log("user not found")
       }
@@ -87,7 +108,7 @@ function ProfilePage() {
 
   // Function to handle change on the Editable Card.
   // Triggered by save changes button.
-  const handleFieldChange = ({
+  const handleFieldChange = async ({
     fieldToUpdate,
     value,
   }: {
@@ -99,24 +120,56 @@ function ProfilePage() {
 
     const updatedProfileData = { [fieldToUpdate]: value }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-profile`, {
+    const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-profile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body : JSON.stringify({
-        uid: window.localStorage.getItem('uid'),
+      body: JSON.stringify({
+        uid: window.localStorage.getItem("uid"),
         fieldToUpdate: fieldToUpdate,
-        value: value
-      })
+        value: value,
+      }),
     })
+
+    if (uploadRes.status == 200) {
+      console.log("Update successful")
+    }
+  }
+
+  const handleProfilePicUpload = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    // check if the file does exist; if it does then take the first file
+    const file = event.target.files && event.target.files[0]
+    const userId = auth.user.uid
+
+    if (file) {
+      const generatedURL = URL.createObjectURL(file)
+      setProfilePic(generatedURL)
+      console.log(generatedURL)
+
+      const formData = new FormData()
+      formData.append("uid", userId)
+      formData.append("profilePic", file)
+
+      try {
+        await fetch("http://localhost:5000/upload-profile-pic", {
+          method: "POST",
+          body: formData,
+        })
+        console.log("profile picture uploaded?")
+      } catch (error) {
+        console.log("welp didnt work out mate")
+      }
+    }
   }
 
   return (
     <div className="profile-page-container">
       <EditProfile />
-      <ProfilePic />
-      <UploadProfilePic />
+      <ProfilePic profilePic={profilePic} />
+      <UploadProfilePic onUpload={handleProfilePicUpload} />
       <NameCard name={fields.fullName} />
       <EmailCard email={fields.email} />
       <EditableCard
@@ -150,9 +203,13 @@ function ProfilePage() {
         }
       />
       <RatingCard rating={fields.rating} />
-      <SignOutButton />
+      <div className="button-container">
+        <SignOutButton />
+        <DeleteAccount 
+          email={fields.email}
+          router={router}
+        />
+      </div>
     </div>
   )
 }
-
-export default ProfilePage

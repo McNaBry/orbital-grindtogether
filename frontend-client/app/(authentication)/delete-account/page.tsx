@@ -3,8 +3,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import CreateStatus from "../createStatus";
 import Password from "../password";
-import Email from "../email"
-
 import { Button, Card, Modal } from "react-bootstrap";
 import "../reusable.css"
 import Link from "next/link";
@@ -70,11 +68,18 @@ function SuccessDialog({ show, onHide } : ModalProps) {
   );
 }
 
-function DeleteAccountPage() {
+type DeleteAccountProps = {
+  params: { id: string },
+  searchParams: any
+}
+
+function DeleteAccountPage({params, searchParams} : DeleteAccountProps) {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState("");
-  const [displayModal, setDisplayModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false)
+  const urlParams = new URLSearchParams(searchParams)
+  const email = urlParams.get("email")
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -96,7 +101,7 @@ function DeleteAccountPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: formData.get("email"),
+          email: email || "",
           password: formData.get('password'),
         }),
       });
@@ -105,18 +110,18 @@ function DeleteAccountPage() {
         case 200:
           setDisplayModal(true);
           setSuccess(true);
-          setMsg("Goodbye young padawan");
+          setMsg("Goodbye! Hope to see you back again one day...");
           break;
         case 400:
           setSuccess(false);
-          setMsg("Somehow you are not logged in");
+          setMsg("Somehow you are not logged in...");
           break;
         case 401:
           setSuccess(false);
-          setMsg("Incorrect password");
+          setMsg("Incorrect password.");
         case 500:
           setSuccess(false);
-          setMsg("Deleting your account was unsuccessful");
+          setMsg("Deleting your account was unsuccessful.");
           break;
       }
     } catch (error) {
@@ -133,7 +138,6 @@ function DeleteAccountPage() {
           <Card.Body>
             <Card.Title> Delete your account </Card.Title>
             <Card.Text>This action is irreversible. If you wish to proceed, please key in your email and password. </Card.Text>
-            <Email />
             <Password value={password} onChange={handlePasswordChange} />
             <DeleteAccount />
             <CreateStatus

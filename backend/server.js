@@ -4,13 +4,12 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
-const serverless = require("serverless-http")
+const multer = require("multer")
 // const nodemailer = require("nodemailer");
 const cookieParser = require("cookie-parser");
 // const Cookies = require('universal-cookie')
 
-const app = express()
-const { db, fireAuth } = require("./firebase")
+const { db, fireAuth, storage, bucket } = require("./firebase")
 const {
   signInUser,
   createAccount,
@@ -25,12 +24,14 @@ const {
   createListing,
   updateListing,
   deleteListing,
+  likeListing,
   getLikedListings,
   getCreatedListings,
 } = require("./listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
+const app = express()
 app.use(cookieParser())
 // Allow for cross-origin request since our backend and frontend are hosted on different domains(origins)
 // By specifying the origin, this allows us to transmit credentials via cookies in our requests
@@ -38,6 +39,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
 }))
+const upload = multer({ storage: multer.memoryStorage() }) // Handling file transfers
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // To parse form data
 
@@ -150,6 +152,7 @@ app.delete("/delete-account", async (req, res) => {
   }
 
   // Get the user record to retrieve the UID for deletion
+  console.log(email)
   const userRecord = await getUserByEmail(email)
   if (!userRecord) {
     console.log("No user record found with the email provided")
@@ -223,10 +226,43 @@ app.delete("/delete-account", async (req, res) => {
 app.post("/get-profile", async (req, res) => {
   const { uid } = req.body
   if (uid == "") res.status(400).json({}).send()
+
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
-    const userData = docRef.data()
-    res.status(200).json(userData).send()
+    let userData = docRef.data()
+    // Sets a file object to point to the user's profile pic in Firebase Storage
+    const file = bucket.file(`${uid}.png`)
+    // Check if file exists
+    file.exists()
+      .then(async ([exists]) => {
+        if (exists) {
+          console.log("Profile pic exists. Retrieving signed URL...")
+          // Retrieve the download URL for frontend to fetch from
+          const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
+          const signedUrl = await file.getSignedUrl({
+            action: 'read',
+            expires: expiresAtMs,
+          });
+          // console.log(signedUrl)
+          userData = {
+            ...userData,
+            profilePic: signedUrl
+          }
+          res.status(200).json(userData).send()
+        } else {
+          console.log("Profile pic does not exist")
+          userData = {
+            ...userData,
+            profilePic: ""
+          }
+          res.status(200).json(userData).send()
+        }
+      })
+      .catch(error => {
+        console.log("Error checking if file exists:\n")
+        console.log(error)
+        res.status(400).send()
+      })
   } else {
     res.status(400).json({}).send()
   }
@@ -243,6 +279,48 @@ app.post("/update-profile", async (req, res) => {
     res.status(200).send()
   } catch (error) {
     console.log("cannot update")
+    res.status(500).send()
+  }
+})
+
+app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
+  const uid = req.body.uid
+  if (!uid) {
+    console.log("No user ID detected")
+    res.status(400).send()
+    return 
+  }
+
+  const file = req.file
+  if (!file) {
+    console.log("No file detected")
+    res.status(400).send()
+    return
+  }
+
+  try {
+    const fileRef = bucket.file(`${uid}.png`)
+    const uploadStream = fileRef.createWriteStream({
+      metadata: {
+        contentType: file.mimetype
+      }
+    })
+    
+    uploadStream.on('error', (error) => {
+      console.error('Error uploading file:', error);
+      res.status(500).json({ error: 'Error uploading file' });
+    })
+    uploadStream.on('finish', () => {
+      console.log('File uploaded successfully');
+      res.status(200).json({ message: 'File uploaded successfully' });
+    })
+  
+    // Pipe the file stream from Multer to the write stream
+    // end basically allows one last write before it closes the stream
+    uploadStream.end(file.buffer)
+  } catch (error) {
+    console.log("Profile Pic Upload Error:\n")
+    console.log(error)
     res.status(500).send()
   }
 })
@@ -306,6 +384,19 @@ app.post("/get-dashboard-listings", async (req, res) => {
   const results = await Promise.all([likedListings, createdListings])
   // console.log(results)
   return res.json(results).send()
+})
+
+app.post("/like-listing", async (req, res) => {
+  const { userID, listingUID, action } = req.body
+  if (action != "like" && action != "unlike") {
+    res.status(500).json({ error: "Invalid action" }).send()
+  }
+  const likeListingRes = await likeListing(userID, listingUID, action)
+  if (likeListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
 })
 
 const port = 5000

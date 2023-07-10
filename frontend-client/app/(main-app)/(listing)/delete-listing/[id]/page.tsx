@@ -31,7 +31,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
   const urlParams = new URLSearchParams(searchParams)
   const tags = urlParams.get("tags")?.split("|") || []
   const listing: StudyListing = {
-    createdBy: urlParams.get('createdBy') || "Annonymous",
+    createdBy: urlParams.get('createdBy') || "Anonymous",
     title: urlParams.get('title') || "Title",
     desc: urlParams.get('desc') || "Desc",
     tags: {
