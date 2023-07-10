@@ -1,9 +1,11 @@
 "use client"
 
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Spinner, Button } from "react-bootstrap" 
+import { StudyListing } from "./studyCard"
+import { mutate } from "swr"
 import cardStyles from "./studyCard.module.css";
 import classnames from "classnames"
 
@@ -22,25 +24,35 @@ function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {
   )
 }
 
-function LikeButton({ listingUID } : { listingUID: string}) {
-  const [likeStatus, setLikeStatus] = useState(false);
+function LikeButton({ listingData } : { listingData: StudyListing }) {
+  const [likeStatus, setLikeStatus] = useState(listingData.liked);
   const [loading, setLoading] = useState(false)
 
   const handleLikeStatus = async () => {
     setLoading(true)
-    const likeListingRes = await fetch("http://localhost:5000/like-listing", {
+    const likeListingRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/like-listing`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userID: window.localStorage.getItem("uid"),
-        listingUID: listingUID,
-        action: !likeStatus ? "like" : "unlike"
+        listingUID: listingData.id,
+        action: !listingData.liked ? "like" : "unlike"
       })
     })
     if (likeListingRes.status == 200) {
       console.log("Like/Liked success")
+      await mutate(`${process.env.NEXT_PUBLIC_API_URL}/get-listings`, (prevData: any) => {
+        const index = prevData.findIndex((item: any) => item.id == listingData.id)
+        const updatedData = prevData;
+        updatedData[index] = {
+          ...updatedData[index],
+          liked: !likeStatus
+        }
+
+        return updatedData
+      })
       setLikeStatus(!likeStatus)
       setLoading(false)
     } else {

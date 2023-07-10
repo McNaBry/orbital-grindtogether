@@ -98,7 +98,8 @@ async function processListings(listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Anonymous" : userData.fullName
+      createdBy: !user.exists ? "Anonymous" : userData.fullName,
+      liked: false
     }
     results.push(docData)
   }

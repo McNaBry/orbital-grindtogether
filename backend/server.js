@@ -30,6 +30,7 @@ const {
 } = require("./listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
+const TOKEN_EXPIRY = 60 * 24
 
 const app = express()
 app.use(cookieParser())
@@ -59,37 +60,47 @@ app.post("/sign-up", async (req, res) => {
 
 // API endpoint for Signing In
 app.post("/sign-in", async (req, res) => {
-  console.log(req.cookies.jwt)
   const { email, password } = req.body
   /* 
     Sends a POST request with user credentials to Firebase Auth API
     If sign in is successful a 200 OK HTTP status code is returned
   */
   const signInRes = await signInUser(email, password)
-  // Retrieves the ID token that Firebase Auth returns when the user is signed in
-  const tokenID = signInRes.data.idToken
-
-  const authJWT = await fireAuth.createCustomToken('102Aaha8Wh', { expiresIn: 60 * 24 }).catch(err => console.log(err))
-  console.log(authJWT)
 
   if (signInRes.status == 200) {
-    res.cookie("jwt", authJWT, {
-      maxAge: 3600000 * 24, // 60 mins * 24 = 1 day
-      httpOnly: true,
-      secure: process.env.NODE_ENV == "production",
-    })
-    res
-      .status(200)
-      .json({ tokenID: tokenID })
-      .send()
+    // Retrieve the id token that Firebase Auth returns
+    const idToken = signInRes.data.idToken
+
+    // Use this idToken to create a session cookie that will persist user sign-in for a week
+    const seshCookie = await fireAuth.createSessionCookie(idToken, { expiresIn: 60 * 60 * 24 * 7 * 1000 })
+    
+    // Retrieve user's Firestore UID and full name
+    const users = await validateToken(idToken)
+    if (users.length == 0) {
+      console.log("Null array for user UID query")
+      res.status(400).send()
+    } else {
+      // Set httpOnly cookie on the frontend browser
+      res.cookie("authCookie", seshCookie, {
+        maxAge: 3600000 * 24, // 60 mins * 24 = 1 day
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+      // Provide the frontend with the user's Firestore UID and full name
+      res.status(200).json(users[0]).send()
+    }
   } else {
     res.status(400).send()
   }
 })
 
 app.post("/validate-token", async (req, res) => {
-  const { tokenID } = req.body
-  const users = await validateToken(tokenID)
+  const authToken = req.cookies.jwt
+  if (authToken == undefined) {
+    res.status(400).send()
+    return
+  }
+  const users = await validateToken(authToken)
   if (users.length == 0) {
     console.log("Null array for user UID query")
     res.status(400).send()

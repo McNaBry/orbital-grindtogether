@@ -20,8 +20,8 @@ type user = {
 
 type authProvider = {
   user: user,
-  signUp: (tokenID: string, email: string, uid: string) => Promise<void>,
-  signIn: (tokenID: string) => Promise<void>,
+  signUp: (email: string, uid: string) => Promise<void>,
+  signIn: (uid: string, fullname: string) => Promise<void>,
   signOut: () => Promise<void>
 }
 
@@ -33,25 +33,21 @@ const defaultUser: user = {
 
 const defaultAuthObj: authProvider = {
   user: defaultUser,
-  signUp: async (tokenID: string, email: string, uid: string) => console.log(tokenID),
-  signIn: async (tokenID: string) => console.log(tokenID),
+  signUp: async (email: string, uid: string) => console.log("sign up"),
+  signIn: async (uid: string, fullname: string) => console.log("sign in"),
   signOut: async () => {}
 }
 
 // Creates the context object
-// Accepts a default value which is  
 const authContext = createContext<authProvider>(defaultAuthObj)
 
 // AuthProvider component that wraps the components passed into it via children
 // Components will interact with it via useAuth()
 export default function AuthProvider({children} : {children : any}) {
   const auth = useAuthProvider()
-  let validate = false
-  // TODO: Trigger validation and reroute
-  useEffect(() => {
-    const valUser = async () => await validateUser(window.localStorage.getItem("tokenID")).then(data => validate = true)
-    valUser()
-  }, [])
+  //   useEffect(() => {
+  //     validateUser().then(data => console.log("Validation success: ", data))
+  // }, [])
   return (
     <authContext.Provider value={auth}>{children}</authContext.Provider>
   )
@@ -64,18 +60,9 @@ export const useAuth = () => {
 }
 
 // Function that POST a request to validate stored Firebase tokenID
-async function validateUser(tokenID: string | null) {
-  // console.log("Token to be validated: ", tokenID)
-  if (tokenID == null) return false
-  // By right, this request should be send to a proxy API using Next.js
-  // This will allow us to access httpOnly cookies and is more secure
-  // However, for now this will do.
+async function validateUser() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-token`, {
-    method: 'POST',
-    headers : {
-      "Content-Type": "application/json",
-    },
-    body : JSON.stringify({tokenID: tokenID})
+    method: 'POST'
   })
   // If request is successful, server returns...
   // User's firestore document UID and full name.
@@ -117,22 +104,20 @@ function useAuthProvider() {
     setUser(userProfile)
   }, [])
 
-  async function signUp(tokenID: string, email: string, uid: string) {
+  async function signUp(email: string, uid: string) {
     window.localStorage.setItem("uid", uid)
     window.localStorage.setItem("fullName", email)
-    window.localStorage.setItem("tokenID", tokenID)
   }
 
-  async function signIn(tokenID: string) {
-    window.localStorage.setItem("tokenID", tokenID)
-    const res = await validateUser(tokenID)
-    if (res) setUser(getStoredUser())
+  async function signIn(uid: string, fullName: string) {
+    window.localStorage.setItem("uid", uid)
+    window.localStorage.setItem("fullName", fullName)
+    setUser(getStoredUser())
   }
 
   async function signOut() {
     window.localStorage.removeItem("uid")
     window.localStorage.removeItem("fullName")
-    window.localStorage.removeItem("tokenID")
     setUser(defaultUser)
   }
 

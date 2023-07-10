@@ -56,6 +56,7 @@
 
 .like-active {
   background-color: #af69ed;
+  border: 1px solid #af69ed;
   color: white;
 }
 

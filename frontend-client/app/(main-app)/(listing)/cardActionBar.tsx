@@ -40,7 +40,7 @@ function CardActionBar({ variant, listingData } : { variant: string, listingData
   return (
     <small id={cardStyles["action-bar"]}>
       { variant == "display"
-        ? <LikeButton listingUID={listingData.id} />
+        ? <LikeButton listingData={listingData} />
         : <></>
       }
       { variant == "modify"

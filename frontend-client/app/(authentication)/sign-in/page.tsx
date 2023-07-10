@@ -69,7 +69,7 @@ function SignInPage() {
     const formData = new FormData(event.currentTarget)
   
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,18 +84,17 @@ function SignInPage() {
         return response
       })
   
-      // if (res.status == 200) {
-      //   setMsg("Sign in successful! Please wait...")
-      //   setSuccess(true)
-      //   // Store sign in token ID for future reference
-      //   await res.json().then(async data => {
-      //     await auth.signIn(data.tokenID)
-      //   })
-      //   router.push("/dashboard")
-      //   return
-      // } else {
-      //   setMsg("Cannot login. Please try again.")
-      // }
+      if (res.status == 200) {
+        setMsg("Sign in successful! Please wait...")
+        setSuccess(true)
+        await res.json().then(async data => {
+          await auth.signIn(data.uid, data.fullName)
+        })
+        router.push("/dashboard")
+        return
+      } else {
+        setMsg("Cannot login. Please try again.")
+      }
 
 
       // else if (res.status === 404) {
