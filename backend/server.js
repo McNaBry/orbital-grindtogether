@@ -30,7 +30,6 @@ const {
 } = require("./listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
-const TOKEN_EXPIRY = 60 * 24
 
 const app = express()
 app.use(cookieParser())

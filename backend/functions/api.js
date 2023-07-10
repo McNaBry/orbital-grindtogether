@@ -2,10 +2,11 @@
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
+const multer = require("multer")
+const cookieParser = require("cookie-parser");
 const serverless = require("serverless-http")
 
-const api = express()
-const { db, fireAuth } = require("../firebase")
+const { db, fireAuth, storage, bucket } = require("../firebase")
 const {
   signInUser,
   createAccount,
@@ -20,19 +21,38 @@ const {
   createListing,
   updateListing,
   deleteListing,
+  likeListing,
   getLikedListings,
   getCreatedListings,
 } = require("../listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
-const app = express.Router()
 
-app.use(cors())
+const api = express()
+const app = express.Router()
+app.use(cookieParser())
+// Allow for cross-origin request since our backend and frontend are hosted on different domains(origins)
+// By specifying the origin, this allows us to transmit credentials via cookies in our requests
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // To parse form data
 
 async function getUserByEmail(email) {
   return await fireAuth.getUserByEmail(email).catch((err) => null)
+}
+
+function isValidUID(uid) {
+  // return !(
+  //   (uid == undefined) || (uid == "")
+  // )
+  if ((uid == undefined) || (uid == "")) {
+    console.log("invalid token")
+    return false
+  }
+  return true
 }
 
 // API endpoint for Signing Up
@@ -53,19 +73,47 @@ app.post("/sign-in", async (req, res) => {
     If sign in is successful a 200 OK HTTP status code is returned
   */
   const signInRes = await signInUser(email, password)
-  // Retrieves the ID token that Firebase Auth returns when the user is signed in
-  const tokenID = signInRes.data.idToken
 
   if (signInRes.status == 200) {
-    res.status(200).json({ tokenID: tokenID }).send()
+    // Retrieve the id token that Firebase Auth returns
+    const idToken = signInRes.data.idToken
+
+    // Use the idToken to create a session cookie that will persist user sign-in for a week
+    const seshCookie = await fireAuth.createSessionCookie(idToken, { expiresIn: 60 * 60 * 24 * 7 * 1000 })
+    
+    // Retrieve user's Firestore UID and full name
+    const users = await validateToken(idToken)
+    if (users.length == 0) {
+      console.log("Null array for user UID query")
+      res.status(400).send()
+    } else {
+      // Set httpOnly cookies on the frontend browser
+      res
+        .cookie("authCookie", seshCookie, {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+        .cookie("uid", users[0].uid, {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+      // Provide the frontend with the user's Firestore UID and full name
+      res.status(200).json(users[0]).send()
+    }
   } else {
     res.status(400).send()
   }
 })
 
 app.post("/validate-token", async (req, res) => {
-  const { tokenID } = req.body
-  const users = await validateToken(tokenID)
+  const authToken = req.cookies.jwt
+  if (authToken == undefined) {
+    res.status(400).send()
+    return
+  }
+  const users = await validateToken(authToken)
   if (users.length == 0) {
     console.log("Null array for user UID query")
     res.status(400).send()
@@ -128,6 +176,7 @@ app.delete("/delete-account", async (req, res) => {
   }
 
   // Get the user record to retrieve the UID for deletion
+  console.log(email)
   const userRecord = await getUserByEmail(email)
   if (!userRecord) {
     console.log("No user record found with the email provided")
@@ -155,13 +204,71 @@ app.delete("/delete-account", async (req, res) => {
   }
 })
 
+// middleware to extract token from cookie and verify it before use
+// const verifyIdToken = async (req, res, next) => {
+//   const idToken = req.cookies.idToken;
+
+//   if (!idToken) {
+//     return res.status(401).send("Unauthorised");
+//   }
+
+//   try {
+//     const decodedToken = await fireAuth.verifyIdToken(idToken);
+//     const userId = decodedToken.uid;
+//     const email = decodedToken.email;
+
+//     // we will attach the user object to the req object to be passed around
+//     req.user = { userId, email }
+//     next();
+//   } catch (error) {
+//     console.log('Failed to verify idToken:', error);
+//     res.status(401).send('Unauthorized');
+//   }
+// }
+
 app.post("/get-profile", async (req, res) => {
-  const { uid } = req.body
-  if (uid == "") res.status(400).json({}).send()
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).json({}).send()
+    return
+  }
+
   const docRef = await db.collection("users").doc(uid).get()
   if (docRef.exists) {
-    const userData = docRef.data()
-    res.status(200).json(userData).send()
+    let userData = docRef.data()
+    // Sets a file object to point to the user's profile pic in Firebase Storage
+    const file = bucket.file(`${uid}.png`)
+    // Check if file exists
+    file.exists()
+      .then(async ([exists]) => {
+        if (exists) {
+          console.log("Profile pic exists. Retrieving signed URL...")
+          // Retrieve the download URL for frontend to fetch from
+          const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
+          const signedUrl = await file.getSignedUrl({
+            action: 'read',
+            expires: expiresAtMs,
+          });
+          // console.log(signedUrl)
+          userData = {
+            ...userData,
+            profilePic: signedUrl
+          }
+          res.status(200).json(userData).send()
+        } else {
+          console.log("Profile pic does not exist")
+          userData = {
+            ...userData,
+            profilePic: ""
+          }
+          res.status(200).json(userData).send()
+        }
+      })
+      .catch(error => {
+        console.log("Error checking if file exists:\n")
+        console.log(error)
+        res.status(400).send()
+      })
   } else {
     res.status(400).json({}).send()
   }
@@ -170,7 +277,12 @@ app.post("/get-profile", async (req, res) => {
 // Update the database when the user modifies a field in the profile page
 app.post("/update-profile", async (req, res) => {
   try {
-    const { uid, fieldToUpdate, value } = req.body
+    const { fieldToUpdate, value } = req.body
+    const uid = req.cookies.uid
+    if (!isValidUID(uid)) {
+      res.status(400).send()
+      return
+    }
     await db
       .collection("users")
       .doc(uid)
@@ -182,8 +294,54 @@ app.post("/update-profile", async (req, res) => {
   }
 })
 
+app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    console.log("No user ID detected")
+    res.status(400).send()
+    return 
+  }
+
+  const file = req.file
+  if (!file) {
+    console.log("No file detected")
+    res.status(400).send()
+    return
+  }
+
+  try {
+    const fileRef = bucket.file(`${uid}.png`)
+    const uploadStream = fileRef.createWriteStream({
+      metadata: {
+        contentType: file.mimetype
+      }
+    })
+    
+    uploadStream.on('error', (error) => {
+      console.error('Error uploading file:', error);
+      res.status(500).json({ error: 'Error uploading file' });
+    })
+    uploadStream.on('finish', () => {
+      console.log('File uploaded successfully');
+      res.status(200).json({ message: 'File uploaded successfully' });
+    })
+  
+    // Pipe the file stream from Multer to the write stream
+    // end basically allows one last write before it closes the stream
+    uploadStream.end(file.buffer)
+  } catch (error) {
+    console.log("Profile Pic Upload Error:\n")
+    console.log(error)
+    res.status(500).send()
+  }
+})
+
 app.post("/sign-out", async (req, res) => {
-  const { uid } = req.body
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
   const userRef = await db.collection("users").doc(uid).get()
   if (!userRef.exists) {
     res.status(400).send()
@@ -207,7 +365,12 @@ app.post("/sign-out", async (req, res) => {
 
 // API Endpoint to create listing
 app.post("/create-listing", async (req, res) => {
-  const createListingRes = await createListing(req.body.userID, req.body)
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const createListingRes = await createListing(uid, req.body)
   if (createListingRes) {
     res.status(200).send()
   } else {
@@ -216,7 +379,12 @@ app.post("/create-listing", async (req, res) => {
 })
 
 app.post("/get-listings", async (req, res) => {
-  const results = await getListings()
+  const uid = req.cookies.uid
+  if (!isValidUID) {
+    res.status(400).send()
+    return
+  }
+  const results = await getListings(uid)
   if (results.length > 0) {
     res.json(results).send()
   } else {
@@ -225,8 +393,13 @@ app.post("/get-listings", async (req, res) => {
 })
 
 app.delete("/delete-listing", async (req, res) => {
-  const { userID, listingUID } = req.body
-  const deleteListingRes = await deleteListing(userID, listingUID)
+  const { listingUID } = req.body
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const deleteListingRes = await deleteListing(uid, listingUID)
   if (deleteListingRes) {
     res.status(200).send()
   } else {
@@ -235,12 +408,35 @@ app.delete("/delete-listing", async (req, res) => {
 })
 
 app.post("/get-dashboard-listings", async (req, res) => {
-  const { userID } = req.query
-  const likedListings = getLikedListings(userID)
-  const createdListings = getCreatedListings(userID)
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    console.log(uid)
+    res.status(400).send()
+    return
+  }
+  const likedListings = getLikedListings(uid)
+  const createdListings = getCreatedListings(uid)
   const results = await Promise.all([likedListings, createdListings])
   // console.log(results)
   return res.json(results).send()
+})
+
+app.post("/like-listing", async (req, res) => {
+  const { listingUID, action } = req.body
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  } 
+  if (action != "like" && action != "unlike") {
+    res.status(500).json({ error: "Invalid action" }).send()
+  }
+  const likeListingRes = await likeListing(uid, listingUID, action)
+  if (likeListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
 })
 
 api.use('/api', app);
