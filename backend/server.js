@@ -91,17 +91,20 @@ app.post("/sign-in", async (req, res) => {
       res.status(400).send()
     } else {
       // Set httpOnly cookies on the frontend browser
-      res
-        .cookie("authCookie", seshCookie, {
-        maxAge: 60 * 60 * 24 * 7 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-      })
-        .cookie("uid", users[0].uid, {
-        maxAge: 60 * 60 * 24 * 7 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-      })
+      // res
+      //   .cookie("authCookie", seshCookie, {
+      //   maxAge: 60 * 60 * 24 * 7 * 1000,
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV == "production",
+      // })
+      //   .cookie("uid", users[0].uid, {
+      //   maxAge: 60 * 60 * 24 * 7 * 1000,
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV == "production",
+      // })
+      const maxAge = 60 * 60 * 24 * 7 * 1000
+      res.append('Set-Cookie', `authCookie=${seshCookie}; Max-Age=${maxAge}; Path=/; HttpOnly`)
+      res.append('Set-Cookie', `uid=${users[0].uid}; Max-Age=${maxAge}; Path=/; HttpOnly`)
       // Provide the frontend with the user's Firestore UID and full name
       res.status(200).json(users[0]).send()
     }
