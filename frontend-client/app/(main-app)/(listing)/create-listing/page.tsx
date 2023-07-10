@@ -10,15 +10,30 @@ import {
   DateOption 
 } from "./select"
 import StudyCard, { StudyListing } from '../studyCard'
-import { Container, Form, Button } from 'react-bootstrap'
-import styles from './create-listing.module.css'
+import { Container, Form, Button, Toast, ToastContainer } from 'react-bootstrap'
+import styles from './create-listing.module.css' 
 
 import { tagData } from '../study-listings/data'
+import { useRouter } from 'next/navigation'
 
-const modules:Option[] = [
-  { value: "CS2040S", label: "CS2040S" },
-  { value: "CS1231S", label: "CS1231S" },
-  { value: "CS2030S", label: "CS2030S" }
+const titles:Option[] = [
+  { value: "Serious Sesh", label: "Serious Title" },
+  { value: "Chill sesh", label: "Chill Title" },
+  { value: "Grind & Chill", label: "Mixed Title" }
+]
+
+const desc:Option[] = [
+  { value: "No chat. Just study and help each other.", label: "Serious Description" },
+  { value: "Just want to make friends while studying", label: "Chill Description" },
+  { value: "Let's study as hard as we can and make some friends!", label: "Mixed Description" }
+]
+
+const freq:Option[] = [
+  { value: "Once a week", label: "Once a week" },
+  { value: "Every weekday", label: "Every weekday" },
+  { value: "Weekends", label: "Weekends" },
+  { value: "One time only", label: "One time only" },
+  { value: "Some weekdays", label: "Some weekdays" }
 ]
 
 function SingleOption({ name, type, options, handleChange } : SelectFreeOptionProps) {
@@ -50,17 +65,30 @@ function MultiOption({ name, type, options, handleChange } : SelectMultiOptionPr
 // Typescript has a weird error where you can't index the object with string keys
 // Hence instead of giving it a StudyListing type, it is given a dict type
 const defaultOptions:{[key:string]: any} = {
-  "createdBy": "Bryan Lee",
+  "createdBy": "Xiao Ming",
   "title":     "Title",
   "desc":      "Description",
   "tags":      {"modules":[], "locations":[], "faculties":[]},
   "date":      new Date(), // Set current timing
   "freq":      "Every day",
-  "interest":  10,
+  "interest":  0,
   "id":        "invitedefault"
 }
 
+function Notif(
+  { msg, success } : { msg: string, success: boolean }) {
+  return (
+    <ToastContainer position="bottom-end" style={{position: "fixed", margin: "20px"}}>
+      <Toast bg={success ? "success" : "danger"} autohide={true} show={msg == "" ? false : true}>
+          <Toast.Body style={{color: "white"}}>{msg}</Toast.Body>
+      </Toast>
+    </ToastContainer>
+  )
+}
+
 export default function CreateListing() {
+  const router = useRouter()
+  
   const [demoOptions, setDemoOptions] = useState<StudyListing>({
     createdBy: defaultOptions['createdBy'],
     title: defaultOptions['title'],
@@ -72,8 +100,10 @@ export default function CreateListing() {
     id: defaultOptions['id']
   })
 
+  const [ msg, setMsg ] = useState<string>("")
+  const [ success, setSuccess ] = useState<boolean>(false)
+
   function handleDateOptionChange(date: Date | null) {
-    console.log(date)
     if (date == null) setDemoOptions(prevOptions => ({
       ...prevOptions,
       date: new Date()
@@ -111,7 +141,13 @@ export default function CreateListing() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    console.log("Form submit triggered")
+    const userID = window.localStorage.getItem("uid")
+    if (userID == null || userID == "") {
+      setSuccess(false)
+      setMsg("Cannot find user. Sign in again.")
+      return
+    }
+    
     const res = await fetch('http://localhost:5000/create-listing', {
       method: 'POST',
       headers: {
@@ -119,51 +155,63 @@ export default function CreateListing() {
       },
       body: JSON.stringify({
         ...demoOptions,
-        userID: 'hxASjzp8fZz3GyekGHhO' // For testing
+        userID: userID // For testing
       }),
     })
+    .then(async data => {
+      if (!data.ok) {
+        setSuccess(false)
+        setMsg("Sorry! Listing was not created successfully. Try again.")
+        return
+      }
 
-    if (res.ok) {
-      console.log("submission success")
-    } else {
-      console.log("submission error")
-    }
+      setSuccess(true)
+      setMsg("Listing has been created! View it on your Dashboard or View Listings")
+      await new Promise(r => setTimeout(r, 2000))
+      router.push("/dashboard")
+
+    })
+    .catch(error => {
+      console.log(error)
+      setSuccess(false)
+      setMsg("Sorry! Listing was not created successfully. Try again.")
+    })
   }
 
   return (
     <div id={styles["create-listing-container"]}>
       <h1 style={{color: "white"}}>Create Listing</h1>
       <div id={styles["demo-card-container"]}>
-        <StudyCard {...demoOptions}/>
+        <StudyCard listingData={demoOptions} variant="demo" />
       </div>
       <Form id={styles["options-container"]} onSubmit={handleSubmit}>
         <Container className={styles["options-subcontainer"]}>
           <SingleOption
             name="Title"
             type="title"
-            options={modules}
+            options={titles}
             handleChange={handleSingleOptionChange}/>
           <SingleOption
             name="Description"
             type="desc"
-            options={modules}
+            options={desc}
             handleChange={handleSingleOptionChange}/>
         </Container>
         <Container className={styles["options-subcontainer"]}>
           <MultiOption
             name="Modules"
             type="modules"
-            options={modules}
+            options={tagData["modules"].map(tag => ({value: tag, label: tag}))}
             handleChange={handleMultipleOptionChange}/>
           <MultiOption
             name="Location"
             type="locations"
-            options={modules}
+            options={tagData["locations"].map(tag => ({value: tag, label: tag}))}
             handleChange={handleMultipleOptionChange}/>
           <MultiOption
             name="Faculty"
             type="faculties"
-            options={modules}
+            options={tagData["faculties"].map(tag => ({value: tag, label: tag}))}
             handleChange={handleMultipleOptionChange}/>
         </Container>
         <Container className={styles["options-subcontainer"]}>
@@ -174,11 +222,12 @@ export default function CreateListing() {
           <SingleOption
             name="Frequency"
             type="freq"
-            options={modules}
+            options={freq}
             handleChange={handleSingleOptionChange}/>
         </Container>
         <Button variant="success" type="submit">Create Listing</Button>
       </Form>
+      <Notif msg={msg} success={success} />
     </div>
   )
 }

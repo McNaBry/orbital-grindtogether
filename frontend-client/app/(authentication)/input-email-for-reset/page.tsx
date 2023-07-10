@@ -6,7 +6,7 @@ import SuddenlyRemember from '../suddenlyRemember';
 import CreateStatus from '../createStatus';
 
 import { Container, Button, Card, Form } from 'react-bootstrap'
-import './inputEmailForReset.css'
+import "../reusable.css"
 
 function SendRequestForReset() {
   return (
@@ -41,7 +41,7 @@ function InputEmailForReset() {
           "email": formData.get("email"),
         })
       }).then(payload => {
-        setMsg("The link will be sent to the email if it is valid")
+        setMsg("The link will be sent to the email if it is valid.")
         setSuccess(true)
       });
 
@@ -56,7 +56,7 @@ function InputEmailForReset() {
       //   setSuccess(false);
       // }
     } catch (error) {
-      setMsg("Unexpected error. Reload the page.")
+      setMsg("Unexpected error. Please reload the page.")
       setSuccess(false)
     }
 
@@ -66,7 +66,7 @@ function InputEmailForReset() {
 
   return (
     <Container className="input-email-for-reset-page">
-      <Card style={{ width: "18rem" }}>
+      <Card style={{ width: "22rem" }}>
         <Card.Img variant="top" src="images/padlock.png" alt="padlock" />
         <Card.Body>
           <Card.Title>Reset Password</Card.Title>

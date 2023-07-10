@@ -1,12 +1,14 @@
-"use client";
+"use client"
 
-import { useState, ChangeEvent, FormEvent } from "react";
-import Password from "../password";
-import Email from "../email";
-import "./signin.css";
-import Link from "next/link";
+import { useState, ChangeEvent, FormEvent } from "react"
+import Password from "../password"
+import Email from "../email"
+import "./signin.css"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
-import CreateStatus from "../createStatus";
+import CreateStatus from "../createStatus"
+import { useAuth } from '../../authProvider'
+// import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 function WelcomeBack() {
   return <h2 className="welcome-back"> Welcome Back! </h2>;
@@ -41,24 +43,25 @@ function ForgetPassword() {
 }
 
 function SignInPage() {
-  const [password, setPassword] = useState("");
-  const [msg, setMsg] = useState("");
-  const [success, setSuccess] = useState(false);
-
   const router = useRouter()
+  const auth = useAuth()
+  
+  const [password, setPassword] = useState("")
+  const [msg, setMsg] = useState("")
+  const [success, setSuccess] = useState(false)
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
+    setPassword(event.target.value)
+  }
 
   const dismissAlert = () => {
     setMsg("");
-    setSuccess(false);
-  };
+    setSuccess(false)
+  }
 
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
   
     try {
       const res = await fetch('http://localhost:5000/sign-in', {
@@ -70,15 +73,22 @@ function SignInPage() {
           email: formData.get('email'),
           password: formData.get('password'),
         }),
-      });
+      }).then(response => {
+        console.log(response.headers)
+        return response
+      })
   
       if (res.status == 200) {
-        setMsg("Sign in successful! Please wait...");
-        setSuccess(true);
-        router.push("/dashboard");
-        return;
+        setMsg("Sign in successful! Please wait...")
+        setSuccess(true)
+        // Store sign in token ID for future reference
+        await res.json().then(async data => {
+          await auth.signIn(data.tokenID)
+        })
+        router.push("/dashboard")
+        return
       } else {
-        setMsg("Cannot login. Please try again later.");
+        setMsg("Cannot login. Please try again.")
       }
       // else if (res.status === 404) {
       //   setMsg("Email cannot be found in the database. Please create an account.");
@@ -87,11 +97,11 @@ function SignInPage() {
       // } 
     } catch (error) {
       console.error("An error occurred:", error);
-      setMsg("Cannot login. Please try again later.");
+      setMsg("Cannot login. Please try again later.")
     }
   
-    setSuccess(false);
-    router.push("/sign-in");
+    setSuccess(false)
+    router.push("/sign-in")
   };
 
   return (
@@ -115,4 +125,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default SignInPage
