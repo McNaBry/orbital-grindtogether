@@ -28,6 +28,7 @@ const {
   getLikedListings,
   getCreatedListings,
 } = require("./listingDb")
+const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
@@ -96,18 +97,14 @@ app.post("/sign-in", async (req, res) => {
         maxAge: 60 * 60 * 24 * 7 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV == "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
       })
       .cookie("uid", users[0].uid, {
         maxAge: 60 * 60 * 24 * 7 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV == "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
       })
-      // const maxAge = 60 * 60 * 24 * 7 * 1000
-      // res.append('Set-Cookie', `authCookie=${seshCookie}; Max-Age=${maxAge}; Path=/; HttpOnly`)
-      // res.append('Set-Cookie', `uid=${users[0].uid}; Max-Age=${maxAge}; Path=/; HttpOnly`)
-      // Provide the frontend with the user's Firestore UID and full name
       res.status(200).json(users[0]).send()
     }
   } else {
@@ -115,22 +112,22 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
-app.post("/validate-token", async (req, res) => {
-  const authToken = req.cookies.jwt
-  if (authToken == undefined) {
-    res.status(400).send()
-    return
-  }
-  const users = await validateToken(authToken)
-  if (users.length == 0) {
-    console.log("Null array for user UID query")
-    res.status(400).send()
-  } else if (users.length >= 1) {
-    // If all goes well, only one user will be returned
-    // If not we still return the first user in the array
-    res.status(200).json(users[0]).send()
-  }
-})
+// app.post("/validate-token", async (req, res) => {
+//   const authToken = req.cookies.jwt
+//   if (authToken == undefined) {
+//     res.status(400).send()
+//     return
+//   }
+//   const users = await validateToken(authToken)
+//   if (users.length == 0) {
+//     console.log("Null array for user UID query")
+//     res.status(400).send()
+//   } else if (users.length >= 1) {
+//     // If all goes well, only one user will be returned
+//     // If not we still return the first user in the array
+//     res.status(200).json(users[0]).send()
+//   }
+// })
 
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -173,7 +170,7 @@ app.post("/reset-password", async (req, res) => {
   }
 })
 
-app.delete("/delete-account", async (req, res) => {
+app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
   const { email, password } = req.body
 
   // Check if details given are valid by signing in
@@ -212,29 +209,7 @@ app.delete("/delete-account", async (req, res) => {
   }
 })
 
-// middleware to extract token from cookie and verify it before use
-// const verifyIdToken = async (req, res, next) => {
-//   const idToken = req.cookies.idToken;
-
-//   if (!idToken) {
-//     return res.status(401).send("Unauthorised");
-//   }
-
-//   try {
-//     const decodedToken = await fireAuth.verifyIdToken(idToken);
-//     const userId = decodedToken.uid;
-//     const email = decodedToken.email;
-
-//     // we will attach the user object to the req object to be passed around
-//     req.user = { userId, email }
-//     next();
-//   } catch (error) {
-//     console.log('Failed to verify idToken:', error);
-//     res.status(401).send('Unauthorized');
-//   }
-// }
-
-app.post("/get-profile", async (req, res) => {
+app.post("/get-profile", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).json({}).send()
@@ -283,7 +258,7 @@ app.post("/get-profile", async (req, res) => {
 })
 
 // Update the database when the user modifies a field in the profile page
-app.post("/update-profile", async (req, res) => {
+app.post("/update-profile", verifyAuthCookie, async (req, res) => {
   try {
     const { fieldToUpdate, value } = req.body
     const uid = req.cookies.uid
@@ -344,7 +319,7 @@ app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) =>
   }
 })
 
-app.post("/sign-out", async (req, res) => {
+app.post("/sign-out", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -372,7 +347,7 @@ app.post("/sign-out", async (req, res) => {
 })
 
 // API Endpoint to create listing
-app.post("/create-listing", async (req, res) => {
+app.post("/create-listing", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -400,7 +375,7 @@ app.post("/get-listings", async (req, res) => {
   }
 })
 
-app.delete("/delete-listing", async (req, res) => {
+app.delete("/delete-listing", verifyAuthCookie, async (req, res) => {
   const { listingUID } = req.body
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
@@ -415,7 +390,7 @@ app.delete("/delete-listing", async (req, res) => {
   }
 })
 
-app.post("/get-dashboard-listings", async (req, res) => {
+app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     console.log(uid)
@@ -429,7 +404,7 @@ app.post("/get-dashboard-listings", async (req, res) => {
   return res.json(results).send()
 })
 
-app.post("/like-listing", async (req, res) => {
+app.post("/like-listing", verifyAuthCookie, async (req, res) => {
   const { listingUID, action } = req.body
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {

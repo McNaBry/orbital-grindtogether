@@ -9,9 +9,7 @@ type StudyListingsProps = {
 }
 
 export default function StudyListings({ page, limit, filters, data, variant } : StudyListingsProps) {
-  if (data.length == 0 || data == null) return (<h1>Data null error</h1>)
-
-  console.log(data)
+  if (data.length == 0 || data == null) return (<h1>No listings found.</h1>)
 
   const filterData = data.filter(listing => {
     const categories = Object.keys(listing.tags)

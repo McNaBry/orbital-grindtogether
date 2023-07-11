@@ -90,7 +90,7 @@ function SignInPage() {
         await res.json().then(async data => {
           await auth.signIn(data.fullName)
         })
-        //router.push("/dashboard")
+        router.push("/dashboard")
         return
       } else {
         setMsg("Cannot login. Please try again.")
