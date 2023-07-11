@@ -43,7 +43,8 @@ function EditButton(
 
 /* Variants:
   1. Display. For display only. No edit or delete button.
-  2. Modify. For modification only. No like button.
+  2. Dashboard-Display. Liked listings on dashboard.
+  3. Modify. For modification only. No like button.
   3. Delete. For deletion. No buttons.
 */
 function CardActionBar(
@@ -51,8 +52,8 @@ function CardActionBar(
   { variant: string, listingData: StudyListing, router: AppRouterInstance }) {
   return (
     <small id={cardStyles["action-bar"]}>
-      { variant == "display"
-        ? <LikeButton listingUID={listingData.id} />
+      { variant == "display" || variant == "dashboard-display"
+        ? <LikeButton listingData={listingData} variant={variant} />
         : <></>
       }
       { variant == "modify"

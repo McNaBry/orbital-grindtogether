@@ -55,7 +55,8 @@ export default function CreateListing({ searchParams } : any) {
     date:     editMode ? new Date(urlParams.get('date') || Date.now()) : defaultOptions['date'],
     freq:     editMode ? urlParams.get("freq") : defaultOptions['freq'],
     interest: editMode ? parseInt(urlParams.get("interest") || '0') : defaultOptions['interest'],
-    id:       editMode ? urlParams.get("id") : defaultOptions['id']
+    id:       editMode ? urlParams.get("id") : defaultOptions['id'],
+    liked:    false
   })
 
   // Hooks for notification popup
@@ -73,8 +74,8 @@ export default function CreateListing({ searchParams } : any) {
       return
     }
     
-    const endpoint = editMode ? 'http://localhost:5000/edit-listing' : 
-    'http://localhost:5000/create-listing'
+    const endpoint = editMode ? `${process.env.NEXT_PUBLIC_API_URL}/edit-listing` : 
+    `${process.env.NEXT_PUBLIC_API_URL}/create-listing`
     const action = editMode ? "updated" : "created"
 
     await fetch(endpoint, {
@@ -82,10 +83,8 @@ export default function CreateListing({ searchParams } : any) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        ...demoOptions,
-        userID: userID // For testing
-      }),
+      body: JSON.stringify(demoOptions),
+      credentials: "include"
     })
     .then(async data => {
       if (!data.ok) {

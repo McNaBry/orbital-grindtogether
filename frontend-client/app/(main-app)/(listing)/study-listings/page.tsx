@@ -24,12 +24,13 @@ export default function ListingsPage() {
   })
 
   // Method to fetch data from the server
-  const fetcher = async (url:string) => fetch(url, {method: 'POST'}).then(res => {
-    return res.json()
-  })
+  const fetcher = async (url:string) => fetch(url, {method: 'POST', credentials: "include"})
+    .then(res => {
+      return res.json()
+    })
 
   // useSWR hook that wraps around the fetcher method
-  const { data, error, isLoading } = useSWR("http://localhost:5000/get-listings", fetcher, {
+  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/get-listings`, fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
   })

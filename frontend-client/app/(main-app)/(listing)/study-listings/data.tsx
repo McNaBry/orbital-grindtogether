@@ -18,7 +18,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  20,
-    id:        "invite1"
+    id:        "invite1",
+    liked:     false
   },
 
   {
@@ -29,7 +30,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  0,
-    id:        "invite2"
+    id:        "invite2",
+    liked:     false
   },
 
   {
@@ -40,7 +42,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Once",
     interest:  2,
-    id:        "invite3"
+    id:        "invite3",
+    liked:     false
   },
 
   {
@@ -51,7 +54,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  50,
-    id:        "invite4"
+    id:        "invite4",
+    liked:     false
   },
 
   {
@@ -62,6 +66,7 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Once",
     interest:  2,
-    id:        "invite5"
+    id:        "invite5",
+    liked:     false
   }
 ]

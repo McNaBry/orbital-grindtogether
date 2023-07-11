@@ -1,6 +1,5 @@
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies'
 import { NextRequest, NextResponse } from 'next/server'
-import cookies from 'universal-cookie'
 
 // Using Next.js API routes to act as a proxy
 // httpOnly cookies cannot be accessed on the browser using JS
@@ -8,7 +7,7 @@ import cookies from 'universal-cookie'
 export async function POST(request: NextRequest) {
   const data = await request.json()
   
-  const res = await fetch('http://localhost:5000/sign-in', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

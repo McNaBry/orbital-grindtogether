@@ -14,7 +14,8 @@ export type StudyListing = {
   date:      Date | null,
   freq:      string,
   interest:  number,
-  id:        string
+  id:        string,
+  liked:     boolean
 }
 
 function Tags({ tags } : Pick<StudyListing, "tags">) {

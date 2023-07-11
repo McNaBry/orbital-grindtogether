@@ -2,7 +2,14 @@ const admin = require('firebase-admin')
 const { getFirestore, FieldValue } = require('firebase-admin/firestore')
 const { getStorage } = require("firebase-admin/storage")
 
-const serviceAccount = require("./grindtogether-a123b-firebase-adminsdk-r5k9c-abc27d783a.json")
+const NodeRSA = require('node-rsa')
+const encryptedJSON = require('./gt-serviceacc-encrypt.json')
+const key = new NodeRSA()
+// Import private key for decryption
+key.importKey(process.env.RSA_PRIVATE_KEY, process.env.DECRYPT_SCHEME)
+// Retrieve encrypted string
+// Decrypt the string and parse it into a JSON object
+const serviceAccount = JSON.parse(key.decrypt(encryptedJSON.encryptedString, 'utf8'))
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

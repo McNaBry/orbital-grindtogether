@@ -7,17 +7,17 @@ async function getListing(listingUID) {
     .get()
 }
 
-async function getListings() {
+async function getListings(userID) {
   const snapshot = await db
     .collection("listings")
     .orderBy("date")
     .get()
-  return await processListings(snapshot)
+  return await processListings(userID, snapshot)
 }
 
 async function createListing(userID, data) {
   const listing = {
-    createdBy: data.userID,
+    createdBy: userID,
     title: data.title,
     desc : data.desc,
     tags : {
@@ -74,7 +74,10 @@ async function likeListing(userID, listingUID, action) {
     .update({
       likes: action == "like" 
         ? FieldValue.arrayUnion(userID)
-        : FieldValue.arrayRemove(userID)
+        : FieldValue.arrayRemove(userID),
+      interest: action == "like" 
+        ? FieldValue.increment(1)
+        : FieldValue.increment(-1),
     })
     .then(res => true)
     .catch(err => {
@@ -97,8 +100,7 @@ async function likeListing(userID, listingUID, action) {
 
 // Function that processes listings obtained from a Firestore Query snapshot
 // As references to users are stored by their doc UID, it needs to be converted to the user's fullname
-async function processListings(listingSnapshot) {
-  // if (!listingSnapshot.exists) return []
+async function processListings(userID, listingSnapshot) {
   const results = []
   // Note: Can't use forEach. Have to use a for..of loop for async 
   for (const doc of listingSnapshot.docs) {
@@ -108,7 +110,8 @@ async function processListings(listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Anonymous" : userData.fullName
+      createdBy: !user.exists ? "Anonymous" : userData.fullName,
+      liked: docData.likes.includes(userID)
     }
     results.push(docData)
   }
@@ -125,7 +128,7 @@ async function getLikedListings(userID) {
   snapshot.forEach(doc => {
     results.push(doc.data())
   })
-  return await processListings(snapshot)
+  return await processListings(userID, snapshot)
 }
 
 async function getCreatedListings(userID) {
@@ -134,7 +137,7 @@ async function getCreatedListings(userID) {
     .where('createdBy', '==', userID)
     .orderBy('date')
     .get()
-  return await processListings(snapshot)
+  return await processListings(userID, snapshot)
 }
 
 module.exports = {
