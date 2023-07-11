@@ -64,6 +64,11 @@
   margin: 0px 0px 0px 6px;
 }
 
+.loading-like-button {
+  background: rgb(237,37,83);
+  background: linear-gradient(90deg, rgba(237,37,83,1) 0%, rgba(175,105,237,1) 100%);
+}
+
 #action-bar {
   display: flex;
   flex-direction: row;

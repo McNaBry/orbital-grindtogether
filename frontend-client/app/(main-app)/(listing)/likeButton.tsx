@@ -11,7 +11,7 @@ import classnames from "classnames"
 
 function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {
   return (
-    <Button variant="danger" disabled>
+    <Button className = {cardStyles["loading-like-button"]} variant="danger" disabled>
         <Spinner
           as="span"
           animation="border"
