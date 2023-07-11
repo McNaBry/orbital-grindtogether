@@ -1,25 +1,41 @@
 "use client"
 
 import { useState, ChangeEvent, FormEvent } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "../../authProvider"
+
 import Password from "../password"
 import Email from "../email"
-import styles from "./signin.module.css"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import CreateStatus from "../createStatus"
-import { useAuth } from '../../authProvider'
-// import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+import { Row, Button, Spinner } from "react-bootstrap"
+import styles from "./signin.module.css"
 
 function WelcomeBack() {
   return <h2 id={styles["welcome-back"]}> Welcome Back! </h2>;
 }
 
-function Login() {
+function Login({ isLoading } : { isLoading: boolean }) {
   return (
-    <button type="submit" className="btn mb-3" id={styles["login"]}>
-      Login
-    </button>
-  );
+    <>
+      { isLoading
+        ? <Button disabled type="submit" className="mb-3" id={styles["login"]} style={{width: "180px"}}>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span style={{marginLeft: "5px"}}>Logging in...</span>
+          </Button>
+
+        : <Button type="submit" className="mb-3" id={styles["login"]}>
+            Login
+          </Button>
+      }
+    </>
+  )
 }
 
 function NoAccount() {
@@ -51,9 +67,10 @@ function SignInPage() {
   const router = useRouter()
   const auth = useAuth()
   
-  const [password, setPassword] = useState("")
-  const [msg, setMsg] = useState("")
-  const [success, setSuccess] = useState(false)
+  const [password, setPassword] = useState<string>("")
+  const [msg, setMsg] = useState<string>("")
+  const [success, setSuccess] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
@@ -66,6 +83,7 @@ function SignInPage() {
 
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.currentTarget)
   
     try {
@@ -95,40 +113,34 @@ function SignInPage() {
       } else {
         setMsg("Cannot login. Please try again.")
       }
-
-
-      // else if (res.status === 404) {
-      //   setMsg("Email cannot be found in the database. Please create an account.");
-      // } else if (res.status === 401) {
-      //   setMsg("Password is incorrect.");
-      // } 
     } catch (error) {
-      console.error("An error occurred:", error);
+      console.error("An error occurred:", error)
       setMsg("Cannot login. Please try again later.")
     }
   
     setSuccess(false)
+    setIsLoading(false)
     router.push("/sign-in")
   };
 
   return (
-    <div className={"row " + styles["sign-in-page"]}>
+    <Row className={styles["sign-in-page"]}>
       <div className={styles["left-half"] + " col-1 col-md-6"}/>
       <div className={styles["right-half"] + " col-10 col-md-5"}>
         <form onSubmit = {submitForm}>
           <WelcomeBack />
           <Email />
           <Password value={password} onChange={handlePasswordChange} />
-          <Login />
+          <Login isLoading={isLoading} />
           <CreateStatus msg={msg} 
-          success={success} 
-          dismissAlert={dismissAlert}/>
+            success={success} 
+            dismissAlert={dismissAlert}/>
           <NoAccount />
           <ForgetPassword />
         </form>
       </div>
       <div className="col-1"/>
-    </div>
+    </Row>
   );
 }
 

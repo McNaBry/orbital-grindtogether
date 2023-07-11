@@ -6,8 +6,7 @@ const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
 // const nodemailer = require("nodemailer");
-const cookieParser = require("cookie-parser");
-// const Cookies = require('universal-cookie')
+const cookieParser = require("cookie-parser")
 
 const { db, fireAuth, storage, bucket } = require("./firebase")
 const {
