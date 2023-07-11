@@ -8,33 +8,27 @@ import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
-import LikeButton from "../(listing)/likeButton"
-import { useAuth } from "../../authProvider"
+import UploadProfilePic from "./uploadProfilePic"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+
+const deleteAccountIcon = "/images/delete-account.png"
 
 function EditProfile() {
   return <h1 style={{ color: "white" }}> Profile Page </h1>
 }
 
-function UploadProfilePic() {
-  return (
-    <div>
-      <label
-        htmlFor="pictureUpload"
-        className="btn btn-primary upload-profile-pic"
-      >
-        Upload Profile Picture
-        <input
-          type="file"
-          id="pictureUpload"
-          accept="image/png, image/jpeg, image/svg"
-        />
-      </label>
-    </div>
-  )
+function NoProfilePic() {
+  return <div className="no-profile-pic"></div>
 }
 
-function ProfilePic() {
-  return <div className="profile-pic"></div>
+function ProfilePic({ profilePic }: {profilePic: string}) {
+  return (
+    <div className="profile-pic">
+      {profilePic ? <img src={profilePic}></img> : <NoProfilePic />}
+    </div>
+  )
 }
 
 function NameCard({ name }: { name: string }) {
@@ -61,7 +55,7 @@ function OptInForListings(
 
   // Everytime user clicks it will update the server
   const handleClick = async (event: ChangeEvent<HTMLInputElement>) => {
-    await fetch("http://localhost:5000/update-opt-in-status", {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-opt-in-status`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,8 +86,29 @@ function OptInForListings(
   )
 }
 
-function ProfilePage() {
-  const auth = useAuth()
+  // This button is different from the one in delete-account; it just redirects to the page
+  function DeleteAccount({ email, router } : { email: string, router: AppRouterInstance}) {
+    const onClick = () => {
+      router.push(`/delete-account?email=${email}`)
+    }
+
+    return (
+      <button id="profile-delete-account" className="btn mb-3" onClick={onClick}>
+        <Image
+          width={20}
+          height={20}
+          src={deleteAccountIcon}
+          style={{ marginRight: "5px" }}
+          alt="Delete Account"
+        />
+        Delete Account
+      </button>
+    )
+  }
+
+export default function ProfilePage() {
+  const router = useRouter()
+
   const [fields, setFields] = useState({
     email: "",
     fullName: "",
@@ -104,22 +119,23 @@ function ProfilePage() {
     rating: 0,
     optInStatus: false
   })
+  const [profilePic, setProfilePic] = useState("")
 
   // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(auth.user.uid)
-        const response = await fetch("http://localhost:5000/get-profile", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-profile`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ uid: window.localStorage.getItem("uid") }),
+          credentials: "include"
         })
         let data = await response.json()
         console.log(data)
         setFields(data)
+        setProfilePic(data.profilePic || "")
       } catch (error) {
         console.log("User not found.")
       }
@@ -130,7 +146,7 @@ function ProfilePage() {
 
   // Function to handle change on the Editable Card.
   // Triggered by save changes button.
-  const handleFieldChange = ({
+  const handleFieldChange = async ({
     fieldToUpdate,
     value,
   }: {
@@ -142,24 +158,55 @@ function ProfilePage() {
 
     const updatedProfileData = { [fieldToUpdate]: value }
 
-    fetch("http://localhost:5000/update-profile", {
+    const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-profile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        uid: window.localStorage.getItem("uid"),
         fieldToUpdate: fieldToUpdate,
         value: value,
       }),
+      credentials: "include"
     })
+
+    if (uploadRes.status == 200) {
+      console.log("Update successful")
+    }
+  }
+
+  const handleProfilePicUpload = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    // check if the file does exist; if it does then take the first file
+    const file = event.target.files && event.target.files[0]
+
+    if (file) {
+      const generatedURL = URL.createObjectURL(file)
+      setProfilePic(generatedURL)
+      console.log(generatedURL)
+
+      const formData = new FormData()
+      formData.append("profilePic", file)
+
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
+          method: "POST",
+          body: formData,
+          credentials: "include"
+        })
+        console.log("profile picture uploaded?")
+      } catch (error) {
+        console.log("welp didnt work out mate")
+      }
+    }
   }
 
   return (
     <div className="profile-page-container">
       <EditProfile />
-      <ProfilePic />
-      <UploadProfilePic />
+      <ProfilePic profilePic={profilePic} />
+      <UploadProfilePic onUpload={handleProfilePicUpload} />
       <NameCard name={fields.fullName} />
       <EmailCard email={fields.email} />
       <EditableCard
@@ -200,8 +247,12 @@ function ProfilePage() {
           ...fields,
           optInStatus: optInStatus
         })}/>
+      <div className="button-container">
+        <SignOutButton />
+        <DeleteAccount 
+          email={fields.email}
+          router={router} />
+      </div>
     </div>
   )
 }
-
-export default ProfilePage

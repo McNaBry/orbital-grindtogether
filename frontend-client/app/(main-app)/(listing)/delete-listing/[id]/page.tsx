@@ -25,13 +25,18 @@ type DeleteListingProps = {
 
 export default function DeleteListing({ params, searchParams }: DeleteListingProps) {
   const router = useRouter()
+  // useState hooks to manipulate pop up notification
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
 
+  // Retrieve URL search params taht were passed in
   const urlParams = new URLSearchParams(searchParams)
+  // Unpack tags into the respective categories
   const tags = urlParams.get("tags")?.split("|") || []
+  // Set each field to the respective URL search param value(s)
+  // These fields are used to display the details of the listing to be deleted
   const listing: StudyListing = {
-    createdBy: urlParams.get('createdBy') || "Annonymous",
+    createdBy: urlParams.get('createdBy') || "Anonymous",
     title: urlParams.get('title') || "Title",
     desc: urlParams.get('desc') || "Desc",
     tags: {
@@ -42,31 +47,27 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
     date: new Date(urlParams.get('date') || Date.now()),
     freq: urlParams.get('freq') || "Every day",
     interest: parseInt(urlParams.get('interest') || '0'),
-    id: urlParams.get('id') || ""
+    id: urlParams.get('id') || "",
+    liked: false
   }
 
   async function deleteListing() {
-    const userID = window.localStorage.getItem("uid") || ""
-    if (userID == "") {
-      setSuccess(false)
-      setMsg("User ID not found. Please sign in.")
-    }
-
-    const deleteListingRes = await fetch("http://localhost:5000/delete-listing", {
+    const deleteListingRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete-listing`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userID: userID,
         listingUID: listing.id
-      })
+      }),
+      credentials: "include"
     })
 
     if (deleteListingRes.ok) {
       console.log("Delete successful")
       setSuccess(true)
       setMsg("Listing successfully deleted!")
+      await new Promise(resolve => setTimeout(resolve, 1000))
       router.push("/dashboard")
     } else {
       console.log("Delete unsuccessful")

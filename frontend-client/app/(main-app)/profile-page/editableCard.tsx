@@ -28,7 +28,7 @@ function EditableCard({ field, value, maxChars, onSave }: EditableCardProps) {
       <Card.Body>
         <Card.Title>{field}</Card.Title>
         {inEditingState ? (
-          <Card.Text id="edit-area">
+          <div id="edit-area">
             <textarea
               value={editedValue}
               maxLength = {maxChars}
@@ -37,12 +37,12 @@ function EditableCard({ field, value, maxChars, onSave }: EditableCardProps) {
               onChange={(event) => setEditedValue(event.target.value)}
             ></textarea>
             <SaveChanges onClick={handleSaveChanges} />
-          </Card.Text>
+          </div>
         ) : (
-          <Card.Text>
+          <div>
             {value}
             <EditButton onClick={handleEdit} />
-          </Card.Text>
+          </div>
         )}
       </Card.Body>
     </Card>
