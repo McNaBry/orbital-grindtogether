@@ -382,6 +382,17 @@ app.post("/like-listing", async (req, res) => {
   }
 })
 
+
+app.post("/report-user", async (req, res) => {
+  try {
+    const reportData = req.body
+    await db.collection("user-reports").add({reportData})
+    res.status(200).send()
+  } catch (error) {
+    res.status(500).send()
+  }
+})
+
 const port = 5000
 
 app.listen(port, () => console.log("Listening on " + port))

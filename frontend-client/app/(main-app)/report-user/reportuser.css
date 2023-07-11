@@ -1,0 +1,26 @@
+#report-user {
+    background-color: #ff8c00;
+    color: white;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 25px;
+    margin-left: 10px;
+    border-color: #ff8c00;
+    width: 180px;
+}
+
+.reason {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.disclaimer {
+    color: white;
+    font-size: 20px;
+}
