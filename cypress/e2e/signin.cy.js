@@ -7,7 +7,7 @@ describe("Sign in", () => {
         cy.contains("button", "Login").click()
         cy.get('[data-testid="create-status-msg"]').should(
             "have.text",
-            "Cannot login. Please try again later."
+            "Cannot login. Please try again."
         )
     })
 
@@ -19,7 +19,7 @@ describe("Sign in", () => {
         cy.contains("button", "Login").click()
         cy.get('[data-testid="create-status-msg"]').should(
             "have.text",
-            "Cannot login. Please try again later."
+            "Cannot login. Please try again."
         )
     })
 
@@ -33,5 +33,6 @@ describe("Sign in", () => {
             "have.text",
             "Sign in successful! Please wait..."
         )
+        cy.url().should("eq", "http://localhost:3000/dashboard")
     })
 })
