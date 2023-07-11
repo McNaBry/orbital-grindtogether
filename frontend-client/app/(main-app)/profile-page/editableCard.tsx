@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SaveChanges from "./saveChanges";
 import EditButton from "./editButton";
+import { Card } from "react-bootstrap"
 
 interface EditableCardProps {
   field: string;
@@ -23,32 +24,28 @@ function EditableCard({ field, value, maxChars, onSave }: EditableCardProps) {
   };
 
   return (
-    <div>
-      <div className="col-sm-6 editable-card">
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">{field}</h5>
-            {inEditingState ? (
-              <div className = "card-content">
-                <textarea
-                  value={editedValue}
-                  maxLength = {maxChars}
-                  rows = {2}
-                  cols = {75}
-                  onChange={(event) => setEditedValue(event.target.value)}
-                ></textarea>
-                <SaveChanges onClick={handleSaveChanges} />
-              </div>
-            ) : (
-              <div className = "card-content">
-                <p>{value}</p>
-                <EditButton onClick={handleEdit} />
-              </div>
-            )}
+    <Card>
+      <Card.Body>
+        <Card.Title>{field}</Card.Title>
+        {inEditingState ? (
+          <div id="edit-area">
+            <textarea
+              value={editedValue}
+              maxLength = {maxChars}
+              rows = {2}
+              cols = {75}
+              onChange={(event) => setEditedValue(event.target.value)}
+            ></textarea>
+            <SaveChanges onClick={handleSaveChanges} />
           </div>
-        </div>
-      </div>
-    </div>
+        ) : (
+          <div>
+            {value}
+            <EditButton onClick={handleEdit} />
+          </div>
+        )}
+      </Card.Body>
+    </Card>
   );
 }
 

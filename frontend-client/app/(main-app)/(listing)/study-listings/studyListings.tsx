@@ -4,10 +4,11 @@ type StudyListingsProps = {
   page: number, 
   limit: number,
   filters: { [key:string] : string[] },
-  data: StudyListing[]
+  data: StudyListing[],
+  variant: string
 }
 
-export default function StudyListings({ page, limit, filters, data } : StudyListingsProps) {
+export default function StudyListings({ page, limit, filters, data, variant } : StudyListingsProps) {
   if (data.length == 0 || data == null) return (<h1>Data null error</h1>)
 
   const filterData = data.filter(listing => {
@@ -32,7 +33,7 @@ export default function StudyListings({ page, limit, filters, data } : StudyList
     : filterData.slice((page - 1) * limit, page * limit)
 
   const listings = slicedData.map((listing) => {
-    return <StudyCard key={listing["id"]} {...listing} />
+    return <StudyCard key={listing["id"]} listingData={listing} variant={variant} />
   })
 
   return (
