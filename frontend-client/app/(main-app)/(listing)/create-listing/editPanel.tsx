@@ -1,7 +1,7 @@
 import { 
   Option, 
-  SelectFreeOption, SelectMultiOption, 
-  SelectFreeOptionProps, SelectMultiOptionProps,
+  SelectFreeOption, 
+  SelectMultiOption,
   DateOption 
 } from "./select"
 
@@ -31,34 +31,6 @@ const freq:Option[] = [
   { value: "One time only", label: "One time only" },
   { value: "Some weekdays", label: "Some weekdays" }
 ]
-
-function SingleOption({ name, type, options, defaultValue, handleChange } : SelectFreeOptionProps) {
-  return (
-    <SelectFreeOption
-      params={{
-        name: name,
-        type: type,
-        options: options,
-        defaultValue: defaultValue,
-        handleChange: handleChange
-      }}
-    />
-  )
-}
-
-function MultiOption({ name, type, options, defaultValue, handleChange } : SelectMultiOptionProps) {
-  return (
-    <SelectMultiOption
-      params={{
-        name: name,
-        type: type,
-        options: options,
-        defaultValue: defaultValue,
-        handleChange: handleChange
-      }}
-    />
-  )
-}
 
 type EditPanelProps = {
   editMode: boolean,
@@ -121,7 +93,7 @@ export default function EditPanel(
         params={{
           name: "Title",
           type: "title",
-          options: titles,
+          options: [...titles, {value: demoOptions.title, label: demoOptions.title}],
           defaultValue: !editMode 
             ? null : {value: demoOptions.title, label: demoOptions.title},
           handleChange: handleSingleOptionChange
@@ -131,7 +103,7 @@ export default function EditPanel(
         params={{
           name:"Description",
           type:"desc",
-          options: desc,
+          options: [...desc, {value: demoOptions.desc, label: demoOptions.desc}],
           defaultValue: !editMode
             ? null : {value: demoOptions.desc, label: demoOptions.desc},
           handleChange: handleSingleOptionChange

@@ -361,11 +361,16 @@ app.post("/create-listing", verifyAuthCookie, async (req, res) => {
 })
 
 app.post("/edit-listing", async (req, res) => {
-  const editListingRes = await updateListing(req.body.id, req.body)
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const editListingRes = await updateListing(uid, req.body.id, req.body)
   if (editListingRes) {
-    res.send(200).send()
+    res.status(200).send()
   } else {
-    res.send(400).send()
+    res.status(400).send()
   }
 })
 

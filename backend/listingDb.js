@@ -35,12 +35,25 @@ async function createListing(userID, data) {
   return !docRef.empty
 }
 
-async function updateListing(listingUID, data) {
-  // TODO
-  const docRef = await db.collection("listings").doc(listingUID)
-  console.log(docRef)
+async function updateListing(userID, listingUID, data) {
+  const listingRef = db.collection("listings").doc(listingUID)
+  const listingData = (await listingRef.get()).data()
+  if (listingData.createdBy != userID) return false
+
+  const updatedListing = {
+    title: data.title,
+    desc : data.desc,
+    tags : {
+      modules  : data.tags.modules,
+      locations: data.tags.locations,
+      faculties: data.tags.faculties
+    },
+    date : data.date,
+    freq : data.freq,
+  }
+  
   try {
-    await docRef.update(data)
+    await listingRef.update(updatedListing)
     console.log("Successfully updated record")
     return true
   } catch (error) {

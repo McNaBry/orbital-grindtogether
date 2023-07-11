@@ -38,8 +38,7 @@ export default function CreateListing({ searchParams } : any) {
   
   // Boolean flag to determine whether a NEW listing is being created
   // Or an EXISTING listing is being edited
-  const editParam = urlParams.get("edit") || "create"
-  const editMode = editParam == "create" ? false : true
+  const editMode = (urlParams.get("edit") || "create") != "create"
   const tags = urlParams.get("tags")?.split("|") || []
 
   // Options to be displayed on the card as a preview (demo)
@@ -66,16 +65,10 @@ export default function CreateListing({ searchParams } : any) {
   // Function to handle form submit and create/update listing
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    // Retrieve user firestore id so that backend can identify who is creating/editing
-    const userID = window.localStorage.getItem("uid")
-    if (userID == null || userID == "") {
-      setSuccess(false)
-      setMsg("Cannot find user. Sign in again.")
-      return
-    }
     
-    const endpoint = editMode ? `${process.env.NEXT_PUBLIC_API_URL}/edit-listing` : 
-    `${process.env.NEXT_PUBLIC_API_URL}/create-listing`
+    const endpoint = editMode 
+      ? `${process.env.NEXT_PUBLIC_API_URL}/edit-listing` 
+      : `${process.env.NEXT_PUBLIC_API_URL}/create-listing`
     const action = editMode ? "updated" : "created"
 
     await fetch(endpoint, {
@@ -87,17 +80,17 @@ export default function CreateListing({ searchParams } : any) {
       credentials: "include"
     })
     .then(async data => {
+      // Server responds with error
       if (!data.ok) {
         setSuccess(false)
         setMsg(`Sorry! Listing was not ${action} successfully. Try again.`)
         return
       }
-
+      // Listing created/edited successfully
       setSuccess(true)
       setMsg(`Listing has been ${action}! View it on your Dashboard or View Listings`)
       await new Promise(r => setTimeout(r, 2000))
       router.push("/dashboard")
-
     })
     .catch(error => {
       console.log(error)
@@ -108,7 +101,7 @@ export default function CreateListing({ searchParams } : any) {
 
   return (
     <div id={styles["create-listing-container"]}>
-      <h1 style={{color: "white"}}>Create Listing</h1>
+      <h1 style={{color: "white"}}>{editMode ? "Edit" : "Create"} Listing</h1>
       <div id={styles["demo-card-container"]}>
         <StudyCard listingData={demoOptions} variant="demo" router={router}/>
       </div>
