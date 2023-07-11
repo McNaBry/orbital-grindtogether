@@ -1,6 +1,6 @@
 const NodeRSA = require('node-rsa');
 const fs = require('fs')
-const firebaseAcc = require("<Service account json filepath>")
+const firebaseAcc = require("./grindtogether-a123b-2a887f7301a7.json")
 
 function genKeyPair() {
   const key = new NodeRSA({b: 512});
@@ -22,12 +22,12 @@ function encryptJSON(jsonObj, publicKey) {
   const key = new NodeRSA({b: 512});
   key.importKey(publicKey, 'pkcs8-public-pem');
   const encrypted = key.encrypt(JSON.stringify(jsonObj), 'base64');
-  fs.writeFileSync("<Filepath for encrypted string>", encrypted, (err) => {
+  fs.writeFileSync("encrypted_key.txt", encrypted, (err) => {
     if (err) console.log(err)
   })
   console.log('ENCRYPTED:');
   console.log(encrypted);
-  return "<Filepath for encrypted string>"
+  return "encrypted_key.txt"
 }
 
 function decryptJSON(filePath, privateKey) {
