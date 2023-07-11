@@ -1,6 +1,6 @@
 const NodeRSA = require('node-rsa');
 const fs = require('fs')
-const firebaseAcc = require("./grindtogether-a123b-2a887f7301a7.json")
+const firebaseAcc = require("<PATH TO SERVICE ACCOUNT JSON>")
 
 function genKeyPair() {
   const key = new NodeRSA({b: 512});
@@ -12,8 +12,14 @@ function genKeyPair() {
 
   console.log('\nPUBLIC:');
   console.log(publicKey);
+  fs.writeFileSync("public_key.txt", publicKey, (err) => {
+    if (err) console.log(err)
+  })
   console.log('\nPRIVATE:');
   console.log(privateKey);
+  fs.writeFileSync("private_key.txt", privateKey, (err) => {
+    if (err) console.log(err)
+  })
 
   return { public: publicKey, private: privateKey }
 }
