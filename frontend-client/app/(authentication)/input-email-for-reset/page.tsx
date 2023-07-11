@@ -32,7 +32,7 @@ function InputEmailForReset() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const res = await fetch('http://localhost:5000/input-email-for-reset', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/input-email-for-reset`, {
         method: "POST",
         headers : {
           "Content-Type": "application/json",
