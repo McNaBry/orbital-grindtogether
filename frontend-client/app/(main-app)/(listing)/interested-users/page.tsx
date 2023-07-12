@@ -1,10 +1,10 @@
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/router"
 import { ListGroup, ListGroupItem } from "react-bootstrap"
 
 function InterestedUsersPage() {
     const router = useRouter()
     const { interestedUsers } = router.query
-
+    console.log(interestedUsers)
     const interestedUsersArr = interestedUsers ? JSON.parse(interestedUsers) : []
 
    return (

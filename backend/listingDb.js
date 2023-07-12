@@ -135,12 +135,14 @@ async function getListingLikers(listingID) {
   const nameOfLikers = []
   
   if (snapshot.exists) {
-    const likers = snapshot.data.likes;
+    const likers = snapshot.data().likes;
+    console.log(likers)
     
-    for (liker in likers) {
-      const userSnapshot = await db.collection("users").doc(liker).get()
-      const username = userSnapshot.data.fullName;
-      nameOfLikers.add(username)
+    for (let i = 0; i < likers.length; i += 1) {
+      console.log(likers[i])
+      const userSnapshot = await db.collection("users").doc(likers[i]).get()
+      const username = userSnapshot.data().fullName;
+      nameOfLikers.push(username)
     }
   } 
 

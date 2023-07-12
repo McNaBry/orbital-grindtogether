@@ -469,8 +469,15 @@ app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
 
 app.post("/get-interested-users", async (req, res) => {
   const { listingUID } = req.body
-  const users = await getListingLikers(listingUID);
-  res.status(200).json(users)
+  
+  try {
+    const users = await getListingLikers(listingUID);
+    console.log(users)
+    res.status(200).json(users)
+  } catch (error) {
+    console.error("error getting likers list", error)
+    res.status(500).send()
+  }
 })
 
 app.post("/like-listing", verifyAuthCookie, async (req, res) => {

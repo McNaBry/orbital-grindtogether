@@ -10,6 +10,7 @@ import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import Form from "react-bootstrap/Form"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 const deleteAccountIcon = "/images/delete-account.png"
