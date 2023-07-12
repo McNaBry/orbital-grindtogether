@@ -78,7 +78,7 @@ app.post("/sign-in", async (req, res) => {
   */
   const signInRes = await signInUser(email, password)
 
-  if (signInRes.status == 200) {
+  if (signInRes != undefined && signInRes.status == 200) {
     // Retrieve the id token that Firebase Auth returns
     const idToken = signInRes.data.idToken
 
@@ -472,7 +472,7 @@ app.post("/get-interested-users", async (req, res) => {
   
   try {
     const users = await getListingLikers(listingUID);
-    console.log(users)
+    console.log("Users: ", users)
     res.status(200).json(users)
   } catch (error) {
     console.error("error getting likers list", error)
