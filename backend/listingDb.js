@@ -1,4 +1,4 @@
-const { db } = require("./firebase")
+const { db, FieldValue } = require("./firebase")
 
 async function getListing(listingUID) {
   const docRef = await db
@@ -7,21 +7,21 @@ async function getListing(listingUID) {
     .get()
 }
 
-async function getListings() {
+async function getListings(userID) {
   const snapshot = await db
     .collection("listings")
     .orderBy("date")
     .get()
-  return await processListings(snapshot)
+  return await processListings(userID, snapshot)
 }
 
 async function createListing(userID, data) {
   const listing = {
-    createdBy: data.userID,
+    createdBy: userID,
     title: data.title,
     desc : data.desc,
     tags : {
-      modules: data.tags.modules,
+      modules  : data.tags.modules,
       locations: data.tags.locations,
       faculties: data.tags.faculties
     },
@@ -40,7 +40,6 @@ async function updateListing(userID, listingUID, fieldToUpdate, newValue) {
 }
 
 async function deleteListing(userID, listingUID) {
-  console.log("userID: ", userID, " listingID: ", listingUID)
   const docRef = await db.collection("listings").doc(listingUID).get()
   if (!docRef.exists) {
     return false
@@ -55,10 +54,43 @@ async function deleteListing(userID, listingUID) {
     .catch(err => false)
 }
 
+async function likeListing(userID, listingUID, action) {
+  console.log("User ID: ", userID, " Listing ID: ", listingUID, " action: ", action)
+  const listingRef = db.collection("listings").doc(listingUID)
+  const listingData = (await listingRef.get()).data()
+  // Limit max no. of users that like a listing to be 20
+  if (listingData.likes.length >= 20) return false
+  const updateListingRes = await listingRef
+    .update({
+      likes: action == "like" 
+        ? FieldValue.arrayUnion(userID)
+        : FieldValue.arrayRemove(userID),
+      interest: action == "like" 
+        ? FieldValue.increment(1)
+        : FieldValue.increment(-1),
+    })
+    .then(res => true)
+    .catch(err => {
+      console.log(err)
+      return false
+    })
+  if (!updateListingRes) return false
+  return await db.collection("users").doc(userID)
+    .update({
+      likes: action == "like" 
+        ? FieldValue.arrayUnion(listingUID)
+        : FieldValue.arrayRemove(listingUID)
+    })
+    .then(res => true)
+    .catch(err => {
+      console.log(err)
+      return false
+    })
+}
+
 // Function that processes listings obtained from a Firestore Query snapshot
 // As references to users are stored by their doc UID, it needs to be converted to the user's fullname
-async function processListings(listingSnapshot) {
-  // if (!listingSnapshot.exists) return []
+async function processListings(userID, listingSnapshot) {
   const results = []
   // Note: Can't use forEach. Have to use a for..of loop for async 
   for (const doc of listingSnapshot.docs) {
@@ -68,7 +100,8 @@ async function processListings(listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Anonymous" : userData.fullName
+      createdBy: !user.exists ? "Anonymous" : userData.fullName,
+      liked: docData.likes.includes(userID)
     }
     results.push(docData)
   }
@@ -85,7 +118,7 @@ async function getLikedListings(userID) {
   snapshot.forEach(doc => {
     results.push(doc.data())
   })
-  return await processListings(snapshot)
+  return await processListings(userID, snapshot)
 }
 
 async function getCreatedListings(userID) {
@@ -94,7 +127,7 @@ async function getCreatedListings(userID) {
     .where('createdBy', '==', userID)
     .orderBy('date')
     .get()
-  return await processListings(snapshot)
+  return await processListings(userID, snapshot)
 }
 
 async function getListingLikers(listingID) {
@@ -120,6 +153,7 @@ module.exports = {
   createListing,
   updateListing,
   deleteListing,
+  likeListing,
   processListings,
   getLikedListings, 
   getCreatedListings,

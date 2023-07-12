@@ -12,10 +12,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+  
+
+
   return (
-    <html lang="en">
+    <html lang="en" style={{width: "100%"}}>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
-      <body>
+      <body style={{
+        fontSize: "18px", 
+        margin: "0px", 
+        backgroundColor: "black", 
+        width: "100%"
+      }}>
         <AuthProvider>
           {children}
         </AuthProvider>
