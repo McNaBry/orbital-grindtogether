@@ -26,6 +26,7 @@
     padding: 0.6em;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     background-color: #4166f5;
+    border-color: #4166f5;
     color: white;
 }
 
@@ -149,4 +150,17 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+}
+
+.profile-pic-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+#remove-profile-pic {
+    background-color: #fa86c4;
+    border-color: #fa86c4; 
+    padding: 0.2em;
+    width: 250px;
 }
