@@ -26,7 +26,7 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
           ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
           : data[0].length == 0
             ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} variant="display" />}
+            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} variant="dashboard-display" />}
     </>
   )
 }
@@ -67,12 +67,10 @@ function ListingViewer({ option, data, error, isLoading } : ListingViewerProps) 
 
 export default function Dashboard() {
   const fetcher = async (url:string) => {
-    const userID = window.localStorage.getItem("uid")
-    if (userID == null || userID == "") return [[], []]
-    return await fetch(url + `?userID=${userID}`, { method: "POST" }).then(res => res.json())
+    return await fetch(url, { method: "POST", credentials: "include" }).then(res => res.json())
   }
 
-  const { data, isLoading, error } = useSWR(`http://localhost:5000/get-dashboard-listings`, 
+  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/get-dashboard-listings`, 
     fetcher,  {
       revalidateIfStale: false,
       revalidateOnFocus: false,

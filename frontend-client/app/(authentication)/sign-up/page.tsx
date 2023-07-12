@@ -13,6 +13,7 @@ import ValidatePassword from "../validatePassword"
 import { useAuth } from "../../authProvider"
 
 import * as pc from "./passwordChecks.js";
+import { Button, Spinner } from "react-bootstrap";
 
 function GetStarted() {
   return <h2 className={styles["get-started"]}> Get Started </h2>;
@@ -35,14 +36,27 @@ function Name() {
   );
 }
 
-function CreateAccount() {
+function CreateAccount({ isLoading } : { isLoading: boolean }) {
   return (
-    <button
-      type="submit"
-      className="btn mb-3"
-      id={styles["create-account"]}
-    > Create Account </button>
-  );
+    <>
+      { isLoading
+        ? <Button disabled type="submit" className="mb-3" id={styles["create-account"]} style={{width: "180px"}}>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span style={{marginLeft: "5px"}}>Creating...</span>
+          </Button>
+
+        : <Button type="submit" className="mb-3" id={styles["create-account"]}>
+            Create Account
+          </Button>
+      }
+    </>
+  )
 }
 
 function AlreadyHaveAccount() {
@@ -56,12 +70,12 @@ function AlreadyHaveAccount() {
 
 function SignUpPage() {
   const router = useRouter()
-  const auth = useAuth()
 
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [msg, setMsg] = useState<string>("")
   const [success, setSuccess] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -80,16 +94,20 @@ function SignUpPage() {
 
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.currentTarget)
     if (!ValidatePassword({
       pw: formData.get('password'), 
       confirmPw: formData.get('confirmPw'), 
       setMsg: setMsg, 
       setSuccess: setSuccess})
-    ) return
+    ) {
+      setIsLoading(false)
+      return
+    }
 
     try {
-      const res = await fetch('http://localhost:5000/sign-up', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-up`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +116,8 @@ function SignUpPage() {
           fullName: formData.get('fullName'),
           email: formData.get('email'),
           password: formData.get('password')
-        })
+        }),
+        credentials: "include"
       })
 
       if (res.status == 200) {
@@ -116,7 +135,7 @@ function SignUpPage() {
       console.log(error)
       setMsg("Account not created. Issue with server connection.")
       setSuccess(false)
-      return
+      setIsLoading(false)
     }
   }
 
@@ -135,7 +154,7 @@ function SignUpPage() {
             onChange={handleConfirmPasswordChange}
           />
         </div>
-        <CreateAccount />
+        <CreateAccount isLoading={isLoading} />
         <CreateStatus 
           msg={msg} 
           success={success} 

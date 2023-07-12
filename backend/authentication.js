@@ -92,10 +92,11 @@ async function validateOob(oobCode) {
   return validateOobRes.status == 200
 }
 
-async function validateToken(tokenID) {
-  // Verify tokenID and get email associated with the ID
+async function validateToken(authToken) {
+  if (authToken == "") return []
+  // Verify auth token and get email associated with the ID
   const decodedToken = await fireAuth
-    .verifyIdToken(tokenID)
+    .verifyIdToken(authToken)
     .then((decodedToken) => {
       return decodedToken.email
     })
