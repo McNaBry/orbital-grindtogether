@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, Badge, Button } from "react-bootstrap"
+import { Card, Badge, Button, Placeholder } from "react-bootstrap"
 import { tagData } from "../(listing)/study-listings/data"
 import {
   Option,
@@ -17,11 +17,12 @@ for (const key in tagData) {
 }
 
 type NotifFiltersProps = {
+  isLoading: boolean,
   filters: string[];
   onSave: (value: string[]) => void;
 }
 
-export default function NotifFilters({ filters, onSave } : NotifFiltersProps) {
+export default function NotifFilters({ isLoading, filters, onSave } : NotifFiltersProps) {
   // Toggle edit mode
   const [ editMode, setEditMode ] = useState<boolean>(false)
   // Hook to stage/store our updated filters
@@ -50,34 +51,36 @@ export default function NotifFilters({ filters, onSave } : NotifFiltersProps) {
   }
 
   const tags = filters.map(item => {
-    return <Badge key={item} className={mappedTagData[item] + " " + "tag"}>{ item }</Badge>
+    return <span key={item} className={"badge " + mappedTagData[item] + " " + "tag"}>{ item }</span>
   })
   
   return (
     <Card>
       <Card.Body>
         <Card.Title>Notification Filters</Card.Title>
-        <Card.Text id="notif-tag-row">
-          { tags }
-        </Card.Text>
-        { editMode
-          ? <SelectMultiOption
-              params={{
-                name: "Filters",
-                type: "filters",
-                defaultValue: filters.map(tag => ({ value: tag, label: tag })),
-                options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
-                handleChange: handleMultipleOptionChange
-              }} 
-            />
-          : <></>
+        { isLoading 
+          ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+          : <>
+          <Card.Text id="notif-tag-row">{ tags }</Card.Text>
+          { editMode
+            ? <SelectMultiOption
+                params={{
+                  name: "Filters",
+                  type: "filters",
+                  defaultValue: filters.map(tag => ({ value: tag, label: tag })),
+                  options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
+                  handleChange: handleMultipleOptionChange
+                }} 
+              />
+            : <></>
+          }
+          <ActionBar
+            editMode={editMode}
+            onEditChanges={handleEdit}
+            onSaveChanges={handleSaveChanges}
+            onCancelChanges={handleCancelChanges}
+          /> </>
         }
-        <ActionBar
-          editMode={editMode}
-          onEditChanges={handleEdit}
-          onSaveChanges={handleSaveChanges}
-          onCancelChanges={handleCancelChanges}
-        />
       </Card.Body>
     </Card>
   )

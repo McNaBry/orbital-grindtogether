@@ -27,9 +27,9 @@ function SaveButton({ onSaveChanges } : { onSaveChanges: () => void }) {
   return (
     <Button 
       variant="success" 
-      style={{marginRight: "5px"}}
+      style={{marginRight: "5px", marginBottom: "5px"}}
       onClick={onSaveChanges}>
-        Save Changes
+        Save
     </Button>
   )
 }
@@ -38,8 +38,9 @@ function CancelButton({ onCancelChanges } : { onCancelChanges: () => void }) {
   return (
     <Button 
       variant="danger" 
+      style={{marginBottom: "5px"}}
       onClick={onCancelChanges}>
-        Cancel Changes
+        Cancel
     </Button>
   )
 }

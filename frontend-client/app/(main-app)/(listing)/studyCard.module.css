@@ -24,6 +24,8 @@
 }
 
 .tag {
+  font-size: 14px;
+  padding: 6px 9px 6px 9px;
   margin-right: 5px;
   margin-bottom: 5px;
 }
