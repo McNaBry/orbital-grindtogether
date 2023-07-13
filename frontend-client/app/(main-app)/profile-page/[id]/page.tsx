@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import Image from "next/image"
 import Form from "react-bootstrap/Form"
-import NonEditableCard from "./nonEditableCard"
-import EditableCard from "./editableCard"
-import RatingCard from "./ratingCard"
-import SignOutButton from "./signOutButton"
-import UploadProfilePic from "./uploadProfilePic"
-import NotifFilters from "./notifFilters"
+import NonEditableCard from "../nonEditableCard"
+import EditableCard from "../editableCard"
+import RatingCard from "../ratingCard"
+import SignOutButton from "../signOutButton"
+import UploadProfilePic from "../uploadProfilePic"
+import NotifFilters from "../notifFilters"
 import "./profile-page.css"
 import { Placeholder } from "react-bootstrap"
-import RemoveProfilePic from "./removeProfilePic"
+import RemoveProfilePic from "../removeProfilePic"
 
 const deleteAccountIcon = "/images/delete-account.png"
 
@@ -124,6 +124,7 @@ function DeleteAccount({
 
 export default function ProfilePage() {
   const router = useRouter()
+  const { name } = router.query;
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [fields, setFields] = useState({
     email: "",
