@@ -1,17 +1,17 @@
 "use client"
 
 import { useState, useEffect, ChangeEvent } from "react"
+import { useRouter } from "next/navigation"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+import Image from "next/image"
 import Form from "react-bootstrap/Form"
-import "./profilepage.css"
-import "./nonEditableCard"
 import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
-import { useRouter } from "next/navigation"
-import Image from "next/image"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+import NotifFilters from "./notifFilters"
+import "./profile-page.css"
 
 const deleteAccountIcon = "/images/delete-account.png"
 
@@ -61,9 +61,9 @@ function OptInForListings(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        uid: window.localStorage.getItem("uid"),
         optInStatus: !optInStatus
       }),
+      credentials: "include"
     })
 
     setOptInStatus(!optInStatus)
@@ -73,7 +73,7 @@ function OptInForListings(
   const switchText = `Opt ${inOrOut} to receive email notifications whenever a listing is created.`
 
   return (
-    <Form>
+    <Form id="opt-in-form">
       <Form.Check
         type="switch"
         id="custom-switch"
@@ -115,8 +115,9 @@ export default function ProfilePage() {
     bio: "",
     year: 0,
     course: "",
-    telegramHandle: "@",
+    teleHandle: "@",
     rating: 0,
+    notifFilters: [""],
     optInStatus: false
   })
   const [profilePic, setProfilePic] = useState("")
@@ -151,13 +152,10 @@ export default function ProfilePage() {
     value,
   }: {
     fieldToUpdate: string
-    value: string | number
+    value: string | number | string[]
   }) => {
     // immediately update the state
     setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }))
-
-    const updatedProfileData = { [fieldToUpdate]: value }
-
     const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-profile`, {
       method: "POST",
       headers: {
@@ -202,6 +200,13 @@ export default function ProfilePage() {
     }
   }
 
+  function setNotifDisplay(values: string[]) {
+    setFields({
+      ...fields,
+      notifFilters: values
+    })
+  }
+
   return (
     <div className="profile-page-container">
       <EditProfile />
@@ -233,14 +238,18 @@ export default function ProfilePage() {
       />
       <EditableCard
         field="Telegram Handle"
-        value={fields.telegramHandle}
+        value={fields.teleHandle}
         maxChars={32}
         onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "telegramHandle", value })
+          handleFieldChange({ fieldToUpdate: "teleHandle", value })
         }
       />
       <RatingCard rating={fields.rating} />
-      <SignOutButton />
+      <NotifFilters 
+        filters={fields.notifFilters}
+        onSave={(value: string[]) =>
+          handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
+      />
       <OptInForListings 
         optInStatus = {fields.optInStatus}
         setOptInStatus={(optInStatus: boolean) => setFields({

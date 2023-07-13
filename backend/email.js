@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer")
+const { db, FieldValue } = require("./firebase")
 
 // Create a transporter using SMTP settings
 const transporter = nodemailer.createTransport({
@@ -22,21 +23,31 @@ transporter.verify(function (error, success) {
   }
 });
 
-async function test() {
-  const info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: "mcnabry123@gmail.com, tzejie.c@gmail.com", // list of receivers
-    subject: "Hello SIR", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
+async function updateNotifFilters(userID, filterArr) {
+  return await db
+    .collection("users")
+    .doc(userID)
+    .update({ notifFilters: filterArr })
+    .then(res => true)
+    .catch(err => {
+      console.log(err)
+      return false
+    })
+}
 
-  console.log("Message sent: %s", info.messageId);
+async function getSubscribedUsers(filterArr) {
+  const snapshot = await db
+    .collection("users")
+    .where("notifFilters", "array-contains-any", filterArr)
+    .where("optInStatus", "==", true)
+    .get()
+  const users = []
+  snapshot.forEach(doc => users.push(doc.data().email))
+  return users
 }
 
 async function sendToReceivers(receiversArr, subject, text) {
   const receiverString = receiversArr.join(", ")
-  console.log(receiverString)
   try {
     const info = await transporter.sendMail({
       from: 'GrindTogether', // sender address
@@ -51,6 +62,22 @@ async function sendToReceivers(receiversArr, subject, text) {
   }
 }
 
+async function sendListingNotif(listingData) {
+  const filterArr = [
+    ...listingData.tags.modules, 
+    ...listingData.tags.locations,
+    ...listingData.tags.faculties
+  ]
+  const userEmails = await getSubscribedUsers(filterArr)
+  if (userEmails.length == 0) return
+  await sendToReceivers(
+    userEmails, 
+    "GrindTogether: New Listing Created",
+    "Listing title: " + listingData.title
+  )
+}
+
 module.exports = {
-  sendToReceivers
+  updateNotifFilters,
+  sendListingNotif
 }
