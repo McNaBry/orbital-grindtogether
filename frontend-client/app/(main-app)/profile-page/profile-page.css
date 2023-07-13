@@ -5,6 +5,13 @@
   width: 100%;
 }
 
+.card {
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19); */
+  width: 60%;
+  margin-top: 2px;
+  border: none;
+}
+
 @media (max-width: 992px) {
   .card {
     width: 90%;
@@ -18,11 +25,23 @@
   margin-bottom: 40px;
 }
 
+.profile-pic-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .upload-profile-pic {
+  margin: 10px 10px 10px 0px;
   padding: 0.6em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   background-color: #4166f5;
   color: white;
+}
+
+#remove-profile-pic {
+  background-color: #fa86c4;
+  border-color: #fa86c4; 
+  margin: 10px 0px 10px 0px;
+  padding: 0.6em;
 }
 
 .upload-profile-pic input {
@@ -36,12 +55,6 @@
 
 .card-text {
   font-size: 21px;
-}
-
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19);
-  width: 60%;
-  margin-top: 2px;
 }
 
 .no-profile-pic {
@@ -62,11 +75,6 @@
   border-radius: 50%;
   border: none;
   overflow: hidden;
-}
-
-.upload-profile-pic {
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 #edit-area {

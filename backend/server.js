@@ -331,6 +331,22 @@ app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) =>
     return
   }
 
+  // If file given is empty, then user wants to DELETE the profile pic
+  if (file.buffer.length == 0) {
+    try {
+      const fileRef = bucket.file(`${uid}.png`)
+      fileRef.delete()
+      console.log('File deleted successfully')
+      res.status(200).json({ message: 'File deleted successfully' })
+      return
+    } catch (error) {
+      console.log("Profile Pic Deletion Error:\n")
+      console.log(error)
+      res.status(500).send()
+    }
+  }
+   
+  // If not, create a new profile pic or overwrite the existing one
   try {
     const fileRef = bucket.file(`${uid}.png`)
     const uploadStream = fileRef.createWriteStream({

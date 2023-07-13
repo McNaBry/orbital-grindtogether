@@ -89,8 +89,8 @@
 }
 
 #delete-button {
-  background: radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%)
-      padding-box,
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
     radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%) border-box;
   border-radius: 5px;
   border: 2px solid transparent;
@@ -101,15 +101,14 @@
 }
 
 #delete-button:hover {
-  background: radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%)
-      padding-box,
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%) padding-box,
     radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%) border-box;
 }
 
 #edit-button {
-  background-color: transparent;
-  background: radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%)
-      padding-box,
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
     radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%) border-box;
   border-radius: 5px;
   border: 2px solid transparent;
@@ -119,25 +118,26 @@
 }
 
 #edit-button:hover {
-  background: radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%)
-      padding-box,
+  background: 
+    radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%) padding-box,
     radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%) border-box;
 }
 
 #interested-users-button {
-  background: radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%)
-      padding-box,
-      radial-gradient(100% 100% at 100% 0, rgba(105,237,233,1) 0, rgba(114,105,237,1) 100%) border-box;
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, rgba(105,237,233,1) 0, rgba(114,105,237,1) 100%) border-box;
   border-radius: 5px;
   border: 2px solid transparent;
   padding: 5px;
   margin-right: 4px;
-  padding: 6px 24px 6px 24px;
+  padding: 6px 18px 6px 18px;
 }
 
 #interested-users-button:hover {
-  background: radial-gradient(100% 100% at 100% 0, rgba(105,237,233,1) 0, rgba(114,105,237,1) 100%) padding-box,
-      radial-gradient(100% 100% at 100% 0, rgba(105,237,233,1) 0, rgba(114,105,237,1) 100%) border-box;
+  background: 
+    radial-gradient(100% 100% at 100% 0, rgba(105,237,233,1) 0, rgba(114,105,237,1) 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, rgba(105,237,233,1) 0, rgba(114,105,237,1) 100%) border-box;
 }
 
 #edit-button:hover,
@@ -154,6 +154,6 @@
 
 #delete-button p,
 #edit-button p,
-#interested-users-button {
+#interested-users-button p {
   margin: 0px;
 }
