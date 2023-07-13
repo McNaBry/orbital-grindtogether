@@ -27,6 +27,11 @@ const {
   getLikedListings,
   getCreatedListings,
 } = require("./listingDb")
+const { firestore } = require("firebase-admin")
+const { 
+  updateNotifFilters,
+  sendListingNotif,
+} = require("./email")
 const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
@@ -224,21 +229,19 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
     file.exists()
       .then(async ([exists]) => {
         if (exists) {
-          console.log("Profile pic exists. Retrieving signed URL...")
           // Retrieve the download URL for frontend to fetch from
-          const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
           const signedUrl = await file.getSignedUrl({
             action: 'read',
-            expires: expiresAtMs,
+            expires: Date.now() + 60 * 60 * 1000, // Expiry date of the URL
           });
-          // console.log(signedUrl)
+          // Return the profile data with the signed URL included
           userData = {
             ...userData,
             profilePic: signedUrl
           }
           res.status(200).json(userData).send()
         } else {
-          console.log("Profile pic does not exist")
+          // Return the profile data with an empty URL
           userData = {
             ...userData,
             profilePic: ""
@@ -247,8 +250,7 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
         }
       })
       .catch(error => {
-        console.log("Error checking if file exists:\n")
-        console.log(error)
+        console.log("Error checking if file exists:\n", error)
         res.status(400).send()
       })
   } else {
@@ -276,10 +278,47 @@ app.post("/update-profile", verifyAuthCookie, async (req, res) => {
   }
 })
 
+// Update the database when the user clicks on the switch
+app.post("/update-opt-in-status", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  
+  try {
+    const { optInStatus } = req.body
+    console.log(optInStatus)
+    await db
+      .collection("users")
+      .doc(uid)
+      .update({ ["optInStatus"]: optInStatus })
+    res.status(200).send()
+  } catch (error) {
+    console.log("Opt in status is not updated:\n", error)
+    res.status(500).send()
+  }
+})
+
+app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return 
+  }
+
+  const filters = req.body.filters
+  const updateFilterRes = await updateNotifFilters(uid, filters)
+  if (updateFilterRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
 app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
-    console.log("No user ID detected")
     res.status(400).send()
     return 
   }
@@ -354,6 +393,31 @@ app.post("/create-listing", verifyAuthCookie, async (req, res) => {
   }
   const createListingRes = await createListing(uid, req.body)
   if (createListingRes) {
+    // Send OK status to the user who created the listing
+    // Whether the notification succeeds does not matter to the creator
+    res.status(200).send()
+
+    try {
+      // We will send an email to all users with optInStatus true
+      // And filter for those interested in the listing's tag
+      await sendListingNotif(req.body)
+    } catch (error) {
+      console.log(error)
+    }
+    
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post("/edit-listing", async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const editListingRes = await updateListing(uid, req.body.id, req.body)
+  if (editListingRes) {
     res.status(200).send()
   } else {
     res.status(400).send()

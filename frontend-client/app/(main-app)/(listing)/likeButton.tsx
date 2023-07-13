@@ -11,7 +11,7 @@ import classnames from "classnames"
 
 function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {
   return (
-    <Button variant="danger" disabled>
+    <button className = {cardStyles["loading-like-button"]}>
         <Spinner
           as="span"
           animation="border"
@@ -20,7 +20,7 @@ function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {
           aria-hidden="true"
         />
         <span style={{marginLeft: "5px"}}>{!likeStatus ? "Liking..." : "Unliking..."}</span>
-    </Button>
+    </button>
   )
 }
 
