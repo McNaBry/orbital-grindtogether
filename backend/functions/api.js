@@ -91,16 +91,18 @@ app.post("/sign-in", async (req, res) => {
       // Set httpOnly cookies on the frontend browser
       res
         .cookie("authCookie", seshCookie, {
+          path: "/",
           maxAge: 60 * 60 * 24 * 7 * 1000,
           httpOnly: true,
           secure: process.env.NODE_ENV == "production",
-          sameSite: "lax",
+          sameSite: "none",
         })
         .cookie("uid", users[0].uid, {
+          path: "/",
           maxAge: 60 * 60 * 24 * 7 * 1000,
           httpOnly: true,
           secure: process.env.NODE_ENV == "production",
-          sameSite: "lax",
+          sameSite: "none",
         })
       // const maxAge = 60 * 60 * 24 * 7 * 1000
       // res.append('Set-Cookie', `authCookie=${seshCookie}; Max-Age=${maxAge}; Path=/; HttpOnly`)
