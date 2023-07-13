@@ -1,23 +1,13 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import StudyCard, { StudyListing } from '../studyCard'
 import EditPanel from "./editPanel"
 import { Form, Button, Toast, ToastContainer } from 'react-bootstrap'
 import styles from './create-listing.module.css' 
-
-function Notif(
-  { msg, success } : { msg: string, success: boolean }) {
-  return (
-    <ToastContainer position="bottom-end" style={{position: "fixed", margin: "20px"}}>
-      <Toast bg={success ? "success" : "danger"} autohide={true} show={msg == "" ? false : true}>
-          <Toast.Body style={{color: "white"}}>{msg}</Toast.Body>
-      </Toast>
-    </ToastContainer>
-  )
-}
+import Notif from './notif'
 
 // Typescript has a weird error where you can't index the object with string keys
 // Hence instead of giving it a StudyListing type, it is given a dict type
@@ -61,6 +51,19 @@ export default function CreateListing({ searchParams } : any) {
   // Hooks for notification popup
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (msg != "") {
+      const timeout = setTimeout(() => {
+        setMsg("")
+        router.push("/dashboard")
+      }, 3000)
+
+      return () => {
+        clearTimeout(timeout)
+      }
+    }
+  }, [msg])
 
   // Function to handle form submit and create/update listing
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

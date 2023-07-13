@@ -1,10 +1,12 @@
 "use client"
 
-import { useState, FormEvent } from "react"
+import { useState, useEffect, FormEvent } from "react"
 import { Button } from "react-bootstrap"
 import DatePicker from "react-datepicker"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import "react-datepicker/dist/react-datepicker.css"
+import Notif from "../(listing)/create-listing/notif"
 import styles from "../../(authentication)/auth.module.css"
 import "./reportuser.css"
 
@@ -28,7 +30,7 @@ function Name() {
       </label>
       <input
         type="text"
-        name="fullName"
+        name="name"
         className="form-control"
         id="name"
       ></input>
@@ -82,7 +84,24 @@ function ReportUserButton() {
 }
 
 function ReportUserPage() {
-  // bryan please give me a popup when the report was successfully made thanku
+  const [success, setSuccess] = useState(false)
+  const [msg, setMsg] = useState("")
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (msg != "") {
+      const timeout = setTimeout(() => {
+        setMsg("")
+        router.push("/dashboard")
+      }, 3000)
+
+      return () => {
+        clearTimeout(timeout)
+      }
+    }
+  }, [msg])
+
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -103,9 +122,11 @@ function ReportUserPage() {
       })
 
       if (res.ok) {
-        console.log("report is successful")
+        setSuccess(true)
+        setMsg("Your report was successfully submitted.")
       } else {
-        console.log("report unsuccessful")
+        setSuccess(false)
+        setMsg("Your report was not successfully submitted.")
       }
     } catch (error) {
       console.error("encounter error:", error)
@@ -120,6 +141,7 @@ function ReportUserPage() {
         <DateOfOffence />
         <Reason />
         <ReportUserButton />
+        <Notif msg = {msg} success = {success} />
       </form>
     </div>
   )
