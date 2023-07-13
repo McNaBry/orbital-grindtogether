@@ -93,7 +93,9 @@ function ReportUserPage() {
     if (msg != "") {
       const timeout = setTimeout(() => {
         setMsg("")
-        router.push("/dashboard")
+        if (success) {
+          router.push("/dashboard")
+        }
       }, 3000)
 
       return () => {
@@ -107,7 +109,7 @@ function ReportUserPage() {
     const formData = new FormData(event.currentTarget)
 
     try {
-      const res = await fetch("http://localhost:5000/report-user", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/report-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,8 +119,8 @@ function ReportUserPage() {
           name: formData.get("name"),
           date: formData.get("date"),
           reason: formData.get("reason"),
-          reporter: "tj",
         }),
+        credentials: "include"
       })
 
       if (res.ok) {

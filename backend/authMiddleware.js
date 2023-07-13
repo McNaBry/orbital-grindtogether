@@ -3,7 +3,7 @@ const { fireAuth } = require("./firebase")
 // Middleware to verify session cookie for protected API endpoints
 async function verifyAuthCookie (req, res, next) {
   const authCookie = req.cookies.authCookie;
-
+  
   if (authCookie == undefined || authCookie == "") {
     return res.status(401).send("Unauthorised");
   }

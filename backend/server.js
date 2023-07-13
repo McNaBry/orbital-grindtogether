@@ -486,9 +486,11 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
 })
 
 
-app.post("/report-user", async (req, res) => {
+app.post("/report-user", verifyAuthCookie, async (req, res) => {
   try {
     const reportData = req.body
+    const uid = req.cookies.uid
+    reportData.reporter = uid
     await db.collection("user-reports").add({reportData})
     res.status(200).send()
   } catch (error) {
