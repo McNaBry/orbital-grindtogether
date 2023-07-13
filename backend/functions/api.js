@@ -94,13 +94,13 @@ app.post("/sign-in", async (req, res) => {
           maxAge: 60 * 60 * 24 * 7 * 1000,
           httpOnly: true,
           secure: process.env.NODE_ENV == "production",
-          sameSite: "none",
+          sameSite: "lax",
         })
         .cookie("uid", users[0].uid, {
           maxAge: 60 * 60 * 24 * 7 * 1000,
           httpOnly: true,
           secure: process.env.NODE_ENV == "production",
-          sameSite: "none",
+          sameSite: "lax",
         })
       // const maxAge = 60 * 60 * 24 * 7 * 1000
       // res.append('Set-Cookie', `authCookie=${seshCookie}; Max-Age=${maxAge}; Path=/; HttpOnly`)
