@@ -1,12 +1,11 @@
-import { useRouter } from "next/navigation"
 import LikeButton from "./likeButton"
 import cardStyles from "./studyCard.module.css"
 import { StudyListing } from "./studyCard"
 import { MouseEvent } from "react"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
-function DeleteButton({ listingData }: { listingData: StudyListing }) {
-  const router = useRouter()
-  let flattenedData = {
+function listingToURLParam(listingData: StudyListing) {
+  const flattenedData = {
     ...listingData,
     tags: [
       "modules," + listingData.tags.modules.join(","),
@@ -14,9 +13,13 @@ function DeleteButton({ listingData }: { listingData: StudyListing }) {
       "faculties," + listingData.tags.faculties.join(","),
     ].join("|"),
   }
-  const query = new URLSearchParams(
-    JSON.parse(JSON.stringify(flattenedData))
-  ).toString()
+  return new URLSearchParams(JSON.parse(JSON.stringify(flattenedData))).toString()
+}
+
+function DeleteButton(
+  { listingData, router } : 
+  { listingData: StudyListing, router: AppRouterInstance }) {
+  const query = listingToURLParam(listingData)
   return (
     <button
       id={cardStyles["delete-button"]}
@@ -29,31 +32,33 @@ function DeleteButton({ listingData }: { listingData: StudyListing }) {
   )
 }
 
-function EditButton() {
+function EditButton(
+  { listingData, router } : 
+  { listingData: StudyListing, router: AppRouterInstance }) {
+  const query = listingToURLParam(listingData)
   return (
-    <button id={cardStyles["edit-button"]}>
+    <button 
+      id={cardStyles["edit-button"]}
+      onClick={(event) => router.push(`/create-listing?edit=true&${query}`)}>
       <p>Edit</p>
     </button>
   )
 }
 
-function InterestedUsersButton({ listingData }: { listingData: StudyListing }) {
-  const router = useRouter()
+function InterestedUsersButton(
+  { listingData, router } : 
+  { listingData: StudyListing, router: AppRouterInstance }) {
 
   const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     try {
-      const requestData = {
-        listingUID: listingData.id,
-      }
-
       const response = await fetch(
-        "http://localhost:5000/get-interested-users",
+        `${process.env.NEXT_PUBLIC_API_URL}/get-interested-users`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestData),
+          body: JSON.stringify({listingUID: listingData.id}),
         }
       )
 
@@ -91,22 +96,24 @@ function InterestedUsersButton({ listingData }: { listingData: StudyListing }) {
 function CardActionBar({
   variant,
   listingData,
+  router
 }: {
   variant: string
   listingData: StudyListing
+  router: AppRouterInstance
 }) {
   return (
     <small id={cardStyles["action-bar"]}>
-      {variant == "display" || variant == "dashboard-display" ? (
+      { variant == "display" || variant == "dashboard-display" ? (
         <LikeButton listingData={listingData} variant={variant} />
       ) : (
         <></>
       )}
-      {variant == "modify" ? (
+      { variant == "modify" ? (
         <>
-          <EditButton />
-          <DeleteButton listingData={listingData} />
-          <InterestedUsersButton listingData={listingData} />
+          <EditButton listingData={listingData} router={router} />
+          <DeleteButton listingData={listingData} router={router} />
+          <InterestedUsersButton listingData={listingData} router={router} />
         </>
       ) : (
         <></>

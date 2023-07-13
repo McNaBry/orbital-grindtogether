@@ -24,19 +24,22 @@
 }
 
 .tag {
+  font-size: 14px;
+  padding: 6px 9px 6px 9px;
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 
 .modules {
-  background-color: #0052d4;
+  background-color: #1D2671;
 }
 
 .locations {
-  background-color: #65c7f7;
+  background-color: #702F6B;
 }
 
 .faculties {
-  background-color: #9cecfb;
+  background-color: #C33764;
 }
 
 .like-button {
@@ -47,7 +50,7 @@
   background-color: #ed2553;
   color: white;
   border-radius: 5px;
-  border: 1px solid #ed2553;
+  border: none;
   width: fit-content;
   height: fit-content;
   margin-right: 4px;
@@ -56,12 +59,26 @@
 
 .like-active {
   background-color: #af69ed;
-  border: 1px solid #af69ed;
   color: white;
 }
 
 .like-button-text {
   margin: 0px 0px 0px 6px;
+}
+
+.loading-like-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  margin-right: 4px;
+  padding: 8px 12px 8px 12px;
+  background: linear-gradient(90deg, rgba(237,37,83,1) 0%, rgba(175,105,237,1) 100%);
 }
 
 #action-bar {

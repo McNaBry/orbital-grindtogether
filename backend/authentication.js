@@ -30,6 +30,7 @@ async function createAccount(data) {
     rating: 0,
     listings: [],
     likes: [],
+    notifFilters: [],
     optInStatus: false
   }
 
