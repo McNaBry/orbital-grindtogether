@@ -80,7 +80,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
     <div id={deleteStyles["delete-listing-container"]}>
       <h1 style={{color: "white", textAlign: "center"}}>Delete Listing</h1>
       <div id={deleteStyles["delete-listing-subcontainer"]}>
-        <StudyCard listingData={listing} variant="delete" />
+        <StudyCard listingData={listing} variant="delete" router={router} />
         <h5 id={deleteStyles["delete-prompt"]}>Are you sure you wish to delete this listing?</h5>
         <Button variant="danger" onClick={(event) => deleteListing()}>I am sure.</Button>
       </div>

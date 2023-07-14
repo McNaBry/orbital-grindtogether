@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import { Card } from "react-bootstrap"
 import Image from "next/image"
-import "./profilepage.css";
+import "./profile-page.css";
 
 const fullStarIcon = "/images/star-full-icon.png"
 const halfStarIcon = "/images/star-half-icon.png"
@@ -37,7 +37,7 @@ function RatingCard({rating} : {rating: number}) {
       <Card>
         <Card.Body>
           <Card.Title> Rating </Card.Title>
-          <p> {rating} / 5 </p>
+          <p style={{marginBottom: "0.4rem"}}> {rating} / 5 </p>
           <div className="stars-container">
             {getStars(rating)}
           </div>

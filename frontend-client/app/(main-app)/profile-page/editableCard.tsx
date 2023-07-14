@@ -1,49 +1,57 @@
-import React, { useState } from "react";
-import SaveChanges from "./saveChanges";
-import EditButton from "./editButton";
-import { Card } from "react-bootstrap"
+import { useState } from "react";
+import { Card, Placeholder } from "react-bootstrap"
+import ActionBar from "./actionBar";
 
 interface EditableCardProps {
+  isLoading: boolean;
   field: string;
   value: string | number;
   maxChars : number;
   onSave: (value: string | number) => void;
 }
 
-function EditableCard({ field, value, maxChars, onSave }: EditableCardProps) {
-  const [inEditingState, setEditingState] = useState(false);
+function EditableCard({ isLoading, field, value, maxChars, onSave }: EditableCardProps) {
+  const [inEditingState, setInEditingState] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
 
-  const handleEdit = () => {
-    setEditingState(true);
-  };
+  const handleEdit = () => setInEditingState(true);
 
   const handleSaveChanges = () => {
-    setEditingState(false);
+    setInEditingState(false);
     onSave(editedValue);
   };
+
+  const handleCancelChanges = () => {
+    setInEditingState(false);
+  }
 
   return (
     <Card>
       <Card.Body>
         <Card.Title>{field}</Card.Title>
-        {inEditingState ? (
-          <div id="edit-area">
-            <textarea
-              value={editedValue}
-              maxLength = {maxChars}
-              rows = {2}
-              cols = {75}
-              onChange={(event) => setEditedValue(event.target.value)}
-            ></textarea>
-            <SaveChanges onClick={handleSaveChanges} />
-          </div>
-        ) : (
-          <div>
-            {value}
-            <EditButton onClick={handleEdit} />
-          </div>
-        )}
+        { isLoading 
+          ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+          : <> 
+            { inEditingState 
+              ? <div id="edit-area">
+                  <textarea
+                    value={value}
+                    maxLength = {maxChars}
+                    rows = {2}
+                    cols = {75}
+                    onChange={(event) => setEditedValue(event.target.value)}
+                  ></textarea>
+                </div>
+              : value
+            }
+            <ActionBar
+              editMode={inEditingState}
+              onEditChanges={handleEdit}
+              onSaveChanges={handleSaveChanges}
+              onCancelChanges={handleCancelChanges}
+            /> 
+          </>
+        }
       </Card.Body>
     </Card>
   );
