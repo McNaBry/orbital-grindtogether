@@ -155,7 +155,7 @@ async function getCreatedListings(userID) {
 
 async function getListingLikers(listingID) {
   const snapshot = await db.collection("listings").doc(listingID).get()
-  const nameOfLikers = []
+  const likersInfo = []
   
   if (snapshot.exists) {
     const likers = snapshot.data().likes
@@ -165,11 +165,12 @@ async function getListingLikers(listingID) {
       console.log("Liker: ", likers[i])
       const userSnapshot = await db.collection("users").doc(likers[i]).get()
       const username = userSnapshot.data().fullName;
-      nameOfLikers.push(username)
+      let user = [likers[i], username]
+      likersInfo.push(user)
     }
   } 
 
-  return nameOfLikers
+  return likersInfo
 }
 
 module.exports = {

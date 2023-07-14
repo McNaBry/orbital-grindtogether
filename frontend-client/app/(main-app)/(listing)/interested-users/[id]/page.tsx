@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ListGroup, ListGroupItem } from "react-bootstrap"
 
@@ -18,15 +18,23 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
   console.log("PARAM: ", params)
   const interestedUsersArr = interestedUsers ? JSON.parse(interestedUsers) : []
 
+  const getUID = (user: string[]) => {
+    return user[0]
+  }
+
+  const getName = (user: string[]) => {
+    return user[1]
+  } 
+
   return (
     <div>
       <h1 style={{ color: "white" }}> Interested Users Page </h1>
       <ListGroup>
         {/* Should use a more unique key rather the user's name */}
-        {interestedUsersArr.map((user: string) => (
-          <ListGroupItem key={user}>
-            <Link href = {{pathname: "/profile-page", query: {name: user }}}>
-              <p>{user} </p>
+        {interestedUsersArr.map((user: string[]) => (
+          <ListGroupItem key={getUID(user)}>
+            <Link href = {`/profile-page/${getUID(user)}`}>
+              <p>{getName(user)} </p>
             </Link>
           </ListGroupItem>
         ))}
