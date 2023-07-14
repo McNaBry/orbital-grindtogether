@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react"
 import { Placeholder } from "react-bootstrap"
+import Image from "next/image"
 
 interface UploadProfilePicProps {
   isLoading: boolean,
@@ -14,27 +15,20 @@ function UploadProfilePic({ isLoading, onUpload }: UploadProfilePicProps) {
   }
 
   return (
-    <>
-    { isLoading 
-      ? <div style={{width: "200px", margin: "15px 0px 15px 0px"}}>
-          <Placeholder.Button variant="primary" xs={12}/>
-        </div>
-      : <div>
-          <label
-            htmlFor="pictureUpload"
-            className="btn btn-primary upload-profile-pic"
-          >
-            Upload Profile Picture
-            <input
-              type="file"
-              id="pictureUpload"
-              accept="image/png, image/jpeg, image/svg"
-              onChange = {handleUpload}
-            />
-          </label>
-        </div>
-    }
-    </>
+    <div>
+      <label id="upload-picture-label" htmlFor="upload-picture-input">
+        <Image 
+          src="images/upload-pic.svg" alt="" 
+          width="40" height="40" />
+      </label> 
+
+      <input
+        type="file"
+        id="upload-picture-input"
+        accept="image/png, image/jpeg, image/svg"
+        onChange = {handleUpload}
+      />
+    </div>
   )
 }
 

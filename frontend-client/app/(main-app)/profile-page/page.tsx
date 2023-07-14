@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import Image from "next/image"
 import Form from "react-bootstrap/Form"
-import NonEditableCard from "../nonEditableCard"
-import EditableCard from "../editableCard"
-import RatingCard from "../ratingCard"
-import SignOutButton from "../signOutButton"
-import UploadProfilePic from "../uploadProfilePic"
-import NotifFilters from "../notifFilters"
+import NonEditableCard from "./nonEditableCard"
+import EditableCard from "./editableCard"
+import RatingCard from "./ratingCard"
+import SignOutButton from "./signOutButton"
+import UploadProfilePic from "./uploadProfilePic"
+import NotifFilters from "./notifFilters"
 import "./profile-page.css"
 import { Placeholder } from "react-bootstrap"
-import RemoveProfilePic from "../removeProfilePic"
+import RemoveProfilePic from "./removeProfilePic"
 
 const deleteAccountIcon = "/images/delete-account.png"
 
-function EditProfile() {
+function EditProfileTitle() {
   return <h1 style={{ color: "white" }}> Profile Page </h1>
 }
 
@@ -38,21 +38,30 @@ function ProfilePic({ profilePic }: { profilePic: string }) {
   )
 }
 
-function NameCard({ isLoading, name }: { isLoading: boolean, name: string }) {
+function NameEmail({ isLoading, name, email } : { isLoading: boolean, name: string, email: string }) {
   return (
-    <NonEditableCard isLoading={isLoading} title="Full Name">
-      <p className="card-text"> {name} </p>
-    </NonEditableCard>
+    <div id="name-email-container">
+      <p id="name-field">{name}</p>
+      <p id="email-field">{email}</p>
+    </div>
   )
 }
 
-function EmailCard({ isLoading, email }: { isLoading: boolean, email: string }) {
-  return (
-    <NonEditableCard isLoading={isLoading} title="Email">
-      <p className="card-text"> {email} </p>
-    </NonEditableCard>
-  )
-}
+// function NameCard({ isLoading, name }: { isLoading: boolean, name: string }) {
+//   return (
+//     <NonEditableCard isLoading={isLoading} title="Full Name">
+//       <p className="card-text"> {name} </p>
+//     </NonEditableCard>
+//   )
+// }
+
+// function EmailCard({ isLoading, email }: { isLoading: boolean, email: string }) {
+//   return (
+//     <NonEditableCard isLoading={isLoading} title="Email">
+//       <p className="card-text"> {email} </p>
+//     </NonEditableCard>
+//   )
+// }
 
 // optInStatus is part of the profile fields variable
 // setOptInStatus is a method to handle the change in optInStatus
@@ -124,7 +133,7 @@ function DeleteAccount({
 
 export default function ProfilePage() {
   const router = useRouter()
-  const { name } = router.query;
+  // const { name } = router.query;
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [fields, setFields] = useState({
     email: "",
@@ -243,17 +252,18 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-page-container">
-      <EditProfile />
+      <EditProfileTitle />
       <ProfilePic profilePic={profilePic} />
-      <div className="profile-pic-button-container">
+      <div id="profile-pic-button-container">
         <UploadProfilePic isLoading={isLoading} onUpload={handleProfilePicUpload} />
         <RemoveProfilePic
           profilePic={profilePic}
           onRemove={handleProfilePicRemoval}
         />
       </div>
-      <NameCard isLoading={isLoading} name={fields.fullName} />
-      <EmailCard isLoading={isLoading} email={fields.email} />
+      {/* <NameCard isLoading={isLoading} name={fields.fullName} />
+      <EmailCard isLoading={isLoading} email={fields.email} /> */}
+      <NameEmail isLoading={isLoading} name={fields.fullName} email={fields.email} />
       <EditableCard
         isLoading={isLoading}
         field="Bio"

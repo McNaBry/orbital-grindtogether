@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap"
+import Image from "next/image"
 
 interface RemoveProfilePicProps {
     profilePic: string;
@@ -8,12 +9,14 @@ interface RemoveProfilePicProps {
 function RemoveProfilePic({ profilePic, onRemove }: RemoveProfilePicProps) {
     if (profilePic) {
       return (
-        <Button id="remove-profile-pic" onClick={onRemove}>
-          Remove Profile Picture
+        <Button id="remove-pic" onClick={onRemove}>
+          <Image
+            src="images/remove-pic.svg" alt="" 
+            width="40" height="40" />
         </Button>
       )
     } else {
-      return null
+      return <></>
     }
 }
 
