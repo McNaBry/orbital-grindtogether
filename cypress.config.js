@@ -9,4 +9,12 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
+
+  component: {
+    specPattern: "cypress/components",
+    devServer: {
+      framework: "next",
+      bundler: "webpack",
+    },
+  },
 });
