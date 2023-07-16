@@ -3,11 +3,11 @@ import { Placeholder } from "react-bootstrap"
 import Image from "next/image"
 
 interface UploadProfilePicProps {
-  isLoading: boolean,
+  profilePic: string,
   onUpload: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-function UploadProfilePic({ isLoading, onUpload }: UploadProfilePicProps) {
+function UploadProfilePic({ profilePic, onUpload }: UploadProfilePicProps) {
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length) {
       onUpload(event)
@@ -16,7 +16,7 @@ function UploadProfilePic({ isLoading, onUpload }: UploadProfilePicProps) {
 
   return (
     <div>
-      <label id="upload-picture-label" htmlFor="upload-picture-input">
+      <label id={`upload-picture-label${profilePic ? "" : "-none"}`} htmlFor="upload-picture-input">
         <Image 
           src="images/upload-pic.svg" alt="" 
           width="40" height="40" />

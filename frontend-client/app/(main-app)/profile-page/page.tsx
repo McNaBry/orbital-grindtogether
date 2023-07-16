@@ -12,7 +12,7 @@ import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
 import NotifFilters from "./notifFilters"
 import "./profile-page.css"
-import { Placeholder } from "react-bootstrap"
+import { Placeholder, Row } from "react-bootstrap"
 import RemoveProfilePic from "./removeProfilePic"
 
 const deleteAccountIcon = "/images/delete-account.png"
@@ -255,7 +255,7 @@ export default function ProfilePage() {
       <EditProfileTitle />
       <ProfilePic profilePic={profilePic} />
       <div id="profile-pic-button-container">
-        <UploadProfilePic isLoading={isLoading} onUpload={handleProfilePicUpload} />
+        <UploadProfilePic profilePic={profilePic} onUpload={handleProfilePicUpload} />
         <RemoveProfilePic
           profilePic={profilePic}
           onRemove={handleProfilePicRemoval}
@@ -264,7 +264,27 @@ export default function ProfilePage() {
       {/* <NameCard isLoading={isLoading} name={fields.fullName} />
       <EmailCard isLoading={isLoading} email={fields.email} /> */}
       <NameEmail isLoading={isLoading} name={fields.fullName} email={fields.email} />
-      <EditableCard
+      <div className="profile-field">
+        <h3 style={{marginRight: "15px"}}>Bio</h3>
+        <p>{fields.bio}</p>
+      </div>
+
+      <div className="profile-field">
+        <h3 style={{marginRight: "0px"}}>Course</h3>
+        <p>{fields.course}</p>
+      </div>
+
+      <div className="profile-field">
+        <h3 style={{marginRight: "0px"}}>Year</h3>
+        <p>{fields.year}</p>
+      </div>
+
+      <div className="profile-field">
+        <h3 style={{marginRight: "0px"}}>Tele</h3>
+        <p>{fields.teleHandle}</p>
+      </div>
+      
+      {/* <EditableCard
         isLoading={isLoading}
         field="Bio"
         value={fields.bio}
@@ -304,7 +324,7 @@ export default function ProfilePage() {
         filters={fields.notifFilters}
         onSave={(value: string[]) =>
           handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
-      />
+      /> */}
       {isLoading 
         ? <></> 
         : <OptInForListings 

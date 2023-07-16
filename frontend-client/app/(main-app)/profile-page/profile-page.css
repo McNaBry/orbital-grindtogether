@@ -86,7 +86,7 @@
 #remove-pic {
   margin-left: 15px;
   border-radius: 100px;
-  padding: 10px 11px 10px 11px;
+  padding: 10px;
   background: 
     radial-gradient(100% 100% at 100% 0, rgb(8,80,120,0.9) 0, rgb(133,216,206,0.9) 100%);
   border: none;
@@ -100,7 +100,15 @@
 #upload-picture-label {
   background: 
     radial-gradient(100% 100% at 100% 0, rgb(116,116,191,0.9) 0, rgb(52,138,199,0.9) 100%);
-  padding: 10px 11px 10px 11px;
+  padding: 10px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+#upload-picture-label-none {
+  background: 
+    radial-gradient(100% 100% at 100% 0, rgb(116,116,191) 0, rgb(52,138,199) 100%);
+  padding: 10px;
   border-radius: 100px;
   cursor: pointer;
 }
@@ -132,6 +140,20 @@
 #email-field {
   color: #d3d3d3;
   margin-bottom: 0px;
+}
+
+.sub-details {
+  width: 60%;
+  margin-top: 15px;
+}
+
+.profile-field {
+  width: 60%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  margin: 0px;
 }
 
 #edit-area {
