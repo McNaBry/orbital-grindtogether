@@ -1,4 +1,5 @@
 import { Pagination } from 'react-bootstrap'
+import "./pagination.css"
 
 type ListingPageControlProps = {
   page: number,
@@ -7,9 +8,10 @@ type ListingPageControlProps = {
 
 function PagePrev({page, setPage} : ListingPageControlProps) {
   return (
-    page <= 1
-      ? <Pagination.Prev disabled onClick={(event) => setPage(page - 1)}/>
-      : <Pagination.Prev onClick={(event) => setPage(page - 1)}/>
+    <Pagination.Prev 
+      style={{backgroundColor: "black"}} 
+      onClick={(event) => setPage(Math.max(1, page - 1))}
+    />
   )
 }
 

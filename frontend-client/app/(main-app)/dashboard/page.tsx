@@ -57,12 +57,16 @@ type ListingViewerProps = {
 function ListingViewer({ option, data, error, isLoading } : ListingViewerProps) {
   const emptyFilters = {"modules":[], "locations":[], "faculties":[]}
   return (
-    <Container style={{marginTop:"20px"}}>
+    <div id={styles["listing-viewer"]}>
     { option === "liked"
-      ? <LikedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
-      : <CreatedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
+      ? <div id={styles["listing-container"]}>
+         <LikedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
+        </div>
+      : <div id={styles["listing-container"]}>
+          <CreatedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
+        </div>
     }
-    </Container>
+    </div>
   )
 }
 
@@ -94,10 +98,10 @@ export default function Dashboard() {
   const toggleState = (state: string) => setViewState(state)
   
   return (
-    <Container id={styles["dashboard-container"]}>
+    <div id={styles["dashboard-container"]}>
       <h1 style={{textAlign:"center"}}>Dashboard</h1>
       <SelectorContainer toggleState={toggleState} viewState={viewState} />
       <ListingViewer option={viewState} data={data} error={error} isLoading={isLoading} />
-    </Container>
+    </div>
   )
 }

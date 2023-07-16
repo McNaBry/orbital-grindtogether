@@ -1,9 +1,12 @@
 "use client"
 
 import { 
+  Option, 
   SelectMultiOption, 
   SelectMultiOptionProps 
 } from "../create-listing/select"
+import { Container } from "react-bootstrap"
+import viewStyles from "./studyListings.module.css"
 import { tagData } from "./data"
 
 function FilterAutoComplete({ name, type, options, defaultValue, handleChange } : SelectMultiOptionProps) {
@@ -25,7 +28,7 @@ function FilterAutoComplete({ name, type, options, defaultValue, handleChange } 
 
 export default function FilterPanel({ handleChange } : Pick<SelectMultiOptionProps, 'handleChange'>) {
   return (
-    <div className="container col-4" id="filter-container">
+    <Container id={viewStyles["filter-container"]}>
       <FilterAutoComplete 
         name="Module"   
         type="modules"
@@ -44,6 +47,6 @@ export default function FilterPanel({ handleChange } : Pick<SelectMultiOptionPro
         options={tagData["faculties"].map(value => ({value: value, label: value}))}
         defaultValue={[]}
         handleChange={handleChange} />
-    </div>
+    </Container>
   )
 }

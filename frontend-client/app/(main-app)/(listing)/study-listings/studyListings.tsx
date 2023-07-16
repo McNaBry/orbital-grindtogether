@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation"
 import StudyCard, { StudyListing } from "../studyCard"
-import { useState } from "react"
+
+import { Container, Row } from "react-bootstrap"
+import viewStyles from "./studyListings.module.css"
 
 type StudyListingsProps = {
   page: number, 
@@ -34,25 +36,25 @@ export default function StudyListings({ page, limit, filters, data, variant } : 
     return true
   })
 
-  const [sortFunction, setSortFunction] = useState(null)
+  // const [sortFunction, setSortFunction] = useState(null)
 
   // Sort functions
-  const sortByDate = (a: any, b: any) : number => {
-    return a.date - b.date
-  }
+  // const sortByDate = (a: any, b: any) : number => {
+  //   return a.date - b.date
+  // }
 
-  const sortByCreatedListingDate = (a: any, b: any) : number => {
-    return a.createdListingDate - b.createdListingDate
-  }
+  // const sortByCreatedListingDate = (a: any, b: any) : number => {
+  //   return a.createdListingDate - b.createdListingDate
+  // }
 
   // the indexes of the functions here matches the labels in the SortOptionsButton
-  const sortFunctions = [sortByDate, sortByCreatedListingDate]
+  // const sortFunctions = [sortByDate, sortByCreatedListingDate]
 
-  const handleSort = (sortFunction) => {
-    setSortFunction(sortFunction)
-  }
+  // const handleSort = (sortFunction) => {
+  //   setSortFunction(sortFunction)
+  // }
 
-  const sortedData = sortFunction ? filterData.slice().sort(sortFunction) : filterData;
+  // const sortedData = sortFunction ? filterData.slice().sort(sortFunction) : filterData;
 
   const slicedData = page == -1
     ? filterData
@@ -68,10 +70,8 @@ export default function StudyListings({ page, limit, filters, data, variant } : 
   })
 
   return (
-    <div className="container col-8" id="listing-container">
-      <div className="row g-0 justify-content-evenly">
-        {listings}
-      </div>
+    <div id={viewStyles["listing-container"]}>
+      {listings}
     </div>
   )
 }

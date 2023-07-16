@@ -34,3 +34,21 @@
 .selector:hover {
   background-color: #702F6B;
 }
+
+#listing-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+#listing-container {
+  width: 60%;
+}
+
+@media (max-width: 1050px) {
+  #listing-container {
+    width: 90%;
+  }
+}
