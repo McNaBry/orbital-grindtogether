@@ -5,6 +5,7 @@ const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
+const cron = require("node-cron")
 // const nodemailer = require("nodemailer");
 const cookieParser = require("cookie-parser")
 
@@ -26,6 +27,8 @@ const {
   likeListing,
   getLikedListings,
   getCreatedListings,
+  getListingStatus,
+  updateListingStatus
 } = require("./listingDb")
 const { firestore } = require("firebase-admin")
 const { 
@@ -482,6 +485,17 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
     res.status(200).send()
   } else {
     res.status(400).send()
+  }
+})
+
+// scheduling the check of listing status to be done each hour
+cron.schedule("0 * * * *", async () => {
+  try {
+    console.log("Starting the update of listing status.")
+    await updateListingStatus()
+    console.log("Updating listing status is complete.")
+  } catch (error) {
+    console.log("Updating listing status every hour failed", error)
   }
 })
 
