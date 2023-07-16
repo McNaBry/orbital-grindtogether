@@ -27,12 +27,13 @@ interface SelectProps {
 }
 
 export type SelectFreeOptionProps = SelectProps & {
+  defaultValue: Option | null,
   handleChange: 
     ((type:string, option: Option | null, actionMeta: ActionMeta<Option>) => void)
 }
 
 function SelectFreeOption({params} : {params : SelectFreeOptionProps}) {
-  const { name, type, options, handleChange } = params
+  const { name, type, options, defaultValue, handleChange } = params
 
   return (
     <CreatableSelect 
@@ -40,6 +41,7 @@ function SelectFreeOption({params} : {params : SelectFreeOptionProps}) {
       name={name}
       placeholder={name}
       isClearable
+      defaultValue={defaultValue}
       options={options} 
       onChange={(option, actionMeta) => handleChange(type, option, actionMeta)} 
     />
@@ -47,19 +49,21 @@ function SelectFreeOption({params} : {params : SelectFreeOptionProps}) {
 }
 
 export type SelectMultiOptionProps = SelectProps & {
+  defaultValue: Option[]
   handleChange:
     ((type:string, option: readonly Option[], actionMeta: ActionMeta<Option>) => void)
 }
 
 function SelectMultiOption({params} : {params : SelectMultiOptionProps}) {
-  const { name, type, options, handleChange } = params
-  
+  const { name, type, options, defaultValue, handleChange } = params
+
   return (
     <Select
       className={"basic-multi-select " + styles["multi-option-input"]}
       name={name}
       placeholder={name}
       isMulti
+      defaultValue={defaultValue}
       options={options}
       onChange={(option, actionMeta) => handleChange(type, option, actionMeta)}
     />

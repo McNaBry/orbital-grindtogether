@@ -1,9 +1,10 @@
 import { StudyListing } from "../studyCard"
 
-export const tagData:{[key:string]: string[]} = {
+export const tagData : {[key:string]: string[]} = {
   "modules"   : ["CS1101S", "CS1010X", "CS1010S" ,"CS1231", "CS1231S", "BT1101", "CS2030", "CS2030S", 
   "CS2040", "CS2040S", "CS2100", "MA1521", "MA2001", "ST2334", "IS1108", "IS2218", "GEA1000", "HSI1000", 
-  "ES2660", "ACC1701X", "CS2101", "CS2102", "CS2103", "CS2103T", "CS2105", "CS2106", "CS2107"],
+  "ES2660", "ACC1701X", "CS2101", "CS2102", "CS2103", "CS2103T", "CS2105", "CS2106", "CS2107", "CS2109S",
+  "CS3230"],
   "locations" : ["Terrace", "Benches @ LT-19", "Basement 1", "COM3"],
   "faculties" : ["SOC", "CHS", "FASS", "Computing", "Social Sciences", "Mathematics", "Statistics",
   "Engineering"],
@@ -18,7 +19,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  20,
-    id:        "invite1"
+    id:        "invite1",
+    liked:     false
   },
 
   {
@@ -29,7 +31,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  0,
-    id:        "invite2"
+    id:        "invite2",
+    liked:     false
   },
 
   {
@@ -40,7 +43,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Once",
     interest:  2,
-    id:        "invite3"
+    id:        "invite3",
+    liked:     false
   },
 
   {
@@ -51,7 +55,8 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  50,
-    id:        "invite4"
+    id:        "invite4",
+    liked:     false
   },
 
   {
@@ -62,6 +67,7 @@ export const testData : StudyListing[] = [
     date:      new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Once",
     interest:  2,
-    id:        "invite5"
+    id:        "invite5",
+    liked:     false
   }
 ]

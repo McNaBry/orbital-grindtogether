@@ -1,14 +1,12 @@
-// Firebase REST API: https://firebase.google.com/docs/reference/rest/auth
-
-require("dotenv").config()
+// require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
-// const nodemailer = require("nodemailer");
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
+const serverless = require("serverless-http")
 
-const { db, fireAuth, storage, bucket } = require("./firebase")
+const { db, fireAuth, storage, bucket } = require("../firebase")
 const {
   signInUser,
   createAccount,
@@ -16,7 +14,7 @@ const {
   sendResetLink,
   validateOob,
   validateToken,
-} = require("./authentication")
+} = require("../authentication")
 const {
   getListing,
   getListings,
@@ -26,17 +24,12 @@ const {
   likeListing,
   getLikedListings,
   getCreatedListings,
-} = require("./listingDb")
-const { firestore } = require("firebase-admin")
-const { 
-  updateNotifFilters,
-  sendListingNotif,
-} = require("./email")
-const { verifyAuthCookie } = require("./authMiddleware")
+} = require("../listingDb")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
-const app = express()
+const api = express()
+const app = express.Router()
 app.use(cookieParser())
 // Allow for cross-origin request since our backend and frontend are hosted on different domains(origins)
 // By specifying the origin, this allows us to transmit credentials via cookies in our requests
@@ -97,18 +90,22 @@ app.post("/sign-in", async (req, res) => {
     } else {
       // Set httpOnly cookies on the frontend browser
       res
-      .cookie("authCookie", seshCookie, {
-        maxAge: 60 * 60 * 24 * 7 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-      })
-      .cookie("uid", users[0].uid, {
-        maxAge: 60 * 60 * 24 * 7 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-      })
+        .cookie("authCookie", seshCookie, {
+          maxAge: 60 * 60 * 24 * 7 * 1000,
+          httpOnly: true,
+          secure: process.env.NODE_ENV == "production",
+          sameSite: "none",
+        })
+        .cookie("uid", users[0].uid, {
+          maxAge: 60 * 60 * 24 * 7 * 1000,
+          httpOnly: true,
+          secure: process.env.NODE_ENV == "production",
+          sameSite: "none",
+        })
+      // const maxAge = 60 * 60 * 24 * 7 * 1000
+      // res.append('Set-Cookie', `authCookie=${seshCookie}; Max-Age=${maxAge}; Path=/; HttpOnly`)
+      // res.append('Set-Cookie', `uid=${users[0].uid}; Max-Age=${maxAge}; Path=/; HttpOnly`)
+      // Provide the frontend with the user's Firestore UID and full name
       res.status(200).json(users[0]).send()
     }
   } else {
@@ -116,22 +113,22 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
-// app.post("/validate-token", async (req, res) => {
-//   const authToken = req.cookies.jwt
-//   if (authToken == undefined) {
-//     res.status(400).send()
-//     return
-//   }
-//   const users = await validateToken(authToken)
-//   if (users.length == 0) {
-//     console.log("Null array for user UID query")
-//     res.status(400).send()
-//   } else if (users.length >= 1) {
-//     // If all goes well, only one user will be returned
-//     // If not we still return the first user in the array
-//     res.status(200).json(users[0]).send()
-//   }
-// })
+app.post("/validate-token", async (req, res) => {
+  const authToken = req.cookies.jwt
+  if (authToken == undefined) {
+    res.status(400).send()
+    return
+  }
+  const users = await validateToken(authToken)
+  if (users.length == 0) {
+    console.log("Null array for user UID query")
+    res.status(400).send()
+  } else if (users.length >= 1) {
+    // If all goes well, only one user will be returned
+    // If not we still return the first user in the array
+    res.status(200).json(users[0]).send()
+  }
+})
 
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -174,7 +171,7 @@ app.post("/reset-password", async (req, res) => {
   }
 })
 
-app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
+app.delete("/delete-account", async (req, res) => {
   const { email, password } = req.body
 
   // Check if details given are valid by signing in
@@ -213,7 +210,29 @@ app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post("/get-profile", verifyAuthCookie, async (req, res) => {
+// middleware to extract token from cookie and verify it before use
+// const verifyIdToken = async (req, res, next) => {
+//   const idToken = req.cookies.idToken;
+
+//   if (!idToken) {
+//     return res.status(401).send("Unauthorised");
+//   }
+
+//   try {
+//     const decodedToken = await fireAuth.verifyIdToken(idToken);
+//     const userId = decodedToken.uid;
+//     const email = decodedToken.email;
+
+//     // we will attach the user object to the req object to be passed around
+//     req.user = { userId, email }
+//     next();
+//   } catch (error) {
+//     console.log('Failed to verify idToken:', error);
+//     res.status(401).send('Unauthorized');
+//   }
+// }
+
+app.post("/get-profile", async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).json({}).send()
@@ -229,19 +248,21 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
     file.exists()
       .then(async ([exists]) => {
         if (exists) {
+          console.log("Profile pic exists. Retrieving signed URL...")
           // Retrieve the download URL for frontend to fetch from
+          const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
           const signedUrl = await file.getSignedUrl({
             action: 'read',
-            expires: Date.now() + 60 * 60 * 1000, // Expiry date of the URL
+            expires: expiresAtMs,
           });
-          // Return the profile data with the signed URL included
+          // console.log(signedUrl)
           userData = {
             ...userData,
             profilePic: signedUrl
           }
           res.status(200).json(userData).send()
         } else {
-          // Return the profile data with an empty URL
+          console.log("Profile pic does not exist")
           userData = {
             ...userData,
             profilePic: ""
@@ -250,7 +271,8 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
         }
       })
       .catch(error => {
-        console.log("Error checking if file exists:\n", error)
+        console.log("Error checking if file exists:\n")
+        console.log(error)
         res.status(400).send()
       })
   } else {
@@ -259,7 +281,7 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
 })
 
 // Update the database when the user modifies a field in the profile page
-app.post("/update-profile", verifyAuthCookie, async (req, res) => {
+app.post("/update-profile", async (req, res) => {
   try {
     const { fieldToUpdate, value } = req.body
     const uid = req.cookies.uid
@@ -278,47 +300,10 @@ app.post("/update-profile", verifyAuthCookie, async (req, res) => {
   }
 })
 
-// Update the database when the user clicks on the switch
-app.post("/update-opt-in-status", verifyAuthCookie, async (req, res) => {
-  const uid = req.cookies.uid
-  if (!isValidUID(uid)) {
-    res.status(400).send()
-    return
-  }
-  
-  try {
-    const { optInStatus } = req.body
-    console.log(optInStatus)
-    await db
-      .collection("users")
-      .doc(uid)
-      .update({ ["optInStatus"]: optInStatus })
-    res.status(200).send()
-  } catch (error) {
-    console.log("Opt in status is not updated:\n", error)
-    res.status(500).send()
-  }
-})
-
-app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
-  const uid = req.cookies.uid
-  if (!isValidUID(uid)) {
-    res.status(400).send()
-    return 
-  }
-
-  const filters = req.body.filters
-  const updateFilterRes = await updateNotifFilters(uid, filters)
-  if (updateFilterRes) {
-    res.status(200).send()
-  } else {
-    res.status(400).send()
-  }
-})
-
 app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
+    console.log("No user ID detected")
     res.status(400).send()
     return 
   }
@@ -357,7 +342,7 @@ app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) =>
   }
 })
 
-app.post("/sign-out", verifyAuthCookie, async (req, res) => {
+app.post("/sign-out", async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -385,7 +370,7 @@ app.post("/sign-out", verifyAuthCookie, async (req, res) => {
 })
 
 // API Endpoint to create listing
-app.post("/create-listing", verifyAuthCookie, async (req, res) => {
+app.post("/create-listing", async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -393,18 +378,7 @@ app.post("/create-listing", verifyAuthCookie, async (req, res) => {
   }
   const createListingRes = await createListing(uid, req.body)
   if (createListingRes) {
-    // Send OK status to the user who created the listing
-    // Whether the notification succeeds does not matter to the creator
     res.status(200).send()
-
-    try {
-      // We will send an email to all users with optInStatus true
-      // And filter for those interested in the listing's tag
-      await sendListingNotif(req.body)
-    } catch (error) {
-      console.log(error)
-    }
-    
   } else {
     res.status(400).send()
   }
@@ -438,7 +412,7 @@ app.post("/get-listings", async (req, res) => {
   }
 })
 
-app.delete("/delete-listing", verifyAuthCookie, async (req, res) => {
+app.delete("/delete-listing", async (req, res) => {
   const { listingUID } = req.body
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
@@ -453,7 +427,7 @@ app.delete("/delete-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
+app.post("/get-dashboard-listings", async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     console.log(uid)
@@ -467,7 +441,7 @@ app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
   return res.json(results).send()
 })
 
-app.post("/like-listing", verifyAuthCookie, async (req, res) => {
+app.post("/like-listing", async (req, res) => {
   const { listingUID, action } = req.body
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
@@ -485,6 +459,6 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-const port = 5000
+api.use('/api', app);
 
-app.listen(port, () => console.log("Listening on " + port))
+export const handler = serverless(api);
