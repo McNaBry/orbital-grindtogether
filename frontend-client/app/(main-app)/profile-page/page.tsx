@@ -264,67 +264,78 @@ export default function ProfilePage() {
       {/* <NameCard isLoading={isLoading} name={fields.fullName} />
       <EmailCard isLoading={isLoading} email={fields.email} /> */}
       <NameEmail isLoading={isLoading} name={fields.fullName} email={fields.email} />
-      <div className="profile-field">
-        <h3 style={{marginRight: "15px"}}>Bio</h3>
+      
+      <div id="profile-field-container">
+      {/* <div className="profile-field">
+        <h4 style={{marginRight: "15px"}}>Bio</h4>
         <p>{fields.bio}</p>
       </div>
 
       <div className="profile-field">
-        <h3 style={{marginRight: "0px"}}>Course</h3>
+        <h4 style={{marginRight: "0px"}}>Course</h4>
         <p>{fields.course}</p>
       </div>
 
       <div className="profile-field">
-        <h3 style={{marginRight: "0px"}}>Year</h3>
+        <h4 style={{marginRight: "0px"}}>Year</h4>
         <p>{fields.year}</p>
       </div>
 
       <div className="profile-field">
-        <h3 style={{marginRight: "0px"}}>Tele</h3>
+        <h4 style={{marginRight: "0px"}}>Tele</h4>
         <p>{fields.teleHandle}</p>
       </div>
-      
-      {/* <EditableCard
-        isLoading={isLoading}
-        field="Bio"
-        value={fields.bio}
-        maxChars={150}
-        onSave={(value) => handleFieldChange({ fieldToUpdate: "bio", value })}
-      />
-      <EditableCard
-        isLoading={isLoading}
-        field="Year"
-        value={fields.year}
-        maxChars={1}
-        onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "year", value: Number(value) })
-        }
-      />
-      <EditableCard
-        isLoading={isLoading}
-        field="Course"
-        value={fields.course}
-        maxChars={50}
-        onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "course", value })
-        }
-      />
-      <EditableCard
-        isLoading={isLoading}
-        field="Telegram Handle"
-        value={fields.teleHandle}
-        maxChars={32}
-        onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "teleHandle", value })
-        }
-      />
-      <RatingCard rating={fields.rating} />
+
       <NotifFilters 
         isLoading={isLoading}
         filters={fields.notifFilters}
         onSave={(value: string[]) =>
           handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
-      /> */}
+        /> */ }
+      
+        <EditableCard
+          isLoading={isLoading}
+          field="Bio"
+          value={fields.bio}
+          maxChars={150}
+          onSave={(value) => handleFieldChange({ fieldToUpdate: "bio", value })}
+        />
+        <EditableCard
+          isLoading={isLoading}
+          field="Year"
+          value={fields.year}
+          maxChars={1}
+          onSave={(value) =>
+            handleFieldChange({ fieldToUpdate: "year", value: Number(value) })
+          }
+        />
+        <EditableCard
+          isLoading={isLoading}
+          field="Course"
+          value={fields.course}
+          maxChars={50}
+          onSave={(value) =>
+            handleFieldChange({ fieldToUpdate: "course", value })
+          }
+        />
+        <EditableCard
+          isLoading={isLoading}
+          field="Telegram Handle"
+          value={fields.teleHandle}
+          maxChars={32}
+          onSave={(value) =>
+            handleFieldChange({ fieldToUpdate: "teleHandle", value })
+          }
+        />
+        <RatingCard rating={fields.rating} />
+        <NotifFilters 
+          isLoading={isLoading}
+          filters={fields.notifFilters}
+          onSave={(value: string[]) =>
+            handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
+        />
+      </div>
+
       {isLoading 
         ? <></> 
         : <OptInForListings 

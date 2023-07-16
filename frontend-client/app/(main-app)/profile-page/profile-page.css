@@ -13,7 +13,7 @@
 }
 
 @media (max-width: 992px) {
-  .card {
+  #profile-field-container {
     width: 90%;
   }
 }
@@ -147,18 +147,33 @@
   margin-top: 15px;
 }
 
+#profile-field-container {
+  border-radius: 10px;
+  /* border: 2px solid whitesmoke; */
+  padding: 15px 20px 15px 20px;
+  background: 
+  radial-gradient(120% 110% at 20% 0, rgba(67, 67, 67, 0.4) 0, #000000 100%)
+}
+
 .profile-field {
-  width: 60%;
+  width: 100%;
   color: white;
   display: flex;
   flex-direction: column;
   padding: 0px;
   margin: 0px;
+  margin-bottom: 20px;
 }
 
 #edit-area {
   display: flex;
   flex-direction: column;
+}
+
+.input-field {
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  border: none;
 }
 
 .save-changes {
@@ -173,6 +188,16 @@
 #profile-action-bar {
   margin-top: 5px;
 }
+
+.pen-icon {
+  color: white;
+}
+
+.pen-icon:hover {
+  width: 22px;
+  height: 22px;
+}
+
 
 #card-content {
   display: flex;

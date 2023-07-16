@@ -34,15 +34,13 @@ function RatingCard({rating} : {rating: number}) {
     }
 
     return (
-      <Card>
-        <Card.Body>
-          <Card.Title> Rating </Card.Title>
+      <div className="profile-field">
+          <h4> Rating </h4>
           <p style={{marginBottom: "0.4rem"}}> {rating} / 5 </p>
           <div className="stars-container">
             {getStars(rating)}
           </div>
-        </Card.Body>
-      </Card>
+      </div>
     );
 }
 

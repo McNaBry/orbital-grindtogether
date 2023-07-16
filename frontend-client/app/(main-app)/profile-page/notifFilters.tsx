@@ -55,33 +55,31 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
   })
   
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>Notification Filters</Card.Title>
-        { isLoading 
-          ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
-          : <>
-          <Card.Text id="notif-tag-row">{ tags }</Card.Text>
-          { editMode
-            ? <SelectMultiOption
-                params={{
-                  name: "Filters",
-                  type: "filters",
-                  defaultValue: filters.map(tag => ({ value: tag, label: tag })),
-                  options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
-                  handleChange: handleMultipleOptionChange
-                }} 
-              />
-            : <></>
-          }
-          <ActionBar
-            editMode={editMode}
-            onEditChanges={handleEdit}
-            onSaveChanges={handleSaveChanges}
-            onCancelChanges={handleCancelChanges}
-          /> </>
+    <div className="profile-field">
+      <h4 style={{color: "white"}}>Notification Filters</h4>
+      { isLoading 
+        ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+        : <>
+        <div id="notif-tag-row">{ tags }</div>
+        { editMode
+          ? <SelectMultiOption
+              params={{
+                name: "Filters",
+                type: "filters",
+                defaultValue: filters.map(tag => ({ value: tag, label: tag })),
+                options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
+                handleChange: handleMultipleOptionChange
+              }} 
+            />
+          : <></>
         }
-      </Card.Body>
-    </Card>
+        <ActionBar
+          editMode={editMode}
+          onEditChanges={handleEdit}
+          onSaveChanges={handleSaveChanges}
+          onCancelChanges={handleCancelChanges}
+        /> </>
+      }
+    </div>
   )
 }

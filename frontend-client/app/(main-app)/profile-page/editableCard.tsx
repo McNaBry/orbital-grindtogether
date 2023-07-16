@@ -26,34 +26,33 @@ function EditableCard({ isLoading, field, value, maxChars, onSave }: EditableCar
   }
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>{field}</Card.Title>
-        { isLoading 
-          ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
-          : <> 
-            { inEditingState 
-              ? <div id="edit-area">
-                  <textarea
-                    value={value}
-                    maxLength = {maxChars}
-                    rows = {2}
-                    cols = {75}
-                    onChange={(event) => setEditedValue(event.target.value)}
-                  ></textarea>
-                </div>
-              : value
-            }
-            <ActionBar
-              editMode={inEditingState}
-              onEditChanges={handleEdit}
-              onSaveChanges={handleSaveChanges}
-              onCancelChanges={handleCancelChanges}
-            /> 
-          </>
-        }
-      </Card.Body>
-    </Card>
+    <div className="profile-field">
+      <h4>{field}</h4>
+      { isLoading 
+        ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+        : <> 
+          { inEditingState 
+            ? <div id="edit-area">
+                <textarea
+                  className="input-field"
+                  value={value}
+                  maxLength = {maxChars}
+                  rows = {2}
+                  cols = {75}
+                  onChange={(event) => setEditedValue(event.target.value)}
+                ></textarea>
+              </div>
+            : value
+          }
+          <ActionBar
+            editMode={inEditingState}
+            onEditChanges={handleEdit}
+            onSaveChanges={handleSaveChanges}
+            onCancelChanges={handleCancelChanges}
+          /> 
+        </>
+      }
+    </div>
   );
 }
 
