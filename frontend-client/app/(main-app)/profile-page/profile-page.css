@@ -12,12 +12,6 @@
   border: none;
 }
 
-@media (max-width: 992px) {
-  #profile-field-container {
-    width: 90%;
-  }
-}
-
 .edit-profile {
   font-size: 40px;
   margin-right: 40px;
@@ -46,15 +40,6 @@
 
 .upload-profile-pic input {
   display: none;
-}
-
-.card h5 {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.card-text {
-  font-size: 21px;
 }
 
 .no-profile-pic {
@@ -148,11 +133,23 @@
 }
 
 #profile-field-container {
+  width: 60%;
   border-radius: 10px;
   /* border: 2px solid whitesmoke; */
   padding: 15px 20px 15px 20px;
   background: 
-  radial-gradient(120% 110% at 20% 0, rgba(67, 67, 67, 0.4) 0, #000000 100%)
+    radial-gradient(120% 110% at 20% 0, rgba(67, 67, 67, 0.4) 0, #000000 100%);
+}
+
+@media (max-width: 992px) {
+  #profile-field-container {
+    width: 90%;
+  }
+}
+
+.profile-header-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .profile-field {
@@ -174,6 +171,9 @@
   padding: 5px 10px 5px 10px;
   border-radius: 5px;
   border: none;
+  background: #212121;
+  margin-bottom: 5px;
+  color: white;
 }
 
 .save-changes {
@@ -190,14 +190,16 @@
 }
 
 .pen-icon {
-  color: white;
+  color: grey;
+  margin-left: 12px;
+  width: 12px;
+  height: 12px;
 }
 
 .pen-icon:hover {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
 }
-
 
 #card-content {
   display: flex;

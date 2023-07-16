@@ -8,7 +8,8 @@ import {
   SelectMultiOption
 } from "../(listing)/create-listing/select"
 import { ActionMeta } from "react-select"
-import ActionBar from "./actionBar"
+import EditButton from "./editButton"
+import SaveCancelBar from "./saveCancelBar"
 
 const mappedTagData : {[key:string]: string} = {}
 
@@ -56,29 +57,33 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
   
   return (
     <div className="profile-field">
-      <h4 style={{color: "white"}}>Notification Filters</h4>
+      <div className="profile-header-container">
+        <h4 style={{color: "white"}}>Notification Filters</h4>
+        { isLoading ? <></> : <>{ editMode ? <></> : <EditButton onEditChanges={handleEdit} /> }</> }
+      </div>
       { isLoading 
         ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
         : <>
-        <div id="notif-tag-row">{ tags }</div>
-        { editMode
-          ? <SelectMultiOption
-              params={{
-                name: "Filters",
-                type: "filters",
-                defaultValue: filters.map(tag => ({ value: tag, label: tag })),
-                options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
-                handleChange: handleMultipleOptionChange
-              }} 
-            />
-          : <></>
-        }
-        <ActionBar
-          editMode={editMode}
-          onEditChanges={handleEdit}
-          onSaveChanges={handleSaveChanges}
-          onCancelChanges={handleCancelChanges}
-        /> </>
+          <div id="notif-tag-row">{ tags }</div>
+          { editMode
+            ? <> 
+                <SelectMultiOption
+                  params={{
+                    name: "Filters",
+                    type: "filters",
+                    defaultValue: filters.map(tag => ({ value: tag, label: tag })),
+                    options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
+                    handleChange: handleMultipleOptionChange
+                  }} 
+                />
+                <SaveCancelBar
+                  onSaveChanges={handleSaveChanges}
+                  onCancelChanges={handleCancelChanges}
+                />
+              </>
+            : <></>
+          }
+        </>
       }
     </div>
   )
