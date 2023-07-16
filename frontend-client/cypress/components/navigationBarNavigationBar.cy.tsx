@@ -1,5 +1,5 @@
 import React from 'react'
-import NavigationBar from '../../frontend-client/app/(main-app)/navigationBar'
+import NavigationBar from '../../app/(main-app)/navigationBar'
 
 describe('<NavigationBar />', () => {
   it('renders', () => {

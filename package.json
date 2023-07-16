@@ -10,16 +10,14 @@
     "frontend": "cd frontend-client && npm run dev",
     "backend": "cd backend && npm run start",
     "deploy": "concurrently \"npm run frontend\" \"npm run backend\"",
-    "e2e": "concurrently \"cypress open\" \"npm run deploy\"",
-    "test": "concurrently \"cypress open\" \"npm run deploy\""
+    "e2e": "cd frontend-client && cypress open",
+    "test": "concurrently \"npm run e2e\" \"npm run deploy\""
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-typescript": "^7.22.5",
-    "@cypress/webpack-dev-server": "^3.5.0",
     "babel-loader": "^9.1.3",
-    "concurrently": "^8.0.1",
-    "cypress": "^12.17.0"
+    "concurrently": "^8.0.1"
   }
 }
