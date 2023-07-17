@@ -386,6 +386,20 @@ app.post("/create-listing", async (req, res) => {
   }
 })
 
+app.post("/edit-listing", async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const editListingRes = await updateListing(uid, req.body.id, req.body)
+  if (editListingRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
 app.post("/get-listings", async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID) {

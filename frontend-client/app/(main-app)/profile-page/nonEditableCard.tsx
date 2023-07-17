@@ -1,18 +1,24 @@
-import React from "react";
+"use client"
+
+import { Card, Placeholder } from "react-bootstrap"
 
 interface CardProps {
+  isLoading: boolean;
   title: string;
   children: React.ReactNode;
 }
 
-function NonEditableCard({ title, children }: CardProps) {
+function NonEditableCard({ isLoading, title, children }: CardProps) {
   return (
-    <div className="card">
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        {children}
-      </div>
-    </div>
+    <Card className="card">
+      <Card.Body className="card-body">
+        <Card.Title className="card-title">{title}</Card.Title>
+        { isLoading 
+          ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+          : <> {children} </> 
+        }
+      </Card.Body>
+    </Card>
   );
 }
 
