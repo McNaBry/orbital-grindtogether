@@ -231,7 +231,7 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
     : res.json(userData).send()
 })
 
-app.post('view-profile', async (req, res) => {
+app.post("/view-profile", async (req, res) => {
   const { uid } = req.body
   const userData = await getViewProfile(uid)
   userData == null 

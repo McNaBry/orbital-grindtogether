@@ -32,7 +32,7 @@ async function getFullProfile(userID) {
 }
 
 async function getViewProfile(userID) {
-  const fullProfile = (await getFullProfile(userID)).data()
+  const fullProfile = await getFullProfile(userID)
   return fullProfile == null 
     ? null
     : { 

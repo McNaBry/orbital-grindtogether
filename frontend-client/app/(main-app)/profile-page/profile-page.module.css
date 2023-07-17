@@ -36,8 +36,8 @@
 }
 
 #no-profile-pic {
-  height: 300px;
-  width: 300px;
+  height: 250px;
+  width: 250px;
   background-color: black;
   border-radius: 50%;
   border: 2px solid #c5c6d0;
@@ -48,8 +48,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
-  width: 300px;
+  height: 250px;
+  width: 250px;
   border-radius: 50%;
   border: none;
   overflow: hidden;
