@@ -1,29 +1,57 @@
 "use client"
 
 import { useState } from "react"
-import { Option } from "../create-listing/select"
-import StudyListings from "./studyListings"
-import FilterPanel from "./filterPanel"
-import ListingPageControl from "./listingPageControl"
-import SortOptionsButton from "./sortOptionsButton"
-import SortDirectionButton from "./sortDirectionButton"
 import useSWR from 'swr'
+import { Option } from "../create-listing/select"
 import { ActionMeta } from "react-select"
+
 import { testData } from "./data"
 
-import {Row, Container} from "react-bootstrap"
-import './studyListings.css'
+import ListingPageControl from "./listingPageControl"
+import StudyListings from "./studyListings"
+import SortPanel, { SortFunction } from "./sortPanel"
+import FilterPanel from "./filterPanel"
+
+import { Row } from "react-bootstrap"
+import viewStyles from './studyListings.module.css'
+import { StudyListing } from "../studyCard"
+
+const SortFunctions : SortFunction[] = [
+  (a: StudyListing, b: StudyListing) => {
+    if (a.date == null && b.date == null) return -1
+    // In ascending order, listings with null date will be in front
+    else if (a.date == null) return -1
+    else if (b.date == null) return 1
+    return a.date <= b.date ? -1 : 1 
+  },
+
+  (a: StudyListing, b: StudyListing) => {
+    if (a.dateCreated == null && b.dateCreated == null) return -1
+    // In ascending order, listings with null date will be in front
+    else if (a.dateCreated == null) return -1
+    else if (b.dateCreated == null) return 1
+    return a.dateCreated <= b.dateCreated ? -1 : 1 
+  },
+
+  (a: StudyListing, b: StudyListing) => {
+    return a.createdBy <= b.createdBy ? -1 : 1 
+  },
+]
 
 export default function ListingsPage() {
   // For pagination.
   const [page, setPage] = useState<number>(1)
 
   // Filters which are mutated by the FilterPanel component
+  // The filters are passed into StudyListings
   const [filters, setFilters] = useState<{ [key:string] : Array<string>}>({
     "modules"   : [],
     "locations" : [],
     "faculties" : []
   })
+
+  const [sortOption, setSortOption] = useState<number>(1)
+  const [sortDirection, setSortDirection] = useState<boolean>(false)
 
   // Method to fetch data from the server
   const fetcher = async (url:string) => fetch(url, {method: 'POST', credentials: "include"})
@@ -47,24 +75,32 @@ export default function ListingsPage() {
   }
 
   return (
-    <Container>
+    <div id={viewStyles["study-listings-container"]}>
       {/* <h1 style={{color:"white"}}>Status: {error ? "error" : (isLoading ? "loading..." : "done")}</h1> */}
       <div id="header-container">
-        <h1>Study Listings</h1>
+        <h1 style={{color: "white", textAlign: "center"}}>Study Listings</h1>
         <ListingPageControl page={page} setPage={setPage} />
       </div>
-      <Row>
-        <StudyListings 
-          page={page} 
-          limit={5} 
-          filters={filters} 
-          data={error ? testData : (isLoading ? testData : data)}
-          variant="display" />
-        <FilterPanel handleChange={handleMultipleOptionChange} />
-        <SortOptionsButton />
-        <SortDirectionButton />
+      <Row id={viewStyles["listings-filter-container"]}>
+        <div className="col-lg-8 col-12">
+          <StudyListings 
+            page={page} 
+            limit={5} 
+            filters={filters} 
+            sortFunction={SortFunctions[sortOption]}
+            sortReverse={sortDirection}
+            data={error ? testData : (isLoading ? testData : data)}
+            variant="display" />
+        </div>
+        <div className="col-lg-4 col-12" style={{padding: "0px", marginBottom: "10px"}}>
+          <FilterPanel handleChange={handleMultipleOptionChange} />
+          <SortPanel 
+            setSortDirection={(direction: boolean) => setSortDirection(direction)}
+            setSortOption={(index: number) => setSortOption(index)}
+          />
+        </div>
       </Row>
       <ListingPageControl page={page} setPage={setPage} />
-    </Container>
+    </div>
   )
 }
