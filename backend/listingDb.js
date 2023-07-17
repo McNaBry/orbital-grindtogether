@@ -26,10 +26,10 @@ async function createListing(userID, data) {
       faculties: data.tags.faculties
     },
     date : data.date,
+    dateCreated: data.dateCreated,
     freq : data.freq,
     interest: 0,
-    likes: [],
-    createdListingDate: data.dateCreatedListing
+    likes: []
   }
   const docRef = await db.collection("listings").add(listing)
   console.log("New listing added with ID:", docRef.id)
@@ -50,6 +50,7 @@ async function updateListing(userID, listingUID, data) {
       faculties: data.tags.faculties
     },
     date : data.date,
+    dateCreated: data.dateCreated,
     freq : data.freq,
   }
   

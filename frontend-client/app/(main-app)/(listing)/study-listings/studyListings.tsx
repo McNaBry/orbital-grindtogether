@@ -2,19 +2,19 @@
 
 import { useRouter } from "next/navigation"
 import StudyCard, { StudyListing } from "../studyCard"
-
-import { Container, Row } from "react-bootstrap"
 import viewStyles from "./studyListings.module.css"
 
 type StudyListingsProps = {
   page: number, 
   limit: number,
   filters: { [key:string] : string[] },
+  sortFunction: (a: StudyListing, b: StudyListing) => number,
+  sortReverse: boolean,
   data: StudyListing[],
   variant: string
 }
 
-export default function StudyListings({ page, limit, filters, data, variant } : StudyListingsProps) {
+export default function StudyListings({ page, limit, filters, sortFunction, sortReverse, data, variant } : StudyListingsProps) {
   if (data.length == 0 || data == null) return (<h5>No listings found.</h5>)
 
   const router = useRouter()
@@ -36,25 +36,8 @@ export default function StudyListings({ page, limit, filters, data, variant } : 
     return true
   })
 
-  // const [sortFunction, setSortFunction] = useState(null)
-
-  // Sort functions
-  // const sortByDate = (a: any, b: any) : number => {
-  //   return a.date - b.date
-  // }
-
-  // const sortByCreatedListingDate = (a: any, b: any) : number => {
-  //   return a.createdListingDate - b.createdListingDate
-  // }
-
-  // the indexes of the functions here matches the labels in the SortOptionsButton
-  // const sortFunctions = [sortByDate, sortByCreatedListingDate]
-
-  // const handleSort = (sortFunction) => {
-  //   setSortFunction(sortFunction)
-  // }
-
-  // const sortedData = sortFunction ? filterData.slice().sort(sortFunction) : filterData;
+  filterData.sort(sortFunction)
+  if (sortReverse) filterData.reverse()
 
   const slicedData = page == -1
     ? filterData

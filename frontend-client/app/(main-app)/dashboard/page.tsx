@@ -2,7 +2,6 @@
 
 import styles from './dashboard.module.css'
 
-import { Container, Row } from 'react-bootstrap'
 import useSWR from 'swr'
 import StudyListings from '../(listing)/study-listings/studyListings'
 import { StudyListing } from '../(listing)/studyCard'
@@ -25,7 +24,15 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
           ? <h5 style={{textAlign:"center"}}>Loading data...</h5>
           : data[0].length == 0
             ? <h5 style={{textAlign:"center"}}>No Listings Found.</h5>
-            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} variant="dashboard-display" />
+            : <StudyListings 
+              page={-1} 
+              limit={0} 
+              filters={emptyFilters} 
+              sortFunction={(a: StudyListing, b: StudyListing) => -1}
+              sortReverse={false}
+              data={data[0]} 
+              variant="dashboard-display" 
+            />
       }
     </>
   )
@@ -41,7 +48,15 @@ function CreatedListings({ data, error, isLoading, emptyFilters } : ListingProps
           ? <h5 style={{textAlign:"center"}}>Loading data...</h5>
           : data[1].length == 0
             ? <h5 style={{textAlign:"center"}}>No Listings Found.</h5>
-            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[1]} variant="modify" />
+            : <StudyListings 
+              page={-1} 
+              limit={0} 
+              filters={emptyFilters} 
+              sortFunction={(a: StudyListing, b: StudyListing) => -1}
+              sortReverse={false}
+              data={data[1]} 
+              variant="modify" 
+            />
       }
     </>
   )
