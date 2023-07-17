@@ -1,0 +1,83 @@
+/*
+#ZC3639
+#3F4E4F
+#CZC8C6
+#966844
+#DCD7C9
+#F6F5F1
+*/
+
+#study-listings-container {
+  width: 100%;
+  margin: 0px;
+  padding: 5px;
+}
+
+#header-container {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  padding: 10px;
+  color: white;
+}
+
+#listings-filter-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0px;
+}
+
+#filter-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 15px 0px 0px;
+}
+
+#filter-container label {
+  text-align: center;
+  color: white;
+}
+
+.filter-tags {
+  display: flex;
+  flex-direction: column;
+}
+
+#listing-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+}
+
+#sort-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 15px 5px 5px 5px;
+}
+
+.sort-subcontainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  #listings-filter-container {
+    flex-direction: column-reverse;
+  }  
+
+  #filter-container {
+    padding: 0px 15px 0px 15px;
+  }
+
+  #sort-container {
+    padding: 15px 15px 5px 15px;
+  }
+}

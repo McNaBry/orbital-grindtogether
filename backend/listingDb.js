@@ -26,6 +26,7 @@ async function createListing(userID, data) {
       faculties: data.tags.faculties
     },
     date : data.date,
+    dateCreated: data.dateCreated,
     freq : data.freq,
     interest: 0,
     likes: []
@@ -49,6 +50,7 @@ async function updateListing(userID, listingUID, data) {
       faculties: data.tags.faculties
     },
     date : data.date,
+    dateCreated: data.dateCreated,
     freq : data.freq,
   }
   
