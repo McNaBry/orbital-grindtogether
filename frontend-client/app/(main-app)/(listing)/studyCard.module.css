@@ -7,8 +7,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
+  border-radius: 5px 0px 0px 5px;
 }
 
 .card-icon {
@@ -20,7 +19,7 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .tag {
@@ -130,4 +129,10 @@
 #delete-button p,
 #edit-button p {
   margin: 0px;
+}
+
+@media (max-width: 576px) {
+  .card-img {
+    border-radius: 5px 5px 0px 0px;
+  }
 }
