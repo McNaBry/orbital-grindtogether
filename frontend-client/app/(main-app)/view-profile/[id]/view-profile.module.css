@@ -50,3 +50,10 @@
     width: 90%;
   }
 }
+
+#view-profile-button-containers {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 25px;
+}

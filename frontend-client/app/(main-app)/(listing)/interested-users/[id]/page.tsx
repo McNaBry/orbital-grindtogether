@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ListGroup, ListGroupItem } from "react-bootstrap"
 
@@ -10,7 +9,6 @@ type InterestedUsersProps = {
 }
 
 function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
-  const router = useRouter()
   // Retrieve URL search params
   const urlParams = new URLSearchParams(searchParams)
   const interestedUsers = urlParams.get("interestedUsers")

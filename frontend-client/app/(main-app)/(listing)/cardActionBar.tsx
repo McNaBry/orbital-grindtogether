@@ -64,7 +64,7 @@ function InterestedUsersButton(
 
       if (!response.ok) {
         console.log(response.status)
-        throw new Error("flag1")
+        throw new Error("Failed to fetch interested users")
       }
 
       const interestedUsers = await response.json()
