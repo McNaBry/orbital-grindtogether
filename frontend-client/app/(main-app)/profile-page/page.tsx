@@ -59,26 +59,12 @@ function NameEmail({ isLoading, name, email } : { isLoading: boolean, name: stri
 function OptInForListings({
   optInStatus,
   setOptInStatus,
+  handleOptInChange
 }: {
   optInStatus: boolean
-  setOptInStatus: (optInStatus: boolean) => void
+  setOptInStatus: (optInStatus: boolean) => void,
+  handleOptInChange: (optInStatus: boolean) => void
 }) {
-  // Everytime user clicks it will update the server
-  const handleClick = async (event: ChangeEvent<HTMLInputElement>) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-opt-in-status`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        optInStatus: !optInStatus
-      }),
-      credentials: "include"
-    })
-
-    setOptInStatus(!optInStatus)
-  }
-
   const inOrOut = optInStatus ? "in" : "out"
   const switchText = `Opt ${inOrOut} to receive email notifications whenever a listing is created.`
 
@@ -89,7 +75,10 @@ function OptInForListings({
         id="custom-switch"
         label={switchText}
         checked={optInStatus}
-        onChange={handleClick}
+        onChange={() => {
+          setOptInStatus(!optInStatus)
+          handleOptInChange(!optInStatus)
+        }}
         className={profileStyles["opt-in-switch"]}
       />
     </Form>
@@ -124,7 +113,6 @@ function DeleteAccount({
 
 export default function ProfilePage() {
   const router = useRouter()
-  // const { name } = router.query;
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [fields, setFields] = useState({
     email: "",
@@ -153,11 +141,15 @@ export default function ProfilePage() {
             credentials: "include",
           }
         )
-        let data = await response.json()
-        console.log(data)
-        setFields(data)
-        setProfilePic(data.profilePic || "")
-        setIsLoading(false)
+        if (response.status == 200) {
+          const data = await response.json()
+          setFields(data)
+          setProfilePic(data.profilePic || "")
+          console.log(data)
+          setIsLoading(false)
+        } else {
+          console.log("Profile fetch error")
+        }
       } catch (error) {
         console.log("User not found.")
       }
@@ -173,7 +165,7 @@ export default function ProfilePage() {
     value,
   }: {
     fieldToUpdate: string
-    value: string | number | string[]
+    value: string | number | string[] | boolean
   }) => {
     // immediately update the state
     setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }))
@@ -209,12 +201,11 @@ export default function ProfilePage() {
       formData.append("profilePic", file)
 
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
           method: "POST",
           body: formData,
           credentials: "include"
         })
-        console.log("profile picture uploaded?")
       } catch (error) {
         console.log(error)
       }
@@ -301,11 +292,15 @@ export default function ProfilePage() {
       { isLoading 
         ? <></> 
         : <OptInForListings 
-          optInStatus = {fields.optInStatus}
-          setOptInStatus={(optInStatus: boolean) => setFields({
-            ...fields,
-            optInStatus: optInStatus
-          })}/> 
+            optInStatus = {fields.optInStatus}
+            setOptInStatus={(optInStatus: boolean) => setFields({
+              ...fields,
+              optInStatus: optInStatus
+            
+            })}
+            handleOptInChange={(value) =>
+              handleFieldChange({ fieldToUpdate: "optInStatus", value })}
+          /> 
       }
       <div className={profileStyles["button-container"]}>
         { isLoading 
