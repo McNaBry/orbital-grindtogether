@@ -12,6 +12,12 @@ import "./reportuser.css"
 
 const reportUserIcon = "/images/report-user.png"
 
+function ReportUserHeader() {
+  return (
+    <h2 className = "report-user-header"> Report User Page</h2>
+  )
+}
+
 function Disclaimer() {
   return (
     <p className="disclaimer">
@@ -19,22 +25,6 @@ function Disclaimer() {
       All reports made will be manually reviewed by the creators. Any trolls who
       abuse this feature will be banned.{" "}
     </p>
-  )
-}
-
-function Name() {
-  return (
-    <>
-      <label htmlFor="full-name" className={styles["form-label"]}>
-        Name of user
-      </label>
-      <input
-        type="text"
-        name="name"
-        className="form-control"
-        id="name"
-      ></input>
-    </>
   )
 }
 
@@ -116,7 +106,7 @@ function ReportUserPage() {
         },
         body: JSON.stringify({
           listingid: "dummy",
-          name: formData.get("name"),
+          name: "dummy",
           date: formData.get("date"),
           reason: formData.get("reason"),
         }),
@@ -137,9 +127,9 @@ function ReportUserPage() {
 
   return (
     <div>
+      <ReportUserHeader />
       <Disclaimer />
       <form onSubmit={submitForm}>
-        <Name />
         <DateOfOffence />
         <Reason />
         <ReportUserButton />
