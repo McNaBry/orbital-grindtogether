@@ -1,5 +1,8 @@
+"use client"
+
 import { Button } from "react-bootstrap"
 import Image from "next/image"
+import profileStyles from "./profile-page.module.css"
 
 interface RemoveProfilePicProps {
     profilePic: string;
@@ -9,7 +12,7 @@ interface RemoveProfilePicProps {
 function RemoveProfilePic({ profilePic, onRemove }: RemoveProfilePicProps) {
     if (profilePic) {
       return (
-        <Button id="remove-pic" onClick={onRemove}>
+        <Button id={profileStyles["remove-pic"]} onClick={onRemove}>
           <Image
             src="images/remove-pic.svg" alt="" 
             width="40" height="40" />

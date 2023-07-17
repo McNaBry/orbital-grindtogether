@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import profileStyles from "./profile-page.module.css"
 
 type SaveCancelBarProps = {
   // Functions to trigger when you click on each button
@@ -30,7 +31,7 @@ function CancelButton({ onCancelChanges } : { onCancelChanges: () => void }) {
 
 export default function ActionBar({ onSaveChanges, onCancelChanges } : SaveCancelBarProps) {
   return (
-    <div id="profile-action-bar">
+    <div id={profileStyles["profile-action-bar"]}>
       <SaveButton onSaveChanges={onSaveChanges} />
       <CancelButton onCancelChanges={onCancelChanges} />
     </div>

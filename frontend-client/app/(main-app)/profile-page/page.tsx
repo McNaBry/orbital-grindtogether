@@ -5,15 +5,14 @@ import { useRouter } from "next/navigation"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import Image from "next/image"
 import Form from "react-bootstrap/Form"
-import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
 import NotifFilters from "./notifFilters"
-import "./profile-page.css"
-import { Placeholder, Row } from "react-bootstrap"
 import RemoveProfilePic from "./removeProfilePic"
+import { Placeholder } from "react-bootstrap"
+import profileStyles from "./profile-page.module.css"
 
 const deleteAccountIcon = "/images/delete-account.png"
 
@@ -22,14 +21,14 @@ function EditProfileTitle() {
 }
 
 function NoProfilePic() {
-  return <div className="no-profile-pic"></div>
+  return <div id={profileStyles["no-profile-pic"]}></div>
 }
 
 function ProfilePic({ profilePic }: { profilePic: string }) {
   return (
     <>
       { profilePic 
-        ? <div className="profile-pic">
+        ? <div id={profileStyles["profile-pic"]}>
             <img src={profilePic} />
           </div>
         : <NoProfilePic />
@@ -40,28 +39,20 @@ function ProfilePic({ profilePic }: { profilePic: string }) {
 
 function NameEmail({ isLoading, name, email } : { isLoading: boolean, name: string, email: string }) {
   return (
-    <div id="name-email-container">
-      <p id="name-field">{name}</p>
-      <p id="email-field">{email}</p>
+    <div id={profileStyles["name-email-container"]}>
+      {isLoading 
+        ? <>
+            <Placeholder animation="glow"><Placeholder xs={12}/></Placeholder>
+            <Placeholder animation="glow"><Placeholder xs={12}/></Placeholder>
+          </>
+        : <>
+            <p id={profileStyles["name-field"]}>{name}</p>
+            <p id={profileStyles["email-field"]}>{email}</p>
+          </>
+      }
     </div>
   )
 }
-
-// function NameCard({ isLoading, name }: { isLoading: boolean, name: string }) {
-//   return (
-//     <NonEditableCard isLoading={isLoading} title="Full Name">
-//       <p className="card-text"> {name} </p>
-//     </NonEditableCard>
-//   )
-// }
-
-// function EmailCard({ isLoading, email }: { isLoading: boolean, email: string }) {
-//   return (
-//     <NonEditableCard isLoading={isLoading} title="Email">
-//       <p className="card-text"> {email} </p>
-//     </NonEditableCard>
-//   )
-// }
 
 // optInStatus is part of the profile fields variable
 // setOptInStatus is a method to handle the change in optInStatus
@@ -92,14 +83,14 @@ function OptInForListings({
   const switchText = `Opt ${inOrOut} to receive email notifications whenever a listing is created.`
 
   return (
-    <Form id="opt-in-form">
+    <Form id={profileStyles["opt-in-form"]}>
       <Form.Check
         type="switch"
         id="custom-switch"
         label={switchText}
         checked={optInStatus}
         onChange={handleClick}
-        className="opt-in-switch"
+        className={profileStyles["opt-in-switch"]}
       />
     </Form>
   )
@@ -118,7 +109,7 @@ function DeleteAccount({
   }
 
   return (
-    <button id="profile-delete-account" className="btn mb-3" onClick={onClick}>
+    <button id={profileStyles["profile-delete-account"]} className="btn mb-3" onClick={onClick}>
       <Image
         width={20}
         height={20}
@@ -251,48 +242,19 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="profile-page-container">
+    <div className={profileStyles["profile-page-container"]}>
       <EditProfileTitle />
       <ProfilePic profilePic={profilePic} />
-      <div id="profile-pic-button-container">
-        <UploadProfilePic profilePic={profilePic} onUpload={handleProfilePicUpload} />
+      <div id={profileStyles["profile-pic-button-container"]}>
+        <UploadProfilePic isLoading={isLoading} profilePic={profilePic} onUpload={handleProfilePicUpload} />
         <RemoveProfilePic
           profilePic={profilePic}
           onRemove={handleProfilePicRemoval}
         />
       </div>
-      {/* <NameCard isLoading={isLoading} name={fields.fullName} />
-      <EmailCard isLoading={isLoading} email={fields.email} /> */}
       <NameEmail isLoading={isLoading} name={fields.fullName} email={fields.email} />
       
-      <div id="profile-field-container">
-      {/* <div className="profile-field">
-        <h4 style={{marginRight: "15px"}}>Bio</h4>
-        <p>{fields.bio}</p>
-      </div>
-
-      <div className="profile-field">
-        <h4 style={{marginRight: "0px"}}>Course</h4>
-        <p>{fields.course}</p>
-      </div>
-
-      <div className="profile-field">
-        <h4 style={{marginRight: "0px"}}>Year</h4>
-        <p>{fields.year}</p>
-      </div>
-
-      <div className="profile-field">
-        <h4 style={{marginRight: "0px"}}>Tele</h4>
-        <p>{fields.teleHandle}</p>
-      </div>
-
-      <NotifFilters 
-        isLoading={isLoading}
-        filters={fields.notifFilters}
-        onSave={(value: string[]) =>
-          handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
-        /> */ }
-      
+      <div id={profileStyles["profile-field-container"]}>      
         <EditableCard
           isLoading={isLoading}
           field="Bio"
@@ -336,7 +298,7 @@ export default function ProfilePage() {
         />
       </div>
 
-      {isLoading 
+      { isLoading 
         ? <></> 
         : <OptInForListings 
           optInStatus = {fields.optInStatus}
@@ -345,10 +307,12 @@ export default function ProfilePage() {
             optInStatus: optInStatus
           })}/> 
       }
-      <div className="button-container">
-        {isLoading ? <Placeholder.Button variant="light" xs={2} style={{marginRight: "10px"}}/> 
+      <div className={profileStyles["button-container"]}>
+        { isLoading 
+          ? <Placeholder.Button variant="light" xs={2} style={{marginRight: "10px"}}/> 
           : <SignOutButton /> }
-        {isLoading ? <Placeholder.Button variant="light" xs={2}/> 
+        { isLoading 
+          ? <Placeholder.Button variant="light" xs={2}/> 
           : <DeleteAccount 
               email={fields.email}
               router={router} />

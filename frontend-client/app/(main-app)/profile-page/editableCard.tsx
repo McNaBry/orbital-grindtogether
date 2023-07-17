@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import { Card, Placeholder } from "react-bootstrap"
 import EditButton from "./editButton"
-import SaveCancelBar from "./saveCancelBar";
+import SaveCancelBar from "./saveCancelBar"
+import profileStyles from "./profile-page.module.css"
 
 interface EditableCardProps {
   isLoading: boolean;
@@ -30,19 +31,19 @@ function EditableCard({ isLoading, field, value, maxChars, onSave }: EditableCar
   useEffect(() => setEditedValue(value), [value])
 
   return (
-    <div className="profile-field">
-      <div className="profile-header-container">
+    <div className={profileStyles["profile-field"]}>
+      <div className={profileStyles["profile-header-container"]}>
         <h4 style={{color: "white"}}>{field}</h4>
         { isLoading ? <></> : <>{ inEditingState ? <></> : <EditButton onEditChanges={handleEdit} /> }</> }
       </div>
       { isLoading 
-        ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+        ? <Placeholder animation="glow"><Placeholder xs={12}/></Placeholder>
         : <> 
           { inEditingState 
             ? <>
-                <div id="edit-area">
+                <div id={profileStyles["edit-area"]}>
                   <textarea
-                    className="input-field"
+                    className={profileStyles["input-field"]}
                     value={editedValue}
                     maxLength = {maxChars}
                     rows = {2}

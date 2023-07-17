@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, Badge, Button, Placeholder } from "react-bootstrap"
+import { Card, Placeholder } from "react-bootstrap"
 import { tagData } from "../(listing)/study-listings/data"
 import {
   Option,
@@ -10,6 +10,7 @@ import {
 import { ActionMeta } from "react-select"
 import EditButton from "./editButton"
 import SaveCancelBar from "./saveCancelBar"
+import profileStyles from "./profile-page.module.css"
 
 const mappedTagData : {[key:string]: string} = {}
 
@@ -41,7 +42,7 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
   }
 
   const handleSaveChanges = () => {
-    onSave(newFilters)
+    if (newFilters.length > 0) onSave(newFilters)
     setNewFilters([])
     setEditMode(false)
   }
@@ -52,19 +53,25 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
   }
 
   const tags = filters.map(item => {
-    return <span key={item} className={"badge " + mappedTagData[item] + " " + "tag"}>{ item }</span>
+    return <span 
+      key={item} 
+      className={"badge " + profileStyles[mappedTagData[item]] + " " + profileStyles["tag"]}>
+        { item }
+      </span>
   })
   
   return (
-    <div className="profile-field">
-      <div className="profile-header-container">
+    <div className={profileStyles["profile-field"]}>
+
+      <div className={profileStyles["profile-header-container"]}>
         <h4 style={{color: "white"}}>Notification Filters</h4>
         { isLoading ? <></> : <>{ editMode ? <></> : <EditButton onEditChanges={handleEdit} /> }</> }
       </div>
+
       { isLoading 
         ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
         : <>
-          <div id="notif-tag-row">{ tags }</div>
+          <div id={profileStyles["notif-tag-row"]}>{ tags }</div>
           { editMode
             ? <> 
                 <SelectMultiOption
@@ -85,6 +92,7 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
           }
         </>
       }
+
     </div>
   )
 }
