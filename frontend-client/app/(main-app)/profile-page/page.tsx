@@ -12,7 +12,7 @@ import UploadProfilePic from "./uploadProfilePic"
 import NotifFilters from "./notifFilters"
 import RemoveProfilePic from "./removeProfilePic"
 import { Placeholder } from "react-bootstrap"
-import RemoveProfilePic from "../removeProfilePic"
+import profileStyles from "./profile-page.module.css"
 
 const deleteAccountIcon = "/images/delete-account.png"
 

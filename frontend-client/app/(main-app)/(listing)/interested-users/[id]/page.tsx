@@ -33,7 +33,7 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
         {/* Should use a more unique key rather the user's name */}
         {interestedUsersArr.map((user: string[]) => (
           <ListGroupItem key={getUID(user)}>
-            <Link href = {`/profile-page/${getUID(user)}`}>
+            <Link href = {`/view-profile/${getUID(user)}`}>
               <p>{getName(user)} </p>
             </Link>
           </ListGroupItem>
