@@ -166,8 +166,8 @@ async function getListingLikers(listingID) {
     for (let i = 0; i < likers.length; i += 1) {
       console.log("Liker: ", likers[i])
       const userSnapshot = await db.collection("users").doc(likers[i]).get()
-      const username = userSnapshot.data().fullName;
-      let user = [likers[i], username]
+      const userData = userSnapshot.data();
+      let user = [likers[i], userData.fullName, userData.teleHandle]
       likersInfo.push(user)
     }
   } 

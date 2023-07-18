@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { MouseEventHandler, useEffect, useState } from "react"
 import profileStyles from "../../profile-page/profile-page.module.css"
 import viewProfileStyles from "./view-profile.module.css"
 import { Button, Placeholder } from "react-bootstrap"
@@ -130,12 +130,12 @@ export default function ViewProfile({
     const router = useRouter()
     // const listingUID = router.query.listingUID
 
-    const handleClick = (event) => {
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault()
       router.back()
     }
 
-    return <Button onClick={handleClick}> Go Back </Button>
+    return <Button variant="dark" onClick={handleClick}> Go Back </Button>
   }
 
   // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
@@ -189,10 +189,10 @@ export default function ViewProfile({
         />
         <Bio isLoading={isLoading} bio={fields.bio} />
         <Rating isLoading={isLoading} rating={fields.rating} />
-      </div>
-      <div id={viewProfileStyles["view-profile-button-container"]}>
-        <ReturnToInterestedUserList />
-        <Button variant="danger">Report User</Button>
+        <div id={viewProfileStyles["view-profile-button-container"]}>
+          <ReturnToInterestedUserList />
+          <Button style={{marginLeft: "10px"}} variant="danger">Report User</Button>
+        </div>
       </div>
     </div>
   )
