@@ -1,0 +1,14 @@
+.custom-pagination .page-link {
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 24px;
+}
+
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  margin: 0px;
+}

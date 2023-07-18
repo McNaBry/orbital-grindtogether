@@ -19,7 +19,6 @@
 .multi-option-input,
 .date-option-container {
   width: 100%;
-  padding: 5px 10px 5px 10px;
 }
 
 .date-option-input {
@@ -65,6 +64,11 @@
 
 .options-subcontainer:hover {
   box-shadow: 0px 0px 20px 5px rgb(255, 255, 255, 0.5);
+}
+
+.options-select-wrapper {
+  padding: 5px 0px 5px 0px;
+  width: 100%;
 }
 
 .option-label {

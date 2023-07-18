@@ -12,15 +12,16 @@ export const tagData : {[key:string]: string[]} = {
 
 export const testData : StudyListing[] = [
   {
-    createdBy: "Tze Jie",
-    title:     "Study @ Terrace",
-    desc:      "Let's have some fun grinding together!",
-    tags:      {"modules": ["CS2040S"], "locations": ["COM3"], "faculties": ["SOC"]},
-    date:      new Date("2023-06-16T08:36:50.175Z"),
-    freq:      "Every Week",
-    interest:  20,
-    id:        "invite1",
-    liked:     false
+    createdBy:  "Tze Jie",
+    title:       "Study @ Terrace",
+    desc:        "Let's have some fun grinding together!",
+    tags:        {"modules": ["CS2040S"], "locations": ["COM3"], "faculties": ["SOC"]},
+    date:        new Date("2023-06-16T08:36:50.175Z"),
+    dateCreated: new Date("2023-06-16T08:36:50.175Z"),
+    freq:        "Every Week",
+    interest:    20,
+    id:          "invite1",
+    liked:       false
   },
 
   {
@@ -29,6 +30,7 @@ export const testData : StudyListing[] = [
     desc:      "Seeking for people willing to carry my assignment",
     tags:      {"modules": ["CS1231S"], "locations": ["COM3"], "faculties": ["SOC"]},
     date:      new Date("2023-06-16T08:36:50.175Z"),
+    dateCreated: new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  0,
     id:        "invite2",
@@ -41,6 +43,7 @@ export const testData : StudyListing[] = [
     desc:      "Anyone wants to be my study date?",
     tags:      {"modules": ["HSI1000"], "locations": ["COM3"], "faculties": ["CHS"]},
     date:      new Date("2023-06-16T08:36:50.175Z"),
+    dateCreated: new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Once",
     interest:  2,
     id:        "invite3",
@@ -53,6 +56,7 @@ export const testData : StudyListing[] = [
     desc:      "NUS Grind Sesh by your favourite boi",
     tags:      {"modules": ["CS2040S", "CS2030S", "CS2100"], "locations": ["COM3"], "faculties": ["SOC"]},
     date:      new Date("2023-06-16T08:36:50.175Z"),
+    dateCreated: new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Every Week",
     interest:  50,
     id:        "invite4",
@@ -65,6 +69,7 @@ export const testData : StudyListing[] = [
     desc:      "Talk, study and chill",
     tags:      {"modules": ["IS2218"], "locations": ["Terrace"], "faculties": ["SOC"]},
     date:      new Date("2023-06-16T08:36:50.175Z"),
+    dateCreated: new Date("2023-06-16T08:36:50.175Z"),
     freq:      "Once",
     interest:  2,
     id:        "invite5",
