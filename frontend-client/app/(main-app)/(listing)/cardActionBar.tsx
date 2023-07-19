@@ -105,10 +105,14 @@ function CardActionBar({
   return (
     <small id={cardStyles["action-bar"]}>
       { variant == "display" || variant == "dashboard-display" ? (
-        <LikeButton listingData={listingData} variant={variant} />
+        <>
+          <LikeButton listingData={listingData} variant={variant} />
+          <InterestedUsersButton listingData={listingData} router={router} />
+        </>
       ) : (
         <></>
       )}
+      
       { variant == "modify" ? (
         <>
           <EditButton listingData={listingData} router={router} />

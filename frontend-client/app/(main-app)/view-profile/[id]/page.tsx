@@ -1,6 +1,6 @@
 "use client"
 
-import { MouseEventHandler, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import profileStyles from "../../profile-page/profile-page.module.css"
 import viewProfileStyles from "./view-profile.module.css"
 import { Button, Placeholder } from "react-bootstrap"
@@ -20,7 +20,7 @@ function ProfilePic({ profilePic }: { profilePic: string }) {
     <>
       {profilePic ? (
         <div id={profileStyles["profile-pic"]}>
-          <img src={profilePic} />
+          <img style={{width: "250px", height: "250px"}} alt="" src={profilePic} />
         </div>
       ) : (
         <NoProfilePic />
@@ -128,7 +128,6 @@ export default function ViewProfile({
 
   function ReturnToInterestedUserList({}) {
     const router = useRouter()
-    // const listingUID = router.query.listingUID
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault()
@@ -138,7 +137,7 @@ export default function ViewProfile({
     return <Button variant="dark" onClick={handleClick}> Go Back </Button>
   }
 
-  // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
+  // UseEffect hook to fetch profile data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -160,7 +159,6 @@ export default function ViewProfile({
           const data = await response.json()
           setFields(data)
           setProfilePic(data.profilePic || "")
-          console.log(data)
           setIsLoading(false)
         } else {
           console.log("Profile fetch error")

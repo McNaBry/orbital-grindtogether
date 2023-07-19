@@ -397,7 +397,6 @@ app.post("/get-interested-users", async (req, res) => {
   
   try {
     const users = await getListingLikers(listingUID);
-    console.log("Users: ", users)
     res.status(200).json(users)
   } catch (error) {
     console.error("error getting likers list", error)

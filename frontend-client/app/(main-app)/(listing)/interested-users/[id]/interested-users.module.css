@@ -53,7 +53,19 @@
   border-radius: 5px;
 }
 
-#no-profile-pic {
+.profile-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: none;
+  overflow: hidden;
+  margin-right: 12px;
+}
+
+.no-profile-pic {
   height: 50px;
   width: 50px;
   background-color: black;

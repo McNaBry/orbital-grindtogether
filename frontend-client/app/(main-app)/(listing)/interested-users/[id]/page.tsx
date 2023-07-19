@@ -1,8 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { ListGroup, ListGroupItem } from "react-bootstrap"
+import Image from "next/image"
+import { Button } from "react-bootstrap"
 import interestStyles from "./interested-users.module.css"
+import { useRouter } from "next/navigation"
 
 type InterestedUsersProps = {
   params: { id: string } // listing UID
@@ -12,18 +14,33 @@ type InterestedUsersProps = {
 type User = {
   uid: string,
   name: string,
-  teleHandle: string
+  teleHandle: string,
+  profilePic: string
 }
 
 function NoProfilePic() {
-  return <div id={interestStyles["no-profile-pic"]}></div>
+  return <div className={interestStyles["no-profile-pic"]}></div>
+}
+
+function ProfilePic({ profilePic }: { profilePic: string }) {
+  return (
+    <>
+      {profilePic ? (
+        <div className={interestStyles["profile-pic"]}>
+          <img style={{width: "50px", height: "50px"}} alt="" src={profilePic} />
+        </div>
+      ) : (
+        <NoProfilePic />
+      )}
+    </>
+  )
 }
 
 function UserEntry({ user } : { user: User }) {
   return (
     <div className={interestStyles["user-entry"]}>
       <div className={interestStyles["user-entry-left"]}>
-        <NoProfilePic />
+        <ProfilePic profilePic={user.profilePic} />
         <Link className={interestStyles["user-link"]} href={`/view-profile/${user.uid}`}>
           <p className={interestStyles["user-name"]}>{user.name}</p>
         </Link>
@@ -34,6 +51,7 @@ function UserEntry({ user } : { user: User }) {
 }
 
 function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
+  const router = useRouter()
   // Retrieve URL search params
   const urlParams = new URLSearchParams(searchParams)
   const interestedUsers = urlParams.get("interestedUsers")
@@ -44,7 +62,8 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
     return ({
       uid: user[0],
       name: user[1],
-      teleHandle: user[2]
+      teleHandle: user[2],
+      profilePic: user[3]
     })
   })
 
@@ -56,6 +75,7 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
           <UserEntry user={user} />
         ))}
       </div>
+      <Button variant="dark" onClick={() => router.back()}>Back</Button>
     </div>
   )
 }
