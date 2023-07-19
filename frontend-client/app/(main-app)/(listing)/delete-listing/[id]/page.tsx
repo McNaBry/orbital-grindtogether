@@ -45,6 +45,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
       "faculties": tags[2].split(",").slice(1)
     },
     date: new Date(urlParams.get('date') || Date.now()),
+    dateCreated: new Date(urlParams.get('dateCreated') || Date.now()), 
     freq: urlParams.get('freq') || "Every day",
     interest: parseInt(urlParams.get('interest') || '0'),
     id: urlParams.get('id') || "",
