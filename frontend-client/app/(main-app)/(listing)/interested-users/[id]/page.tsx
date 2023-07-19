@@ -36,12 +36,12 @@ function ProfilePic({ profilePic }: { profilePic: string }) {
   )
 }
 
-function UserEntry({ user } : { user: User }) {
+function UserEntry({ user, listingUID } : { user: User, listingUID: string }) {
   return (
     <div className={interestStyles["user-entry"]}>
       <div className={interestStyles["user-entry-left"]}>
         <ProfilePic profilePic={user.profilePic} />
-        <Link className={interestStyles["user-link"]} href={`/view-profile/${user.uid}`}>
+        <Link className={interestStyles["user-link"]} href={`/view-profile/${user.uid}?listingUID=${listingUID}`}>
           <p className={interestStyles["user-name"]}>{user.name}</p>
         </Link>
       </div>
@@ -55,8 +55,6 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
   // Retrieve URL search params
   const urlParams = new URLSearchParams(searchParams)
   const interestedUsers = urlParams.get("interestedUsers")
-  // console.log("INTERESTED USERS: ", interestedUsers)
-  // console.log("PARAM: ", params)
   const interestedUsersArr = interestedUsers ? JSON.parse(interestedUsers) : []
   const interestedUsersObjArr: User[] = interestedUsersArr.map((user: string[]) => {
     return ({
@@ -72,7 +70,7 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
       <h1 style={{ color: "white", textAlign: "center" }}> Interested Users </h1>
       <div id={interestStyles["interested-users-list"]}>
         { interestedUsersObjArr.map((user: User) => (
-          <UserEntry user={user} />
+          <UserEntry user={user} listingUID={params.id} />
         ))}
       </div>
       <Button variant="dark" onClick={() => router.back()}>Back</Button>
