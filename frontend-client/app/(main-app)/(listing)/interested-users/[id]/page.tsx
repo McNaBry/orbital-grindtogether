@@ -1,12 +1,53 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { ListGroup, ListGroupItem } from "react-bootstrap"
+import Image from "next/image"
+import { Button } from "react-bootstrap"
+import interestStyles from "./interested-users.module.css"
+import { useRouter } from "next/navigation"
 
 type InterestedUsersProps = {
   params: { id: string } // listing UID
   searchParams: any
+}
+
+type User = {
+  uid: string,
+  name: string,
+  teleHandle: string,
+  profilePic: string
+}
+
+function NoProfilePic() {
+  return <div className={interestStyles["no-profile-pic"]}></div>
+}
+
+function ProfilePic({ profilePic }: { profilePic: string }) {
+  return (
+    <>
+      {profilePic ? (
+        <div className={interestStyles["profile-pic"]}>
+          <img style={{width: "50px", height: "50px"}} alt="" src={profilePic} />
+        </div>
+      ) : (
+        <NoProfilePic />
+      )}
+    </>
+  )
+}
+
+function UserEntry({ user } : { user: User }) {
+  return (
+    <div className={interestStyles["user-entry"]}>
+      <div className={interestStyles["user-entry-left"]}>
+        <ProfilePic profilePic={user.profilePic} />
+        <Link className={interestStyles["user-link"]} href={`/view-profile/${user.uid}`}>
+          <p className={interestStyles["user-name"]}>{user.name}</p>
+        </Link>
+      </div>
+      <p className={interestStyles["user-tele"]}>{user.teleHandle}</p>
+    </div>
+  )
 }
 
 function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
@@ -14,23 +55,27 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
   // Retrieve URL search params
   const urlParams = new URLSearchParams(searchParams)
   const interestedUsers = urlParams.get("interestedUsers")
-  console.log("INTERESTED USERS: ", interestedUsers)
-  console.log("PARAM: ", params)
+  // console.log("INTERESTED USERS: ", interestedUsers)
+  // console.log("PARAM: ", params)
   const interestedUsersArr = interestedUsers ? JSON.parse(interestedUsers) : []
+  const interestedUsersObjArr: User[] = interestedUsersArr.map((user: string[]) => {
+    return ({
+      uid: user[0],
+      name: user[1],
+      teleHandle: user[2],
+      profilePic: user[3]
+    })
+  })
 
   return (
-    <div>
-      <h1 style={{ color: "white" }}> Interested Users Page </h1>
-      <ListGroup>
-        {/* Should use a more unique key rather the user's name */}
-        {interestedUsersArr.map((user: string) => (
-          <ListGroupItem key={user}>
-            <Link href = {{pathname: "/profile-page", query: {name: user }}}>
-              <p>{user} </p>
-            </Link>
-          </ListGroupItem>
+    <div id={interestStyles["interested-users-container"]}>
+      <h1 style={{ color: "white", textAlign: "center" }}> Interested Users </h1>
+      <div id={interestStyles["interested-users-list"]}>
+        { interestedUsersObjArr.map((user: User) => (
+          <UserEntry user={user} />
         ))}
-      </ListGroup>
+      </div>
+      <Button variant="dark" onClick={() => router.back()}>Back</Button>
     </div>
   )
 }

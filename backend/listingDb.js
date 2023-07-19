@@ -1,4 +1,5 @@
 const { db, FieldValue } = require("./firebase")
+const { getInterestProfile } = require("./profile.js")
 
 async function getListing(listingUID) {
   const docRef = await db
@@ -157,21 +158,19 @@ async function getCreatedListings(userID) {
 
 async function getListingLikers(listingID) {
   const snapshot = await db.collection("listings").doc(listingID).get()
-  const nameOfLikers = []
+  const likersInfo = []
   
   if (snapshot.exists) {
     const likers = snapshot.data().likes
-    console.log("Likers UID: ", likers)
+    // console.log("Likers UID: ", likers)
     
     for (let i = 0; i < likers.length; i += 1) {
-      console.log("Liker: ", likers[i])
-      const userSnapshot = await db.collection("users").doc(likers[i]).get()
-      const username = userSnapshot.data().fullName;
-      nameOfLikers.push(username)
+      // console.log("Liker: ", likers[i])
+      likersInfo.push(getInterestProfile(likers[i]))
     }
   } 
 
-  return nameOfLikers
+  return Promise.all(likersInfo)
 }
 
 module.exports = {

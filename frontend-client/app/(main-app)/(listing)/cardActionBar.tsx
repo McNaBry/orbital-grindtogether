@@ -64,7 +64,7 @@ function InterestedUsersButton(
 
       if (!response.ok) {
         console.log(response.status)
-        throw new Error("flag1")
+        throw new Error("Failed to fetch interested users")
       }
 
       const interestedUsers = await response.json()
@@ -105,10 +105,14 @@ function CardActionBar({
   return (
     <small id={cardStyles["action-bar"]}>
       { variant == "display" || variant == "dashboard-display" ? (
-        <LikeButton listingData={listingData} variant={variant} />
+        <>
+          <LikeButton listingData={listingData} variant={variant} />
+          <InterestedUsersButton listingData={listingData} router={router} />
+        </>
       ) : (
         <></>
       )}
+      
       { variant == "modify" ? (
         <>
           <EditButton listingData={listingData} router={router} />

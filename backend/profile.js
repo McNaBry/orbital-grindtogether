@@ -1,14 +1,8 @@
 const { db, bucket } = require("./firebase")
 
-async function getFullProfile(userID) {
-  const userRef = await db.collection("users").doc(userID).get()
-  if (!userRef.exists) return null
-
-  let userData = userRef.data()
-  delete userData.likes
-  delete userData.listings
+async function getProfilePic(userID) {
   const file = bucket.file(`${userID}.png`)
-  await file.exists()
+  return await file.exists()
     .then(async ([exists]) => {
       let signedUrl = ""
       if (exists) {
@@ -17,17 +11,25 @@ async function getFullProfile(userID) {
           expires: Date.now() + 60 * 60 * 1000, // Expiry date of the URL
         })
       }
-      userData = {
-        ...userData,
-        profilePic: signedUrl
-      }
+      return signedUrl
     }).catch(error => {
       console.log("Error checking if file exists:\n", error)
-      userData = {
-        ...userData,
-        profilePic: ""
-      }
+      return ""
     })
+}
+
+async function getFullProfile(userID) {
+  const userRef = await db.collection("users").doc(userID).get()
+  if (!userRef.exists) return null
+
+  let userData = userRef.data()
+  delete userData.likes
+  delete userData.listings
+  const profilePic = await getProfilePic(userID)
+  userData = {
+    ...userData,
+    profilePic: profilePic
+  }
   return userData
 }
 
@@ -44,6 +46,18 @@ async function getViewProfile(userID) {
       rating: fullProfile.rating,
       profilePic: fullProfile.profilePic
     }
+}
+
+async function getInterestProfile(userID) {
+  const fullProfile = await getFullProfile(userID)
+  return fullProfile == null 
+    ? null
+    : [ 
+      userID,
+      fullProfile.fullName,
+      fullProfile.teleHandle,
+      fullProfile.profilePic
+    ]
 }
 
 async function updateProfile(userID, fieldToUpdate, value) {
@@ -114,6 +128,7 @@ async function setProfilePic(userID, file) {
 module.exports = {
   getFullProfile,
   getViewProfile,
+  getInterestProfile,
   updateProfile,
   setProfilePic
 }

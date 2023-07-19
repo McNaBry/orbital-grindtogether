@@ -29,7 +29,7 @@ function ProfilePic({ profilePic }: { profilePic: string }) {
     <>
       { profilePic 
         ? <div id={profileStyles["profile-pic"]}>
-            <img src={profilePic} />
+            <img style={{width: "250px", height: "250px"}} alt="" src={profilePic} />
           </div>
         : <NoProfilePic />
       }
@@ -127,7 +127,7 @@ export default function ProfilePage() {
   })
   const [profilePic, setProfilePic] = useState("")
 
-  // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
+  // UseEffect hook to fetch profile data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -276,9 +276,12 @@ export default function ProfilePage() {
           field="Telegram Handle"
           value={fields.teleHandle}
           maxChars={32}
-          onSave={(value) =>
+          onSave={(value) => {
+            if (typeof value != "string") return
+            if (value == "") value = "@"
+            else if (value.charAt(0) != "@") value = "@" + value
             handleFieldChange({ fieldToUpdate: "teleHandle", value })
-          }
+          }}
         />
         <RatingCard rating={fields.rating} />
         <NotifFilters 
