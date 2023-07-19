@@ -1,14 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Card, Badge, Button, Placeholder } from "react-bootstrap"
+import { Card, Placeholder } from "react-bootstrap"
 import { tagData } from "../(listing)/study-listings/data"
 import {
   Option,
   SelectMultiOption
 } from "../(listing)/create-listing/select"
 import { ActionMeta } from "react-select"
-import ActionBar from "./actionBar"
+import EditButton from "./editButton"
+import SaveCancelBar from "./saveCancelBar"
+import profileStyles from "./profile-page.module.css"
 
 const mappedTagData : {[key:string]: string} = {}
 
@@ -40,7 +42,7 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
   }
 
   const handleSaveChanges = () => {
-    onSave(newFilters)
+    if (newFilters.length > 0) onSave(newFilters)
     setNewFilters([])
     setEditMode(false)
   }
@@ -51,37 +53,46 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
   }
 
   const tags = filters.map(item => {
-    return <span key={item} className={"badge " + mappedTagData[item] + " " + "tag"}>{ item }</span>
+    return <span 
+      key={item} 
+      className={"badge " + profileStyles[mappedTagData[item]] + " " + profileStyles["tag"]}>
+        { item }
+      </span>
   })
   
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>Notification Filters</Card.Title>
-        { isLoading 
-          ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
-          : <>
-          <Card.Text id="notif-tag-row">{ tags }</Card.Text>
+    <div className={profileStyles["profile-field"]}>
+
+      <div className={profileStyles["profile-header-container"]}>
+        <h4 style={{color: "white"}}>Notification Filters</h4>
+        { isLoading ? <></> : <>{ editMode ? <></> : <EditButton onEditChanges={handleEdit} /> }</> }
+      </div>
+
+      { isLoading 
+        ? <Placeholder as={Card.Text} animation="glow"><Placeholder xs={12}/></Placeholder>
+        : <>
+          <div id={profileStyles["notif-tag-row"]}>{ tags }</div>
           { editMode
-            ? <SelectMultiOption
-                params={{
-                  name: "Filters",
-                  type: "filters",
-                  defaultValue: filters.map(tag => ({ value: tag, label: tag })),
-                  options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
-                  handleChange: handleMultipleOptionChange
-                }} 
-              />
+            ? <> 
+                <SelectMultiOption
+                  params={{
+                    name: "Filters",
+                    type: "filters",
+                    defaultValue: filters.map(tag => ({ value: tag, label: tag })),
+                    options: Object.keys(mappedTagData).map(tag => ({ value: tag, label: tag })),
+                    handleChange: handleMultipleOptionChange
+                  }} 
+                />
+                <SaveCancelBar
+                  onSaveChanges={handleSaveChanges}
+                  onCancelChanges={handleCancelChanges}
+                />
+              </>
             : <></>
           }
-          <ActionBar
-            editMode={editMode}
-            onEditChanges={handleEdit}
-            onSaveChanges={handleSaveChanges}
-            onCancelChanges={handleCancelChanges}
-          /> </>
-        }
-      </Card.Body>
-    </Card>
+        </>
+      }
+
+    </div>
   )
 }

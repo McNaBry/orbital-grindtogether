@@ -5,31 +5,31 @@ import { useRouter } from "next/navigation"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import Image from "next/image"
 import Form from "react-bootstrap/Form"
-import NonEditableCard from "./nonEditableCard"
 import EditableCard from "./editableCard"
 import RatingCard from "./ratingCard"
 import SignOutButton from "./signOutButton"
 import UploadProfilePic from "./uploadProfilePic"
 import NotifFilters from "./notifFilters"
-import "./profile-page.css"
+import RemoveProfilePic from "./removeProfilePic"
 import { Placeholder } from "react-bootstrap"
+import profileStyles from "./profile-page.module.css"
 
 const deleteAccountIcon = "/images/delete-account.png"
 
-function EditProfile() {
+function EditProfileTitle() {
   return <h1 style={{ color: "white" }}> Profile Page </h1>
 }
 
 function NoProfilePic() {
-  return <div className="no-profile-pic"></div>
+  return <div id={profileStyles["no-profile-pic"]}></div>
 }
 
-function ProfilePic({ profilePic }: {profilePic: string}) {
+function ProfilePic({ profilePic }: { profilePic: string }) {
   return (
     <>
       { profilePic 
-        ? <div className="profile-pic">
-            <img src={profilePic} />
+        ? <div id={profileStyles["profile-pic"]}>
+            <img style={{width: "250px", height: "250px"}} alt="" src={profilePic} />
           </div>
         : <NoProfilePic />
       }
@@ -37,80 +37,79 @@ function ProfilePic({ profilePic }: {profilePic: string}) {
   )
 }
 
-function NameCard({ isLoading, name }: { isLoading: boolean, name: string }) {
+function NameEmail({ isLoading, name, email } : { isLoading: boolean, name: string, email: string }) {
   return (
-    <NonEditableCard isLoading={isLoading} title="Full Name">
-      <p className="card-text"> {name} </p>
-    </NonEditableCard>
-  )
-}
-
-function EmailCard({ isLoading, email }: { isLoading: boolean, email: string }) {
-  return (
-    <NonEditableCard isLoading={isLoading} title="Email">
-      <p className="card-text"> {email} </p>
-    </NonEditableCard>
+    <div id={profileStyles["name-email-container"]}>
+      {isLoading 
+        ? <>
+            <Placeholder animation="glow"><Placeholder xs={12}/></Placeholder>
+            <Placeholder animation="glow"><Placeholder xs={12}/></Placeholder>
+          </>
+        : <>
+            <p id={profileStyles["name-field"]}>{name}</p>
+            <p id={profileStyles["email-field"]}>{email}</p>
+          </>
+      }
+    </div>
   )
 }
 
 // optInStatus is part of the profile fields variable
 // setOptInStatus is a method to handle the change in optInStatus
-function OptInForListings(
-  { optInStatus, setOptInStatus }: 
-  { optInStatus: boolean, setOptInStatus: (optInStatus: boolean) => void }) {
-
-  // Everytime user clicks it will update the server
-  const handleClick = async (event: ChangeEvent<HTMLInputElement>) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-opt-in-status`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        optInStatus: !optInStatus
-      }),
-      credentials: "include"
-    })
-
-    setOptInStatus(!optInStatus)
-  }
-
+function OptInForListings({
+  optInStatus,
+  setOptInStatus,
+  handleOptInChange
+}: {
+  optInStatus: boolean
+  setOptInStatus: (optInStatus: boolean) => void,
+  handleOptInChange: (optInStatus: boolean) => void
+}) {
   const inOrOut = optInStatus ? "in" : "out"
   const switchText = `Opt ${inOrOut} to receive email notifications whenever a listing is created.`
 
   return (
-    <Form id="opt-in-form">
+    <Form id={profileStyles["opt-in-form"]}>
       <Form.Check
         type="switch"
         id="custom-switch"
         label={switchText}
         checked={optInStatus}
-        onChange={handleClick}
-        className="opt-in-switch"
+        onChange={() => {
+          setOptInStatus(!optInStatus)
+          handleOptInChange(!optInStatus)
+        }}
+        className={profileStyles["opt-in-switch"]}
       />
     </Form>
   )
 }
 
-  // This button is different from the one in delete-account; it just redirects to the page
-  function DeleteAccount({ email, router } : { email: string, router: AppRouterInstance}) {
-    const onClick = () => {
-      router.push(`/delete-account?email=${email}`)
-    }
-
-    return (
-      <button id="profile-delete-account" className="btn mb-3" onClick={onClick}>
-        <Image
-          width={20}
-          height={20}
-          src={deleteAccountIcon}
-          style={{ marginRight: "5px" }}
-          alt="Delete Account"
-        />
-        Delete Account
-      </button>
-    )
+// This button is different from the one in delete-account; it just redirects to the page
+function DeleteAccount({
+  email,
+  router,
+}: {
+  email: string
+  router: AppRouterInstance
+}) {
+  const onClick = () => {
+    router.push(`/delete-account?email=${email}`)
   }
+
+  return (
+    <button id={profileStyles["profile-delete-account"]} className="btn mb-3" onClick={onClick}>
+      <Image
+        width={20}
+        height={20}
+        src={deleteAccountIcon}
+        style={{ marginRight: "5px" }}
+        alt="Delete Account"
+      />
+      Delete Account
+    </button>
+  )
+}
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -128,22 +127,29 @@ export default function ProfilePage() {
   })
   const [profilePic, setProfilePic] = useState("")
 
-  // UseEffect hook to fetch profile data based on Firestore UID stored on local storage
+  // UseEffect hook to fetch profile data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-profile`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include"
-        })
-        let data = await response.json()
-        console.log(data)
-        setFields(data)
-        setProfilePic(data.profilePic || "")
-        setIsLoading(false)
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/get-profile`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        )
+        if (response.status == 200) {
+          const data = await response.json()
+          setFields(data)
+          setProfilePic(data.profilePic || "")
+          console.log(data)
+          setIsLoading(false)
+        } else {
+          console.log("Profile fetch error")
+        }
       } catch (error) {
         console.log("User not found.")
       }
@@ -159,7 +165,7 @@ export default function ProfilePage() {
     value,
   }: {
     fieldToUpdate: string
-    value: string | number | string[]
+    value: string | number | string[] | boolean
   }) => {
     // immediately update the state
     setFields((otherFields) => ({ ...otherFields, [fieldToUpdate]: value }))
@@ -195,86 +201,116 @@ export default function ProfilePage() {
       formData.append("profilePic", file)
 
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
           method: "POST",
           body: formData,
           credentials: "include"
         })
-        console.log("profile picture uploaded?")
       } catch (error) {
-        console.log("welp didnt work out mate")
+        console.log(error)
       }
     }
   }
 
-  function setNotifDisplay(values: string[]) {
-    setFields({
-      ...fields,
-      notifFilters: values
-    })
+  const handleProfilePicRemoval = async () => {
+    try {
+      // create an empty file to send to server
+      const emptyFile = new File([], "empty.png", { type: "image/png" })
+      const formData = new FormData()
+      formData.append("profilePic", emptyFile)
+
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload-profile-pic`, {
+        method: "POST",
+        body: formData,
+        credentials: "include"
+      })
+      console.log("Profile picture removed on the server.")
+    } catch (error) {
+      console.log("Error removing profile picture from the server", error)
+    }
+
+    setProfilePic("")
   }
 
   return (
-    <div className="profile-page-container">
-      <EditProfile />
+    <div className={profileStyles["profile-page-container"]}>
+      <EditProfileTitle />
       <ProfilePic profilePic={profilePic} />
-      <UploadProfilePic isLoading={isLoading} onUpload={handleProfilePicUpload} />
-      <NameCard isLoading={isLoading} name={fields.fullName} />
-      <EmailCard isLoading={isLoading} email={fields.email} />
-      <EditableCard
-        isLoading={isLoading}
-        field="Bio"
-        value={fields.bio}
-        maxChars={150}
-        onSave={(value) => handleFieldChange({ fieldToUpdate: "bio", value })}
-      />
-      <EditableCard
-        isLoading={isLoading}
-        field="Year"
-        value={fields.year}
-        maxChars={1}
-        onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "year", value: Number(value) })
-        }
-      />
-      <EditableCard
-        isLoading={isLoading}
-        field="Course"
-        value={fields.course}
-        maxChars={50}
-        onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "course", value })
-        }
-      />
-      <EditableCard
-        isLoading={isLoading}
-        field="Telegram Handle"
-        value={fields.teleHandle}
-        maxChars={32}
-        onSave={(value) =>
-          handleFieldChange({ fieldToUpdate: "teleHandle", value })
-        }
-      />
-      <RatingCard rating={fields.rating} />
-      <NotifFilters 
-        isLoading={isLoading}
-        filters={fields.notifFilters}
-        onSave={(value: string[]) =>
-          handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
-      />
-      {isLoading 
+      <div id={profileStyles["profile-pic-button-container"]}>
+        <UploadProfilePic isLoading={isLoading} profilePic={profilePic} onUpload={handleProfilePicUpload} />
+        <RemoveProfilePic
+          profilePic={profilePic}
+          onRemove={handleProfilePicRemoval}
+        />
+      </div>
+      <NameEmail isLoading={isLoading} name={fields.fullName} email={fields.email} />
+      
+      <div id={profileStyles["profile-field-container"]}>      
+        <EditableCard
+          isLoading={isLoading}
+          field="Bio"
+          value={fields.bio}
+          maxChars={150}
+          onSave={(value) => handleFieldChange({ fieldToUpdate: "bio", value })}
+        />
+        <EditableCard
+          isLoading={isLoading}
+          field="Year"
+          value={fields.year}
+          maxChars={1}
+          onSave={(value) =>
+            handleFieldChange({ fieldToUpdate: "year", value: Number(value) })
+          }
+        />
+        <EditableCard
+          isLoading={isLoading}
+          field="Course"
+          value={fields.course}
+          maxChars={50}
+          onSave={(value) =>
+            handleFieldChange({ fieldToUpdate: "course", value })
+          }
+        />
+        <EditableCard
+          isLoading={isLoading}
+          field="Telegram Handle"
+          value={fields.teleHandle}
+          maxChars={32}
+          onSave={(value) => {
+            if (typeof value != "string") return
+            if (value == "") value = "@"
+            else if (value.charAt(0) != "@") value = "@" + value
+            handleFieldChange({ fieldToUpdate: "teleHandle", value })
+          }}
+        />
+        <RatingCard rating={fields.rating} />
+        <NotifFilters 
+          isLoading={isLoading}
+          filters={fields.notifFilters}
+          onSave={(value: string[]) =>
+            handleFieldChange({ fieldToUpdate: "notifFilters", value })} 
+        />
+      </div>
+
+      { isLoading 
         ? <></> 
         : <OptInForListings 
-          optInStatus = {fields.optInStatus}
-          setOptInStatus={(optInStatus: boolean) => setFields({
-            ...fields,
-            optInStatus: optInStatus
-          })}/> 
+            optInStatus = {fields.optInStatus}
+            setOptInStatus={(optInStatus: boolean) => setFields({
+              ...fields,
+              optInStatus: optInStatus
+            
+            })}
+            handleOptInChange={(value) =>
+              handleFieldChange({ fieldToUpdate: "optInStatus", value })}
+          /> 
       }
-      <div className="button-container">
-        {isLoading ? <Placeholder.Button variant="light" xs={2} style={{marginRight: "10px"}}/> 
+      <div className={profileStyles["button-container"]}>
+        { isLoading 
+          ? <Placeholder.Button variant="light" xs={2} style={{marginRight: "10px"}}/> 
           : <SignOutButton /> }
-        {isLoading ? <Placeholder.Button variant="light" xs={2}/> 
+        { isLoading 
+          ? <Placeholder.Button variant="light" xs={2}/> 
           : <DeleteAccount 
               email={fields.email}
               router={router} />
