@@ -87,6 +87,19 @@ function InterestedUsersButton(
   )
 }
 
+function RateButton(
+  { listingData, router } : 
+  { listingData: StudyListing, router: AppRouterInstance }) {
+
+  return (
+    <button 
+      id={cardStyles["rate-button"]} 
+      onClick={() => router.push(`rate-listing/${listingData.id}`)}>
+      <p> Rate </p>
+    </button>
+  )
+}
+
 /* Variants:
   1. Display. For display only. No edit or delete button.
   2. Dashboard-Display. Liked listings on dashboard.
@@ -108,6 +121,11 @@ function CardActionBar({
         <>
           <LikeButton listingData={listingData} variant={variant} />
           <InterestedUsersButton listingData={listingData} router={router} />
+          { variant == "dashboard-display" 
+            ? <RateButton listingData={listingData} router={router} />
+            : (
+              <></>
+          )}
         </>
       ) : (
         <></>

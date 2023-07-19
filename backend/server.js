@@ -35,10 +35,6 @@ const {
   updateProfile,
   setProfilePic
 } = require('./profile')
-const { 
-  updateNotifFilters,
-  sendListingNotif,
-} = require("./email")
 const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY

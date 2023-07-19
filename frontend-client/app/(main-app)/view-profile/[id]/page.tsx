@@ -6,11 +6,6 @@ import viewProfileStyles from "./view-profile.module.css"
 import { Button, Placeholder } from "react-bootstrap"
 import { useRouter } from "next/navigation"
 
-type ViewProfileProps = {
-  params: { id: string }
-  searchParams: any
-}
-
 function NoProfilePic() {
   return <div id={profileStyles["no-profile-pic"]}></div>
 }
@@ -109,6 +104,11 @@ function Rating({ isLoading, rating }: { isLoading: boolean; rating: number }) {
       )}
     </>
   )
+}
+
+type ViewProfileProps = {
+  params: { id: string }
+  searchParams: any
 }
 
 export default function ViewProfile({
