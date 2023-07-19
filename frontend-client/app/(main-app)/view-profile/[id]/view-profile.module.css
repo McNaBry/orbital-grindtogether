@@ -1,0 +1,59 @@
+#view-profile-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#name-tele-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 15px 0px 15px 0px;
+}
+
+#name-field {
+  font-size: 24px;
+  margin-bottom: 2px;
+  color: white;
+}
+
+#tele-field {
+  color: #db83e1;
+}
+
+#sub-details-container {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  border-radius: 10px;
+  padding: 15px 20px 15px 20px;
+  background: 
+    radial-gradient(120% 110% at 20% 0, rgba(67, 67, 67, 0.4) 0, #000000 100%);
+}
+
+#student-details {
+  color: white;
+  font-size: 20px;
+}
+
+#bio-field {
+  color: white;
+}
+
+#rating-field {
+  color: white;
+}
+
+@media (max-width: 992px) {
+  #sub-details-container {
+    width: 90%;
+  }
+}
+
+#view-profile-button-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}

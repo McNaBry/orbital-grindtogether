@@ -26,9 +26,19 @@ const {
   likeListing,
   getLikedListings,
   getCreatedListings,
+  getListingLikers,
 } = require("./listingDb")
-const { firestore } = require("firebase-admin")
 const { updateNotifFilters, sendListingNotif } = require("./email")
+const {
+  getFullProfile,
+  getViewProfile,
+  updateProfile,
+  setProfilePic
+} = require('./profile')
+const { 
+  updateNotifFilters,
+  sendListingNotif,
+} = require("./email")
 const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
@@ -81,7 +91,7 @@ app.post("/sign-in", async (req, res) => {
   */
   const signInRes = await signInUser(email, password)
 
-  if (signInRes.status == 200) {
+  if (signInRes != undefined && signInRes.status == 200) {
     // Retrieve the id token that Firebase Auth returns
     const idToken = signInRes.data.idToken
 
@@ -220,86 +230,32 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
     res.status(400).json({}).send()
     return
   }
-
-  const docRef = await db.collection("users").doc(uid).get()
-  if (docRef.exists) {
-    let userData = docRef.data()
-    // Sets a file object to point to the user's profile pic in Firebase Storage
-    const file = bucket.file(`${uid}.png`)
-    // Check if file exists
-    file
-      .exists()
-      .then(async ([exists]) => {
-        if (exists) {
-          // Retrieve the download URL for frontend to fetch from
-          const signedUrl = await file.getSignedUrl({
-            action: "read",
-            expires: Date.now() + 60 * 60 * 1000, // Expiry date of the URL
-          })
-          // Return the profile data with the signed URL included
-          userData = {
-            ...userData,
-            profilePic: signedUrl,
-          }
-          res.status(200).json(userData).send()
-        } else {
-          // Return the profile data with an empty URL
-          userData = {
-            ...userData,
-            profilePic: "",
-          }
-          res.status(200).json(userData).send()
-        }
-      })
-      .catch((error) => {
-        console.log("Error checking if file exists:\n", error)
-        res.status(400).send()
-      })
-  } else {
-    res.status(400).json({}).send()
-  }
+  const userData = await getFullProfile(uid)
+  userData == null 
+    ? res.status(400).json({}).send()
+    : res.json(userData).send()
 })
+
+app.post("/view-profile", async (req, res) => {
+  const { uid } = req.body
+  const userData = await getViewProfile(uid)
+  userData == null 
+    ? res.status(400).json({}).send()
+    : res.json(userData).send()
+}) 
 
 // Update the database when the user modifies a field in the profile page
 app.post("/update-profile", verifyAuthCookie, async (req, res) => {
-  try {
-    const { fieldToUpdate, value } = req.body
-    const uid = req.cookies.uid
-    if (!isValidUID(uid)) {
-      res.status(400).send()
-      return
-    }
-    await db
-      .collection("users")
-      .doc(uid)
-      .update({ [fieldToUpdate]: value })
-    res.status(200).send()
-  } catch (error) {
-    console.log("cannot update")
-    res.status(500).send()
-  }
-})
-
-// Update the database when the user clicks on the switch
-app.post("/update-opt-in-status", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
     return
   }
-
-  try {
-    const { optInStatus } = req.body
-    console.log(optInStatus)
-    await db
-      .collection("users")
-      .doc(uid)
-      .update({ ["optInStatus"]: optInStatus })
-    res.status(200).send()
-  } catch (error) {
-    console.log("Opt in status is not updated:\n", error)
-    res.status(500).send()
-  }
+  const { fieldToUpdate, value } = req.body
+  const updateRes = await updateProfile(uid, fieldToUpdate, value)
+  updateRes
+    ? res.status(200).send()
+    : res.status(400).send()
 })
 
 app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
@@ -328,40 +284,11 @@ app.post(
       return
     }
 
-    const file = req.file
-    if (!file) {
-      console.log("No file detected")
-      res.status(400).send()
-      return
-    }
-
-    try {
-      const fileRef = bucket.file(`${uid}.png`)
-      const uploadStream = fileRef.createWriteStream({
-        metadata: {
-          contentType: file.mimetype,
-        },
-      })
-
-      uploadStream.on("error", (error) => {
-        console.error("Error uploading file:", error)
-        res.status(500).json({ error: "Error uploading file" })
-      })
-      uploadStream.on("finish", () => {
-        console.log("File uploaded successfully")
-        res.status(200).json({ message: "File uploaded successfully" })
-      })
-
-      // Pipe the file stream from Multer to the write stream
-      // end basically allows one last write before it closes the stream
-      uploadStream.end(file.buffer)
-    } catch (error) {
-      console.log("Profile Pic Upload Error:\n")
-      console.log(error)
-      res.status(500).send()
-    }
-  }
-)
+  const setProfilePicRes = setProfilePic(uid, req.file)
+  setProfilePicRes
+    ? res.status(200).json({ message: "upload success" }).send()
+    : res.status(400).json({ error: "upload error" }).send()
+})
 
 app.post("/sign-out", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
@@ -470,6 +397,18 @@ app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
   const results = await Promise.all([likedListings, createdListings])
   // console.log(results)
   return res.json(results).send()
+})
+
+app.post("/get-interested-users", async (req, res) => {
+  const { listingUID } = req.body
+  
+  try {
+    const users = await getListingLikers(listingUID);
+    res.status(200).json(users)
+  } catch (error) {
+    console.error("error getting likers list", error)
+    res.status(500).send()
+  }
 })
 
 app.post("/like-listing", verifyAuthCookie, async (req, res) => {

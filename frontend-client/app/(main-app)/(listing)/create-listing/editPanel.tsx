@@ -89,70 +89,84 @@ export default function EditPanel(
   return (
     <>
     <Container className={styles["options-subcontainer"]}>
-      <SelectFreeOption
-        params={{
-          name: "Title",
-          type: "title",
-          options: [...titles, {value: demoOptions.title, label: demoOptions.title}],
-          defaultValue: !editMode 
-            ? null : {value: demoOptions.title, label: demoOptions.title},
-          handleChange: handleSingleOptionChange
-        }}
-      />
-      <SelectFreeOption
-        params={{
-          name:"Description",
-          type:"desc",
-          options: [...desc, {value: demoOptions.desc, label: demoOptions.desc}],
-          defaultValue: !editMode
-            ? null : {value: demoOptions.desc, label: demoOptions.desc},
-          handleChange: handleSingleOptionChange
-        }}
-      />
+      <div className={styles["options-select-wrapper"]}>
+        <SelectFreeOption
+          params={{
+            name: "Title",
+            type: "title",
+            options: [...titles, {value: demoOptions.title, label: demoOptions.title}],
+            defaultValue: !editMode 
+              ? null : {value: demoOptions.title, label: demoOptions.title},
+            handleChange: handleSingleOptionChange
+          }}
+        />
+      </div>
+      <div className={styles["options-select-wrapper"]}>
+        <SelectFreeOption
+          params={{
+            name:"Description",
+            type:"desc",
+            options: [...desc, {value: demoOptions.desc, label: demoOptions.desc}],
+            defaultValue: !editMode
+              ? null : {value: demoOptions.desc, label: demoOptions.desc},
+            handleChange: handleSingleOptionChange
+          }}
+        />
+      </div>
     </Container>
     <Container className={styles["options-subcontainer"]}>
-      <SelectMultiOption
-        params={{
-          name:"Modules",
-          type:"modules",
-          options: tagData["modules"].map(tag => ({value: tag, label: tag})),
-          defaultValue: !editMode ? [] : demoOptions.tags.modules.map(tag => ({value: tag, label: tag})),
-          handleChange: handleMultipleOptionChange
-        }}
-      />
-      <SelectMultiOption
-        params={{
-          name:"Location",
-          type:"locations",
-          options: tagData["locations"].map(tag => ({value: tag, label: tag})),
-          defaultValue: !editMode ? [] : demoOptions.tags.locations.map(tag => ({value: tag, label: tag})),
-          handleChange: handleMultipleOptionChange
-        }}
-      />
-      <SelectMultiOption
-        params={{
-          name:"Faculty",
-          type:"faculties",
-          options: tagData["faculties"].map(tag => ({value: tag, label: tag})),
-          defaultValue: !editMode ? [] : demoOptions.tags.faculties.map(tag => ({value: tag, label: tag})),
-          handleChange: handleMultipleOptionChange
-        }}
-      />
+      <div className={styles["options-select-wrapper"]}>
+        <SelectMultiOption
+          params={{
+            name:"Modules",
+            type:"modules",
+            options: tagData["modules"].map(tag => ({value: tag, label: tag})),
+            defaultValue: !editMode ? [] : demoOptions.tags.modules.map(tag => ({value: tag, label: tag})),
+            handleChange: handleMultipleOptionChange
+          }}
+        />
+      </div>
+      <div className={styles["options-select-wrapper"]}>
+        <SelectMultiOption
+          params={{
+            name:"Location",
+            type:"locations",
+            options: tagData["locations"].map(tag => ({value: tag, label: tag})),
+            defaultValue: !editMode ? [] : demoOptions.tags.locations.map(tag => ({value: tag, label: tag})),
+            handleChange: handleMultipleOptionChange
+          }}
+        />
+      </div>
+      <div className={styles["options-select-wrapper"]}>
+        <SelectMultiOption
+          params={{
+            name:"Faculty",
+            type:"faculties",
+            options: tagData["faculties"].map(tag => ({value: tag, label: tag})),
+            defaultValue: !editMode ? [] : demoOptions.tags.faculties.map(tag => ({value: tag, label: tag})),
+            handleChange: handleMultipleOptionChange
+          }}
+        />
+      </div>
     </Container>
     <Container className={styles["options-subcontainer"]}>
-      <DateOption
-        startDate={demoOptions["date"]}
-        setStartDate={handleDateOptionChange}
-      />
-      <SelectFreeOption
-        params={{
-          name: "Frequency",
-          type: "freq",
-          options: freq,
-          defaultValue: !editMode ? null : {value: demoOptions.desc, label: demoOptions.desc},
-          handleChange: handleSingleOptionChange
-        }}
-      />
+      <div className={styles["options-select-wrapper"]}>
+        <DateOption
+          startDate={demoOptions["date"]}
+          setStartDate={handleDateOptionChange}
+        />
+      </div>
+      <div className={styles["options-select-wrapper"]}>
+        <SelectFreeOption
+          params={{
+            name: "Frequency",
+            type: "freq",
+            options: freq,
+            defaultValue: !editMode ? null : {value: demoOptions.desc, label: demoOptions.desc},
+            handleChange: handleSingleOptionChange
+          }}
+        />
+      </div>
     </Container>
   </>
   )

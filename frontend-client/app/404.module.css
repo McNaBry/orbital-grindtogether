@@ -21,6 +21,8 @@
     background-color: transparent;
     color: white;
     box-shadow: 0 2px 4px rgba(100, 149, 237, 1);
+    border-color: transparent;
+    border-radius: 5px;
     padding-top: 0.6em;
     padding-bottom: 0.6em;
     padding-left: 0.8em;
