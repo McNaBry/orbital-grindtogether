@@ -3,26 +3,11 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { Spinner, Button } from "react-bootstrap" 
 import { StudyListing } from "./studyCard"
 import { mutate } from "swr"
+import LoadingLikeButton from "./loadingLikeButton";
 import cardStyles from "./studyCard.module.css";
 import classnames from "classnames"
-
-function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {
-  return (
-    <button className = {cardStyles["loading-like-button"]}>
-        <Spinner
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          aria-hidden="true"
-        />
-        <span style={{marginLeft: "5px"}}>{!likeStatus ? "Liking..." : "Unliking..."}</span>
-    </button>
-  )
-}
 
 function LikeButton({ listingData, variant } : { listingData: StudyListing, variant: string }) {
   const [likeStatus, setLikeStatus] = useState(listingData.liked);
