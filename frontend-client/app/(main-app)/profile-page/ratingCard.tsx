@@ -1,13 +1,14 @@
-import React, {useState} from "react"
-import { Card } from "react-bootstrap"
+"use client"
+
+import React, { useState } from "react"
 import Image from "next/image"
-import "./profile-page.css";
+import profileStyles from "./profile-page.module.css";
 
 const fullStarIcon = "/images/star-full-icon.png"
 const halfStarIcon = "/images/star-half-icon.png"
 const emptyStarIcon = "/images/star-empty-icon.png"
 
-function RatingCard({rating} : {rating: number}) {
+function RatingCard({ rating } : { rating: number }) {
     const [currentRating, setRating] = useState(0);
 
     const handleRatingChange = (newRating: number) => {
@@ -34,15 +35,13 @@ function RatingCard({rating} : {rating: number}) {
     }
 
     return (
-      <Card>
-        <Card.Body>
-          <Card.Title> Rating </Card.Title>
+      <div className={profileStyles["profile-field"]}>
+          <h4> Rating </h4>
           <p style={{marginBottom: "0.4rem"}}> {rating} / 5 </p>
-          <div className="stars-container">
+          <div className={profileStyles["stars-container"]}>
             {getStars(rating)}
           </div>
-        </Card.Body>
-      </Card>
+      </div>
     );
 }
 

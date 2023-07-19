@@ -1,9 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useAuth } from "../../authProvider"
+import profileStyles from "./profile-page.module.css"
 
-const logoutIcon = "/images/logout.png";
+const logoutIcon = "/images/logout.png"
 
 function SignOutButton() {
   const router = useRouter();
@@ -32,7 +32,7 @@ function SignOutButton() {
   };
 
   return (
-    <button type="submit" className="btn mb-3" id="logout" onClick = {handleSignOut}>
+    <button type="submit" className="btn mb-3" id={profileStyles["logout"]} onClick = {handleSignOut}>
       <Image
         width={20}
         height={20}
