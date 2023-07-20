@@ -3,8 +3,7 @@ const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
-const cookieParser = require("cookie-parser");
-const serverless = require("serverless-http")
+const cookieParser = require("cookie-parser")
 
 const { db, fireAuth } = require("../firebase")
 const {
@@ -24,7 +23,16 @@ const {
   likeListing,
   getLikedListings,
   getCreatedListings,
+  getListingLikers,
 } = require("../listingDb")
+const { updateNotifFilters, sendListingNotif } = require("../email")
+const {
+  getFullProfile,
+  getViewProfile,
+  updateProfile,
+  setProfilePic
+} = require('./profile')
+const { verifyAuthCookie } = require("../authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
