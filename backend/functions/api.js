@@ -4,6 +4,7 @@ const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
 const cookieParser = require("cookie-parser")
+const serverless = require("serverless-http")
 
 const { db, fireAuth } = require("../firebase")
 const {
