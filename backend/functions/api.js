@@ -31,7 +31,7 @@ const {
   getViewProfile,
   updateProfile,
   setProfilePic
-} = require('./profile')
+} = require('../profile')
 const { verifyAuthCookie } = require("../authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
