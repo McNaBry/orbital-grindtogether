@@ -4,6 +4,8 @@ import rateStyles from "./rate-listing.module.css"
 import RatingBar from "./ratingBar"
 import Notif from "../../../notif"
 import { useState } from "react"
+import { Button } from "react-bootstrap"
+import { useRouter } from "next/navigation"
 
 function Disclaimer() {
   return (
@@ -28,6 +30,7 @@ export default function RateListing({
   searchParams: any
 }) {
   const urlParams = new URLSearchParams(searchParams)
+  const router = useRouter()
   const [msg, setMsg] = useState("")
   const [success, setSuccess] = useState(false)
   return (

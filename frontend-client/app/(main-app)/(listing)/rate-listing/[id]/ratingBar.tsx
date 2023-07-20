@@ -2,8 +2,9 @@
 
 import { Rating, RoundedStar } from "@smastrom/react-rating"
 import { FormEvent, useEffect, useState } from "react"
-import { Button } from "react-bootstrap"
+import { Button, Spinner } from "react-bootstrap"
 import rateStyles from "./rate-listing.module.css"
+import { useRouter } from "next/navigation"
 
 const myStyles = {
   itemShapes: RoundedStar,
@@ -33,17 +34,22 @@ function RatingSubBar({ desc, value, onChange }: RatingSubBarProps) {
   )
 }
 
-export default function RatingBar({
-  listingID,
-  creatorID,
-  setMsg,
-  setSuccess,
-}: {
+type RatingBarProps = {
   listingID: string
   creatorID: string
   setMsg: (msg: string) => void
   setSuccess: (success: boolean) => void
-}) {
+}
+
+export default function RatingBar({
+  listingID, 
+  creatorID,
+  setMsg,
+  setSuccess,
+}: RatingBarProps) {
+  
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
   const [rating, setRating] = useState({
     friendly: 0,
     helpful: 0,
@@ -71,6 +77,7 @@ export default function RatingBar({
           setRating(json)
         })
         .catch((error) => console.log(error))
+      setIsLoading(false)
     }
     fetchRatings()
   }, [])
@@ -87,6 +94,7 @@ export default function RatingBar({
       return
     }
     try {
+      setIsLoading(true)
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/update-rating`,
         {
@@ -113,6 +121,7 @@ export default function RatingBar({
     } catch (error) {
       console.log(error)
     }
+    setIsLoading(false)
   }
 
   return (
@@ -149,9 +158,26 @@ export default function RatingBar({
           setRating((prevRating) => ({ ...prevRating, recommend: value }))
         }
       />
-      <Button type="submit" style={{ marginTop: "25px" }} variant="success">
-        Submit Rating
-      </Button>
+      <div id={rateStyles["button-bar"]}>
+        <Button style={{ marginRight: "10px" }} variant="dark" onClick={() => router.back()}>
+          Back
+        </Button>
+        <Button disabled={isLoading} type="submit" variant="success">
+          { isLoading 
+            ? <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                /> 
+                <span style={{marginLeft: "5px"}}>Please Wait</span> 
+              </>
+            : "Submit Rating"
+          }
+        </Button>
+      </div>
     </form>
   )
 }

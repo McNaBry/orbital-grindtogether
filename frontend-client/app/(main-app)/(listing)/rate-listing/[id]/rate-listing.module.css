@@ -43,6 +43,14 @@
   margin-bottom: 0px;
 }
 
+#button-bar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  margin-top: 25px;
+}
+
 @media (max-width: 800px) {
   #disclaimer-container {
     width: 90%;
