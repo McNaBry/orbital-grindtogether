@@ -431,9 +431,16 @@ app.post("/get-rating", async (req, res) => {
     return
   }
 
+  const { listingID } = req.body
+  if (listingID == "" || listingID == undefined) {
+    res.status(400).send()
+    return
+  }
+
   const ratingSnapshot = await db
     .collection("ratings")
     .where("userID", "==", uid)
+    .where("listingID", "==", listingID)
     .get()
 
   if (ratingSnapshot.empty) {
@@ -523,7 +530,7 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
       await Promise.all([
         db.collection("ratings")
           .add(rating),
-        db.collection("users").doc(uid)
+        db.collection("users").doc(rating.creatorID)
           .update({
             "numOfRaters": updatedNumOfRaters,
             "totalStars": updatedTotalStars,
@@ -540,7 +547,7 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
         const updatedRating = updatedTotalStars / updatedNumOfRaters
         await Promise.all([
           db.collection("ratings").doc(ratingDoc.id).update(rating),
-          db.collection("users").doc(uid)
+          db.collection("users").doc(rating.creatorID)
             .update({
               "numOfRaters": updatedNumOfRaters,
               "totalStars": updatedTotalStars,

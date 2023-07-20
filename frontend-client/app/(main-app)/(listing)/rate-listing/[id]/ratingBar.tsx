@@ -59,6 +59,10 @@ export default function RatingBar(
     async function fetchRatings() {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-rating`, {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({listingID: listingID}),
         credentials: "include"
       }).then(async (payload) => {
         const json = await payload.json()
