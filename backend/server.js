@@ -5,10 +5,9 @@ const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
-// const nodemailer = require("nodemailer");
 const cookieParser = require("cookie-parser")
 
-const { db, fireAuth, storage, bucket } = require("./firebase")
+const { db, fireAuth, FieldValue } = require("./firebase")
 const {
   signInUser,
   createAccount,
@@ -425,31 +424,131 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post("/update-rating", async (req, res) => {
-  const { name, value } = req.body
+app.post("/get-rating", async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+
+  const ratingSnapshot = await db
+    .collection("ratings")
+    .where("userID", "==", uid)
+    .get()
+
+  if (ratingSnapshot.empty) {
+    res.status(200).json({
+      friendly:  0,
+      helpful:   0,
+      recommend: 0,
+    }).send()
+    return
+  }
+
+  const ratingData = []
+  ratingSnapshot.forEach(ratingDoc => ratingData.push(ratingDoc.data()))
+  res.status(200).json({
+    friendly:  ratingData[0].friendly,
+    helpful:   ratingData[0].helpful,
+    recommend: ratingData[0].recommend,
+  }).send()
+})
+
+app.post("/update-rating", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+
+  const rating = {
+    userID:    uid,
+    creatorID: req.body.creatorID,
+    listingID: req.body.listingID,
+    friendly:  req.body.friendly,
+    helpful:   req.body.helpful,
+    recommend: req.body.recommend,
+    overall:   req.body.overall
+  }
+
+  if (rating.userID == rating.creatorID) {
+    res.status(400).send()
+    return
+  }
 
   try {
-    const snapshot = await db
+    // Retrieve user who created the listing
+    const userSnapshot = await db
       .collection("users")
-      .where("name", "==", name)
+      .doc(rating.creatorID)
       .get()
 
-    if (!snapshot.exists()) {
-      res.status(404).send()
+    // User does not exists so we terminate
+    if (!userSnapshot.exists) {
+      res.status(400).send()
+      return
     }
 
-    const user = snapshot.docs[0]
-    const updatedNumOfRaters = user.data().numOfRaters + 1
-    const updatedTotalStars = user.data().totalStars + value
-    const updatedRating = updatedTotalStars / updatedNumOfRaters
-
-    const fieldsToUpdate = {
-      "numOfRaters": updatedNumOfRaters,
-      "totalStars": updatedTotalStars,
-      "rating": updatedRating,
+    // Check if requester has liked the listing
+    const listingSnapshot = await db
+      .collection("listings")
+      .doc(rating.listingID)
+      .get()
+    const likers = listingSnapshot.data().likes
+    let isALiker = false
+    for (let i = 0; i < likers.length; i += 1) {
+      if (likers[i] == uid) {
+        isALiker = true
+        break
+      }
+    }
+    if (!isALiker) {
+      res.status(400).send()
+      return
     }
 
-    await user.update(fieldsToUpdate)
+    // Retrieve existing rating (if it exists)
+    const ratingSnapshot = await db
+      .collection("ratings")
+      .where("userID", "==", uid)
+      .where("listingID", "==", rating.listingID)
+      .get()
+    const user = userSnapshot.data()
+
+    // Add new entry
+    if (ratingSnapshot.empty) {
+      const updatedNumOfRaters = user.numOfRaters + 1
+      const updatedTotalStars = user.totalStars + rating.overall
+      const updatedRating = updatedTotalStars / updatedNumOfRaters
+      await Promise.all([
+        db.collection("ratings")
+          .add(rating),
+        db.collection("users").doc(uid)
+          .update({
+            "numOfRaters": updatedNumOfRaters,
+            "totalStars": updatedTotalStars,
+            "rating": updatedRating,
+          })
+      ])
+    } 
+    // Or update existing
+    else {
+      for (const ratingDoc of ratingSnapshot.docs) {
+        const oldValue = ratingDoc.data().overall
+        const updatedNumOfRaters = user.numOfRaters
+        const updatedTotalStars = user.totalStars - oldValue + rating.overall
+        const updatedRating = updatedTotalStars / updatedNumOfRaters
+        await Promise.all([
+          db.collection("ratings").doc(ratingDoc.id).update(rating),
+          db.collection("users").doc(uid)
+            .update({
+              "numOfRaters": updatedNumOfRaters,
+              "totalStars": updatedTotalStars,
+              "rating": updatedRating,
+            })
+        ])
+      }
+    }
     res.status(200).send()
   } catch (error) {
     console.log("There was an error updating the rating:", error)

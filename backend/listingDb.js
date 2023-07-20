@@ -126,7 +126,7 @@ async function processListings(userID, listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Anonymous" : userData.fullName,
+      creatorName: !user.exists ? "Anonymous" : userData.fullName,
       liked: docData.likes.includes(userID)
     }
     results.push(docData)

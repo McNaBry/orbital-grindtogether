@@ -122,6 +122,7 @@ export default function ProfilePage() {
     course: "",
     teleHandle: "@",
     rating: 0,
+    numOfRaters: 0,
     notifFilters: [""],
     optInStatus: false
   })
@@ -283,7 +284,7 @@ export default function ProfilePage() {
             handleFieldChange({ fieldToUpdate: "teleHandle", value })
           }}
         />
-        <RatingCard rating={fields.rating} />
+        <RatingCard rating={fields.rating} raterCount={fields.numOfRaters} />
         <NotifFilters 
           isLoading={isLoading}
           filters={fields.notifFilters}

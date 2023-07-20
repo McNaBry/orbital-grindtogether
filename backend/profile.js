@@ -44,6 +44,7 @@ async function getViewProfile(userID) {
       year: fullProfile.year,
       teleHandle: fullProfile.teleHandle,
       rating: fullProfile.rating,
+      numOfRaters: fullProfile.numOfRaters,
       profilePic: fullProfile.profilePic
     }
 }

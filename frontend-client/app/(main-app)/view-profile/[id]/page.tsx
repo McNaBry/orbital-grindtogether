@@ -1,10 +1,18 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { Rating, RoundedStar } from '@smastrom/react-rating'
 import profileStyles from "../../profile-page/profile-page.module.css"
 import viewProfileStyles from "./view-profile.module.css"
 import { Button, Placeholder } from "react-bootstrap"
 import { useRouter } from "next/navigation"
+
+const myStyles = {
+  itemShapes: RoundedStar,
+  activeFillColor: ['#e7040f', '#ff6300', '#f1c40f', '#61bb00', '#19a974'],
+  inactiveFillColor: '#ecf0f1'
+  // activeStrokeColor: "#FFFFFF"
+}
 
 function NoProfilePic() {
   return <div id={profileStyles["no-profile-pic"]}></div>
@@ -92,7 +100,7 @@ function Bio({ isLoading, bio }: { isLoading: boolean; bio: string }) {
   )
 }
 
-function Rating({ isLoading, rating }: { isLoading: boolean; rating: number }) {
+function RatingField({ isLoading, rating, raterCount }: { isLoading: boolean, rating: number, raterCount: number }) {
   return (
     <>
       {isLoading ? (
@@ -100,7 +108,23 @@ function Rating({ isLoading, rating }: { isLoading: boolean; rating: number }) {
           <Placeholder xs={12} />
         </Placeholder>
       ) : (
-        <p id={viewProfileStyles["rating-field"]}>Rating: {rating}/5</p>
+        <>
+          <p style={{marginBottom: "0.4rem"}} id={viewProfileStyles["rating-field"]}> 
+            { rating < 0
+              ? "No Ratings Found"
+              : `Rating: ${rating}/5 (${raterCount} ${raterCount > 1 ? "ratings" : "rating"})`
+            }
+          </p>
+          <div className={profileStyles["stars-container"]}>
+            <Rating 
+              readOnly
+              style={{ maxWidth: 120 }} 
+              value={rating} 
+              itemStyles={myStyles}
+              transition='colors' 
+            />
+          </div>
+        </>
       )}
     </>
   )
@@ -123,6 +147,7 @@ export default function ViewProfile({
     course: "",
     teleHandle: "@",
     rating: 0,
+    numOfRaters: 0
   })
   const [profilePic, setProfilePic] = useState("")
 
@@ -186,7 +211,7 @@ export default function ViewProfile({
           year={fields.year}
         />
         <Bio isLoading={isLoading} bio={fields.bio} />
-        <Rating isLoading={isLoading} rating={fields.rating} />
+        <RatingField isLoading={isLoading} rating={fields.rating} raterCount={fields.numOfRaters} />
         <div id={viewProfileStyles["view-profile-button-container"]}>
           <ReturnToInterestedUserList />
           <Button style={{marginLeft: "10px"}} variant="danger">Report User</Button>

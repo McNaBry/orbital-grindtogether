@@ -94,7 +94,7 @@ function RateButton(
   return (
     <button 
       id={cardStyles["rate-button"]} 
-      onClick={() => router.push(`rate-listing/${listingData.id}`)}>
+      onClick={() => router.push(`rate-listing/${listingData.id}?creatorID=${listingData.createdBy}`)}>
       <p> Rate </p>
     </button>
   )
