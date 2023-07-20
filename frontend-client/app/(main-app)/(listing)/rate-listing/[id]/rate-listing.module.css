@@ -5,7 +5,31 @@
   align-items: "center";
 }
 
+#overall-rating {
+  color: white;
+  font-size: 22px;
+  margin-bottom: 0px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+}
+
+#rating-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.rating-sub-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
 #disclaimer {
   color: #c0392b;
   text-align: center;
+  font-size: 16px;
 }

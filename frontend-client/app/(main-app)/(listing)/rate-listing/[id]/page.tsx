@@ -1,4 +1,5 @@
 import rateStyles from "./rate-listing.module.css"
+import RatingBar from './ratingBar'
 
 function Disclaimer() {
   return (
@@ -10,11 +11,12 @@ function Disclaimer() {
   )
 }
 
-export default function RateListing({ params } : { params : {id: string} }) {
+export default function RateListing({ params } : { params : {id: string} }) {  
   return (
     <div id={rateStyles["rate-listing-container"]}>
       <h1 style={{color: "white", textAlign: "center"}}>Rate Listing</h1>
       <Disclaimer />
+      <RatingBar />
     </div>
   )
 }
