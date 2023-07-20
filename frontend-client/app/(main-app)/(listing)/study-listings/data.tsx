@@ -12,7 +12,8 @@ export const tagData : {[key:string]: string[]} = {
 
 export const testData : StudyListing[] = [
   {
-    createdBy:  "Tze Jie",
+    createdBy:  "dummy",
+    creatorName: "Tze Jie",
     title:       "Study @ Terrace",
     desc:        "Let's have some fun grinding together!",
     tags:        {"modules": ["CS2040S"], "locations": ["COM3"], "faculties": ["SOC"]},
@@ -25,7 +26,8 @@ export const testData : StudyListing[] = [
   },
 
   {
-    createdBy: "Bryan",
+    createdBy:  "dummy",
+    creatorName: "Bryan",
     title:     "Study @ Basement1",
     desc:      "Seeking for people willing to carry my assignment",
     tags:      {"modules": ["CS1231S"], "locations": ["COM3"], "faculties": ["SOC"]},
@@ -38,7 +40,8 @@ export const testData : StudyListing[] = [
   },
 
   {
-    createdBy: "Brandon",
+    createdBy:  "dummy",
+    creatorName: "Brandon",
     title:     "Study @ ASL2",
     desc:      "Anyone wants to be my study date?",
     tags:      {"modules": ["HSI1000"], "locations": ["COM3"], "faculties": ["CHS"]},
@@ -51,7 +54,8 @@ export const testData : StudyListing[] = [
   },
 
   {
-    createdBy: "Tiffany",
+    createdBy:  "dummy",
+    creatorName: "Tiffany",
     title:     "Grind Sesh",
     desc:      "NUS Grind Sesh by your favourite boi",
     tags:      {"modules": ["CS2040S", "CS2030S", "CS2100"], "locations": ["COM3"], "faculties": ["SOC"]},
@@ -64,7 +68,8 @@ export const testData : StudyListing[] = [
   },
 
   {
-    createdBy: "Amelia",
+    createdBy:  "dummy",
+    creatorName: "Amelia",
     title:     "Chill study",
     desc:      "Talk, study and chill",
     tags:      {"modules": ["IS2218"], "locations": ["Terrace"], "faculties": ["SOC"]},

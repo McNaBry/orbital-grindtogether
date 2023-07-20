@@ -36,7 +36,8 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
   // Set each field to the respective URL search param value(s)
   // These fields are used to display the details of the listing to be deleted
   const listing: StudyListing = {
-    createdBy: urlParams.get('createdBy') || "Anonymous",
+    createdBy: urlParams.get('createdBy') || "AxAWDSa",
+    creatorName: urlParams.get('creatorName') || "Annonymous",
     title: urlParams.get('title') || "Title",
     desc: urlParams.get('desc') || "Desc",
     tags: {

@@ -48,7 +48,8 @@ function SortOptionsButton({ setSortOption } : Pick<SortPanelProps, 'setSortOpti
   const optionsList: {[key: string] : number} = {
     "date": 0,
     "creation date": 1,
-    "creator": 2
+    "creator": 2,
+    "users interested": 3
   }
 
   return (
