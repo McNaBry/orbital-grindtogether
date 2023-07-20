@@ -1,106 +1,115 @@
 "use client"
 
-import { Rating, RoundedStar } from '@smastrom/react-rating'
-import { FormEvent, useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Rating, RoundedStar } from "@smastrom/react-rating"
+import { FormEvent, useEffect, useState } from "react"
+import { Button } from "react-bootstrap"
 import rateStyles from "./rate-listing.module.css"
 
 const myStyles = {
   itemShapes: RoundedStar,
-  activeFillColor: ['#e7040f', '#ff6300', '#f1c40f', '#61bb00', '#19a974'],
-  inactiveFillColor: '#ecf0f1'
+  activeFillColor: ["#e7040f", "#ff6300", "#f1c40f", "#61bb00", "#19a974"],
+  inactiveFillColor: "#ecf0f1",
   // activeStrokeColor: "#FFFFFF"
 }
 
 type RatingSubBarProps = {
-  desc: string,
-  value: number,
+  desc: string
+  value: number
   onChange: (value: number) => void
 }
 
-function RatingSubBar({ desc, value, onChange } : RatingSubBarProps) {
+function RatingSubBar({ desc, value, onChange }: RatingSubBarProps) {
   return (
     <div className={rateStyles["rating-sub-bar"]}>
-      <div style={{color: "white"}}>{desc}</div>
-      <Rating 
-        style={{ maxWidth: 250 }} 
-        value={value} 
-        onChange={onChange} 
+      <div style={{ color: "white" }}>{desc}</div>
+      <Rating
+        style={{ maxWidth: 250 }}
+        value={value}
+        onChange={onChange}
         itemStyles={myStyles}
-        transition='colors' />
+        transition="colors"
+      />
     </div>
   )
 }
 
-export default function RatingBar(
-  { listingID, 
-    creatorID, 
-    setMsg, 
-    setSuccess 
-  } : {
-    listingID: string, 
-    creatorID: string,
-    setMsg: (msg: string) => void,
-    setSuccess: (success: boolean) => void
-  }) {
-
+export default function RatingBar({
+  listingID,
+  creatorID,
+  setMsg,
+  setSuccess,
+}: {
+  listingID: string
+  creatorID: string
+  setMsg: (msg: string) => void
+  setSuccess: (success: boolean) => void
+}) {
   const [rating, setRating] = useState({
     friendly: 0,
     helpful: 0,
-    recommend: 0
+    recommend: 0,
   })
 
-  const overallRating = () => 
+  const overallRating = () =>
     Math.round(
-      ((rating.friendly + rating.helpful + rating.recommend) / 3) / 0.5
+      (rating.friendly + rating.helpful + rating.recommend) / 3 / 0.5
     ) * 0.5
-  
+
   useEffect(() => {
     async function fetchRatings() {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-rating`, {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({listingID: listingID}),
+        body: JSON.stringify({ listingID: listingID }),
         credentials: "include"
-      }).then(async (payload) => {
-        const json = await payload.json()
-        console.log(json)
-        setRating(json)
-      }).catch(error => console.log(error))
+      })
+        .then(async (payload) => {
+          const json = await payload.json()
+          console.log(json)
+          setRating(json)
+        })
+        .catch((error) => console.log(error))
     }
     fetchRatings()
   }, [])
-  
+
   const handleSubmitRating = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (creatorID == "" || creatorID == undefined || listingID == "" || listingID == undefined) {
+    if (
+      creatorID == "" ||
+      creatorID == undefined ||
+      listingID == "" ||
+      listingID == undefined
+    ) {
       console.log("Cannot find listingID or creatorID")
       return
     }
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-rating`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...rating,
-          creatorID: creatorID,
-          listingID: listingID,
-          overall: overallRating()
-        }),
-        credentials: "include"
-      })
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/update-rating`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...rating,
+            creatorID: creatorID,
+            listingID: listingID,
+            overall: overallRating(),
+          }),
+          credentials: "include"
+        }
+      )
       if (res.status == 200) {
-        setMsg("Rating submission successful")
+        setMsg("Rating was successfully submitted.")
         setSuccess(true)
       } else {
-        setMsg("Rating submission failed")
+        setMsg("Rating was not successfully submitted.")
         setSuccess(false)
       }
-
     } catch (error) {
       console.log(error)
     }
@@ -108,37 +117,41 @@ export default function RatingBar(
 
   return (
     <form onSubmit={handleSubmitRating} id={rateStyles["rating-bar"]}>
-      <p 
+      <p
         id={rateStyles["overall-rating"]}
         style={{
-          background: myStyles.activeFillColor[
-            Math.round(Math.max(0, overallRating() - 1))
-          ] // Change colour based on rating
+          background:
+            myStyles.activeFillColor[
+              Math.round(Math.max(0, overallRating() - 1))
+            ], // Change colour based on rating
         }}
-      >  
-        Overall Rating: { overallRating() }/5</p>
-      <RatingSubBar 
+      >
+        Overall Rating: {overallRating()}/5
+      </p>
+      <RatingSubBar
         desc="Rate how friendly the group/date was:"
         value={rating.friendly}
-        onChange={(value: number) => 
-          setRating(prevRating => ({...prevRating, friendly: value})
-        )}
+        onChange={(value: number) =>
+          setRating((prevRating) => ({ ...prevRating, friendly: value }))
+        }
       />
-      <RatingSubBar 
-        desc="Rate how friendly the group/date was:"
+      <RatingSubBar
+        desc="Rate how helpful the group/date was:"
         value={rating.helpful}
-        onChange={(value: number) => 
-          setRating(prevRating => ({...prevRating, helpful: value})
-        )}
+        onChange={(value: number) =>
+          setRating((prevRating) => ({ ...prevRating, helpful: value }))
+        }
       />
-      <RatingSubBar 
+      <RatingSubBar
         desc="Would you recommend this study group/date to your friends?"
         value={rating.recommend}
-        onChange={(value: number) => 
-          setRating(prevRating => ({...prevRating, recommend: value})
-        )}
+        onChange={(value: number) =>
+          setRating((prevRating) => ({ ...prevRating, recommend: value }))
+        }
       />
-      <Button type="submit" style={{marginTop: "25px"}} variant="success">Submit Rating</Button>
+      <Button type="submit" style={{ marginTop: "25px" }} variant="success">
+        Submit Rating
+      </Button>
     </form>
   )
 }
