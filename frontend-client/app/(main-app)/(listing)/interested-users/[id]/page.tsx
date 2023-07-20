@@ -72,7 +72,7 @@ function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
       <h1 style={{ color: "white", textAlign: "center" }}> Interested Users </h1>
       <div id={interestStyles["interested-users-list"]}>
         { interestedUsersObjArr.map((user: User) => (
-          <UserEntry user={user} />
+          <UserEntry key={user.uid} user={user} />
         ))}
       </div>
       <Button variant="dark" onClick={() => router.back()}>Back</Button>
