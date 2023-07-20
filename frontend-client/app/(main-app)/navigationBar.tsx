@@ -1,7 +1,6 @@
 'use client'
 
 import { Container, Navbar, Nav } from 'react-bootstrap'
-import { useAuth } from "../authProvider"
 import navStyles from "./navigationBar.module.css"
 import { useEffect, useState } from 'react'
 
@@ -12,7 +11,6 @@ function NavLink({ href, value } : { href: string, value: string}) {
 }
 
 export default function NavigationBar() {
-
   const [ username, setUsername ] = useState<string>("Guest")
   useEffect(() => setUsername(window.localStorage.getItem("fullName") || "Guest"), [])
 

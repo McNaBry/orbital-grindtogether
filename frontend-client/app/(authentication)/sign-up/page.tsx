@@ -12,7 +12,6 @@ import CreateStatus from "../createStatus";
 import ValidatePassword from "../validatePassword"
 import { useAuth } from "../../authProvider"
 
-import * as pc from "./passwordChecks.js";
 import { Button, Spinner } from "react-bootstrap";
 
 function GetStarted() {

@@ -1,32 +1,24 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import StudyCard, { StudyListing } from '../studyCard'
 import EditPanel from "./editPanel"
-import { Form, Button, Toast, ToastContainer } from 'react-bootstrap'
+import Notif from "../../notif"
+import { Form, Button } from 'react-bootstrap'
 import styles from './create-listing.module.css' 
-
-function Notif(
-  { msg, success } : { msg: string, success: boolean }) {
-  return (
-    <ToastContainer position="bottom-end" style={{position: "fixed", margin: "20px"}}>
-      <Toast bg={success ? "success" : "danger"} autohide={true} show={msg == "" ? false : true}>
-          <Toast.Body style={{color: "white"}}>{msg}</Toast.Body>
-      </Toast>
-    </ToastContainer>
-  )
-}
 
 // Typescript has a weird error where you can't index the object with string keys
 // Hence instead of giving it a StudyListing type, it is given a dict type
 const defaultOptions : {[key:string]: any} = {
-  "createdBy": "Xiao Ming",
+  "createdBy": "hXAnaW",
+  "creatorName": "Xiao Ming",
   "title":     "Title",
   "desc":      "Description",
   "tags":      {"modules":[], "locations":[], "faculties":[]},
-  "date":      new Date(), // Set current timing
+  "date":        new Date(), // Set current timing
+  "dateCreated": new Date(), // Set current timing
   "freq":      "Every day",
   "interest":  0,
   "id":        "invitedefault"
@@ -43,15 +35,17 @@ export default function CreateListing({ searchParams } : any) {
 
   // Options to be displayed on the card as a preview (demo)
   const [demoOptions, setDemoOptions] = useState<StudyListing>({
-    createdBy: editMode ? urlParams.get("createdBy") : defaultOptions['createdBy'],
-    title:     editMode ? urlParams.get("title")     : defaultOptions['title'],
-    desc:      editMode ? urlParams.get("desc")      : defaultOptions['desc'],
+    createdBy:   editMode ? urlParams.get("createdBy") : defaultOptions['createdBy'],
+    creatorName: editMode ? urlParams.get("creatorName") : defaultOptions['creatorName'],
+    title:       editMode ? urlParams.get("title")     : defaultOptions['title'],
+    desc:        editMode ? urlParams.get("desc")      : defaultOptions['desc'],
     tags: {
       "modules":   editMode ? tags[0].split(",").slice(1) : [], 
       "locations": editMode ? tags[1].split(",").slice(1) : [],
       "faculties": editMode ? tags[2].split(",").slice(1) : []
     },
-    date:     editMode ? new Date(urlParams.get('date') || Date.now()) : defaultOptions['date'],
+    date:        editMode ? new Date(urlParams.get('date') || Date.now()) : defaultOptions['date'],
+    dateCreated: editMode ? new Date(urlParams.get('date') || Date.now()) : defaultOptions['date'],
     freq:     editMode ? urlParams.get("freq") : defaultOptions['freq'],
     interest: editMode ? parseInt(urlParams.get("interest") || '0') : defaultOptions['interest'],
     id:       editMode ? urlParams.get("id") : defaultOptions['id'],
@@ -61,6 +55,12 @@ export default function CreateListing({ searchParams } : any) {
   // Hooks for notification popup
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
+
+  useEffect(() => 
+    setDemoOptions({
+      ...demoOptions, 
+      creatorName: window.localStorage.getItem("fullName") || "Xiao Ming"}
+  ), [])
 
   // Function to handle form submit and create/update listing
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -114,7 +114,7 @@ export default function CreateListing({ searchParams } : any) {
         />
         <Button variant="success" type="submit">{editMode ? "Edit Listing" : "Create Listing"}</Button>
       </Form>
-      <Notif msg={msg} success={success} />
+      <Notif msg={msg} success={success} setMsg={(msg: string) => setMsg(msg)}/>
     </div>
   )
 }

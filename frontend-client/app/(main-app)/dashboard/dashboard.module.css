@@ -1,8 +1,9 @@
 #dashboard-container {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   color: white;
   background-color: black;
+  padding: 10px;
 }
 
 #selector-container {
@@ -33,4 +34,22 @@
 
 .selector:hover {
   background-color: #702F6B;
+}
+
+#listing-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+#listing-container {
+  width: 60%;
+}
+
+@media (max-width: 1050px) {
+  #listing-container {
+    width: 90%;
+  }
 }

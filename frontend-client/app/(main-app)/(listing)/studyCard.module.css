@@ -7,8 +7,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
+  border-radius: 5px 0px 0px 5px;
 }
 
 .card-icon {
@@ -20,7 +19,7 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .tag {
@@ -91,10 +90,9 @@
 #delete-button {
   background: 
     radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
-    radial-gradient(100% 100% at 100% 0, #EC9F05 0, #FF4E00 100%) border-box;
+    radial-gradient(100% 100% at 100% 0, #ED213A 0, #93291E 100%) border-box;
   border-radius: 5px;
   border: 2px solid transparent;
-  padding: 5px;
   margin-right: 4px;
   color: black;
   padding: 6px 12px 6px 12px;
@@ -102,32 +100,81 @@
 
 #delete-button:hover {
   background: 
-    radial-gradient(100% 100% at 100% 0, #EC9F05 0, #FF4E00 100%) padding-box,
-    radial-gradient(100% 100% at 100% 0, #EC9F05 0, #FF4E00 100%) border-box;
-  color: white;
+    radial-gradient(100% 100% at 100% 0, #ED213A 0, #93291E 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #ED213A 0, #93291E 100%) border-box;
 }
 
 #edit-button {
-  background-color: transparent;
   background: 
     radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
-    radial-gradient(100% 100% at 100% 0, #C33764 0, #1D2671 100%) border-box;
+    radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%) border-box;
   border-radius: 5px;
   border: 2px solid transparent;
-  padding: 5px;
   margin-right: 4px;
-  color: black;
   padding: 6px 18px 6px 18px;
 }
 
 #edit-button:hover {
   background: 
-    radial-gradient(100% 100% at 100% 0, #C33764 0, #1D2671 100%) padding-box,
-    radial-gradient(100% 100% at 100% 0, #C33764 0, #1D2671 100%) border-box;
+    radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #c33764 0, #1d2671 100%) border-box;
+}
+
+#interested-users-button {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #4bff98 0, #20BDFF 100%) border-box;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  margin-right: 4px;
+  padding: 6px 18px 6px 18px;
+}
+
+#interested-users-button:hover {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #4bff98 0, #20BDFF 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #4bff98 0, #20BDFF 100%) border-box;
+}
+
+#rate-button {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ffffff 0, #ffffff 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%) border-box;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  margin-right: 4px;
+  padding: 6px 18px 6px 18px;
+}
+
+#rate-button:hover {
+  background: 
+    radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%) padding-box,
+    radial-gradient(100% 100% at 100% 0, #ec9f05 0, #ff4e00 100%) border-box;
+}
+
+#edit-button:hover,
+#delete-button:hover,
+#interested-users-button:hover,
+#rate-button:hover {
   color: white;
 }
 
+#edit-button,
+#delete-button,
+#interested-users-button,
+#rate-button {
+  color: black;
+}
+
 #delete-button p,
-#edit-button p {
+#edit-button p,
+#interested-users-button p,
+#rate-button p {
   margin: 0px;
+}
+
+@media (max-width: 576px) {
+  .card-img {
+    border-radius: 5px 5px 0px 0px;
+  }
 }
