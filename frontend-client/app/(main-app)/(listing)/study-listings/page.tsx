@@ -55,7 +55,7 @@ export default function ListingsPage() {
   })
 
   const [sortOption, setSortOption] = useState<number>(1)
-  const [sortDirection, setSortDirection] = useState<boolean>(false)
+  const [sortDirection, setSortDirection] = useState<boolean>(true)
 
   // Method to fetch data from the server
   const fetcher = async (url:string) => fetch(url, {method: 'POST', credentials: "include"})

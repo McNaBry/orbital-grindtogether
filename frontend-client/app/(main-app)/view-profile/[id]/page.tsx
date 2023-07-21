@@ -130,6 +130,28 @@ function RatingField({ isLoading, rating, raterCount }: { isLoading: boolean, ra
   )
 }
 
+function ReturnToInterestedUserList() {
+  const router = useRouter()
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    router.back()
+  }
+  return <Button variant="dark" onClick={handleClick}> Go Back </Button>
+}
+
+function ReportUser({ name, userID, listingUID } : { name: string, userID: string, listingUID: string }) {
+  const router = useRouter()
+  return (
+    <Button 
+      style={{marginLeft: "10px"}} 
+      variant="danger"
+      onClick={() => router.push(`/report-user?name=${name}&userID=${userID}&listingUID=${listingUID}`)}
+    >
+      Report User
+    </Button>
+  )
+}
+
 type ViewProfileProps = {
   params: { id: string }
   searchParams: any
@@ -150,17 +172,7 @@ export default function ViewProfile({
     numOfRaters: 0
   })
   const [profilePic, setProfilePic] = useState("")
-
-  function ReturnToInterestedUserList({}) {
-    const router = useRouter()
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault()
-      router.back()
-    }
-
-    return <Button variant="dark" onClick={handleClick}> Go Back </Button>
-  }
+  const urlParams = new URLSearchParams(searchParams)
 
   // UseEffect hook to fetch profile data
   useEffect(() => {
@@ -214,7 +226,11 @@ export default function ViewProfile({
         <RatingField isLoading={isLoading} rating={fields.rating} raterCount={fields.numOfRaters} />
         <div id={viewProfileStyles["view-profile-button-container"]}>
           <ReturnToInterestedUserList />
-          <Button style={{marginLeft: "10px"}} variant="danger">Report User</Button>
+          <ReportUser 
+            name={fields.fullName}
+            userID={params.id} 
+            listingUID={urlParams.get("listingUID") || ""} 
+          />
         </div>
       </div>
     </div>

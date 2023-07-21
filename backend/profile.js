@@ -53,12 +53,12 @@ async function getInterestProfile(userID) {
   const fullProfile = await getFullProfile(userID)
   return fullProfile == null 
     ? null
-    : [ 
-      userID,
-      fullProfile.fullName,
-      fullProfile.teleHandle,
-      fullProfile.profilePic
-    ]
+    : {
+      uid: userID,
+      name: fullProfile.fullName,
+      teleHandle: fullProfile.teleHandle,
+      profilePic: fullProfile.profilePic
+    }
 }
 
 async function updateProfile(userID, fieldToUpdate, value) {
