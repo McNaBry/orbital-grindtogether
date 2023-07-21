@@ -8,6 +8,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 export type StudyListing = {
   createdBy:   string,
+  creatorName: string,
   title:       string,
   desc:        string,
   tags:        { [key:string] : string[] },
@@ -38,10 +39,10 @@ type InfoBarProps = {
   date: StudyListing["date"],
   freq: StudyListing["freq"],
   interest: StudyListing["interest"],
-  createdBy: StudyListing["createdBy"],
+  creatorName: StudyListing["creatorName"],
 }
 
-function InfoBar({ date, freq, interest, createdBy } : InfoBarProps) {
+function InfoBar({ date, freq, interest, creatorName } : InfoBarProps) {
   return (
     <>
       <small className="text-body-secondary"> 
@@ -56,7 +57,7 @@ function InfoBar({ date, freq, interest, createdBy } : InfoBarProps) {
           className={cardStyles["card-icon"]} /> 
         interested
       </small>
-      <small>Created by {createdBy}</small>
+      <small>Created by {creatorName}</small>
     </>
   )
 }
@@ -64,7 +65,7 @@ function InfoBar({ date, freq, interest, createdBy } : InfoBarProps) {
 export default function StudyCard(
   { listingData, variant, router } : 
   { listingData: StudyListing, variant: string, router: AppRouterInstance }) {
-  const {createdBy, title, desc, tags, date, dateCreated, freq, interest, id} = listingData
+  const {creatorName, title, desc, tags, date, dateCreated, freq, interest, id} = listingData
   return (
     <Card key={id} style={{color:"black"}} className={cardStyles["card-container"]}>
       <Row className="g-0">
@@ -81,7 +82,7 @@ export default function StudyCard(
             <Tags tags={tags}/>
             <Card.Text style={{marginBottom: "0.5rem"}}>{desc}</Card.Text>
             <Card.Text className="row" style={{marginTop: "auto"}}>
-              <InfoBar date={date} freq={freq} interest={interest} createdBy={createdBy} />
+              <InfoBar date={date} freq={freq} interest={interest} creatorName={creatorName} />
               <CardActionBar variant={variant} listingData={listingData} router={router} />
             </Card.Text>
           </Card.Body>

@@ -34,7 +34,11 @@ const SortFunctions : SortFunction[] = [
   },
 
   (a: StudyListing, b: StudyListing) => {
-    return a.createdBy <= b.createdBy ? -1 : 1 
+    return a.creatorName <= b.creatorName ? -1 : 1 
+  },
+
+  (a: StudyListing, b: StudyListing) => {
+    return a.interest <= b.interest ? -1 : 1 
   },
 ]
 
