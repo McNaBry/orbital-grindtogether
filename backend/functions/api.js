@@ -25,14 +25,14 @@ const {
   getLikedListings,
   getCreatedListings,
   getListingLikers,
-} = require("./listingDb")
+} = require("../listingDb")
 const { updateNotifFilters, sendListingNotif } = require("../email")
 const {
   getFullProfile,
   getViewProfile,
   updateProfile,
   setProfilePic
-} = require('./profile')
+} = require('../profile')
 const { verifyAuthCookie } = require("../authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
