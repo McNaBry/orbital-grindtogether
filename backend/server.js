@@ -420,9 +420,13 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
 
 
 app.post("/report-user", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
   try {
     const reportData = req.body
-    const uid = req.cookies.uid
     reportData.reporter = uid
     await db.collection("user-reports").add({reportData})
     res.status(200).send()

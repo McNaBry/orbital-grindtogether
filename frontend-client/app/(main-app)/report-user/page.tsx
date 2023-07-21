@@ -90,6 +90,12 @@ function ReportUserButton({ isLoading } : { isLoading: boolean }) {
   )
 }
 
+type expectedParams = {
+  name: string,
+  userID: string,
+  listingUID: string
+}
+
 function ReportUserPage({ searchParams } : { searchParams: any }) {
   const urlParams = new URLSearchParams(searchParams)
   const [success, setSuccess] = useState<boolean>(false)
@@ -132,8 +138,9 @@ function ReportUserPage({ searchParams } : { searchParams: any }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          listingid: urlParams.get("listingUID") || "None specified",
-          name: urlParams.get("name") || "None specified",
+          listingUID: urlParams.get("listingUID") || "None specified",
+          reportedName: urlParams.get("name") || "None specified",
+          reportedUID: urlParams.get("userID") || "None specified",
           date: formData.get("date"),
           reason: formData.get("reason"),
         }),
@@ -165,7 +172,7 @@ function ReportUserPage({ searchParams } : { searchParams: any }) {
         <Reason />
         <ReportUserButton isLoading={isLoading} />
       </form>
-      <Notif msg = {msg} success = {success} />
+      <Notif msg={msg} success={success} />
     </div>
   )
 }

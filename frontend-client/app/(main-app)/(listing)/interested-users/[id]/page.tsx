@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
-import { Button } from "react-bootstrap"
+import { Button, Spinner } from "react-bootstrap"
 import interestStyles from "./interested-users.module.css"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 type InterestedUsersProps = {
   params: { id: string } // listing UID
@@ -16,6 +16,19 @@ type User = {
   name: string,
   teleHandle: string,
   profilePic: string
+}
+
+function ReportButton(
+  { listingUID, creatorName, creatorUID } : 
+  { listingUID: string, creatorName: string, creatorUID: string }) {
+  const router = useRouter()
+  return (
+    <Button 
+      variant="danger" 
+      onClick={() => 
+        router.push(`/report-user?name=${creatorName}&userID=${creatorUID}&listingUID=${listingUID}`)}
+    >Report Owner</Button>
+  )
 }
 
 function NoProfilePic() {
@@ -50,29 +63,84 @@ function UserEntry({ user, listingUID } : { user: User, listingUID: string }) {
   )
 }
 
+function InterestedUsersList({ interestedUsers, listingUID } : { interestedUsers: User[], listingUID: string}) {
+  return (
+    <>
+      { interestedUsers.length == 0
+        ? <></>
+        : <div id={interestStyles["interested-users-list"]}>
+            { interestedUsers.map((user: User) => (
+              <UserEntry user={user} listingUID={listingUID} />
+            )) }
+          </div>
+      }
+    </>
+  )
+}
+
 function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
   const router = useRouter()
   // Retrieve URL search params
   const urlParams = new URLSearchParams(searchParams)
-  const interestedUsers = urlParams.get("interestedUsers")
-  const interestedUsersArr = interestedUsers ? JSON.parse(interestedUsers) : []
-  const interestedUsersObjArr: User[] = interestedUsersArr.map((user: string[]) => {
-    return ({
-      uid: user[0],
-      name: user[1],
-      teleHandle: user[2],
-      profilePic: user[3]
-    })
-  })
+  const [ interestedUsers, setInterestedUsers ] = useState<User[]>([])
+  const [ isLoading, setIsLoading ] = useState<boolean>(true)
+
+  useEffect(() => {
+    async function fetchInterestedUsers() {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/get-interested-users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({listingUID: params.id}),
+        }
+      )
+    
+      if (!response.ok) {
+        console.log(response.status)
+        setIsLoading(false)
+        throw new Error("Failed to fetch interested users")
+      }
+    
+      const interestedUsers = await response.json()
+      setInterestedUsers(interestedUsers)
+      setIsLoading(false)
+    }
+    fetchInterestedUsers().catch(error => console.log(error))
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div id={interestStyles["interested-users-container"]}>
+        <h1 style={{ color: "white", textAlign: "center" }}>Interested Users</h1>
+        <div id={interestStyles["loading-container"]}>
+          <Spinner
+            as="span"
+            variant="light"
+            animation="border"
+            role="status"
+            size="sm"
+            aria-hidden="true"
+            style={{marginRight: "10px"}}
+          />
+          <h5 style={{ color: "white", marginTop: "0px", marginBottom: "0px" }}>Fetching Interested Users...</h5>
+        </div>
+        <Button variant="dark" onClick={() => router.back()}>Back</Button>
+      </div>
+    )
+  }
 
   return (
     <div id={interestStyles["interested-users-container"]}>
-      <h1 style={{ color: "white", textAlign: "center" }}> Interested Users </h1>
-      <div id={interestStyles["interested-users-list"]}>
-        { interestedUsersObjArr.map((user: User) => (
-          <UserEntry user={user} listingUID={params.id} />
-        ))}
-      </div>
+      <h1 style={{ color: "white", textAlign: "center" }}>Interested Users</h1>
+      <ReportButton 
+        listingUID={params.id} 
+        creatorName={urlParams.get("creatorName") || ""}
+        creatorUID={urlParams.get("creatorUID") || ""} 
+      />
+      <InterestedUsersList interestedUsers={interestedUsers} listingUID={params.id} />
       <Button variant="dark" onClick={() => router.back()}>Back</Button>
     </div>
   )

@@ -51,29 +51,7 @@ function InterestedUsersButton(
 
   const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/get-interested-users`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({listingUID: listingData.id}),
-        }
-      )
-
-      if (!response.ok) {
-        console.log(response.status)
-        throw new Error("Failed to fetch interested users")
-      }
-
-      const interestedUsers = await response.json()
-
-      const query = new URLSearchParams()
-      query.append("interestedUsers", JSON.stringify(interestedUsers))
-      const url = `/interested-users/${listingData.id}?${query.toString()}`
-      
-      console.log(url)
+      const url = `/interested-users/${listingData.id}?creatorName=${listingData.creatorName}&creatorUID=${listingData.createdBy}`
       router.push(url)
     } catch (error) {
       console.error("Could not get list of interested users", error)
