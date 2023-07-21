@@ -79,7 +79,7 @@ export default function RatingBar({
         .catch((error) => console.log(error))
       setIsLoading(false)
     }
-    fetchRatings()
+    fetchRatings().catch((error) => console.log(error))
   }, [])
 
   const handleSubmitRating = async (event: FormEvent<HTMLFormElement>) => {
@@ -93,6 +93,7 @@ export default function RatingBar({
       console.log("Cannot find listingID or creatorID")
       return
     }
+    
     try {
       setIsLoading(true)
       const res = await fetch(
@@ -114,6 +115,11 @@ export default function RatingBar({
       if (res.status == 200) {
         setMsg("Rating was successfully submitted.")
         setSuccess(true)
+      } else if (res.status == 401) {
+        setMsg("Sign-in to rate the listing.")
+        setSuccess(false)
+        new Promise(resolve => setTimeout(resolve, 4000))
+        router.push("/sign-in")
       } else {
         setMsg("Rating was not successfully submitted.")
         setSuccess(false)

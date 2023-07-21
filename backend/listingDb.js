@@ -11,7 +11,7 @@ async function getListing(listingUID) {
 async function getListings(userID) {
   const snapshot = await db
     .collection("listings")
-    .orderBy("date")
+    .orderBy("dateCreated", "desc")
     .get()
   return await processListings(userID, snapshot)
 }
@@ -138,7 +138,7 @@ async function getLikedListings(userID) {
   const snapshot = await db
     .collection('listings')
     .where('likes', 'array-contains', userID)
-    .orderBy('date')
+    .orderBy('dateCreated', 'desc')
     .get()
   const results = []
   snapshot.forEach(doc => {
@@ -151,7 +151,7 @@ async function getCreatedListings(userID) {
   const snapshot = await db
     .collection('listings')
     .where('createdBy', '==', userID)
-    .orderBy('date')
+    .orderBy('dateCreated', 'desc')
     .get()
   return await processListings(userID, snapshot)
 }

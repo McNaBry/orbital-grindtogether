@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, ChangeEvent, FormEvent } from "react"
+import { useState, ChangeEvent, FormEvent, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "../../authProvider"
 
@@ -70,7 +70,24 @@ function SignInPage() {
   const [password, setPassword] = useState<string>("")
   const [msg, setMsg] = useState<string>("")
   const [success, setSuccess] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  // Check if user is signed in
+  useEffect(() => {
+    async function checkSignIn() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-token`, {
+        method: "POST",
+        credentials: "include"
+      })
+      
+      if (res.status == 200) {
+        router.push("/dashboard")
+      } else {
+        setIsLoading(false)
+      }
+    }
+    checkSignIn()
+  }, [])
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)

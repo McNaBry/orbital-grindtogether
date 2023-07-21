@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import StudyCard, { StudyListing } from '../studyCard'
@@ -56,6 +56,19 @@ export default function CreateListing({ searchParams } : any) {
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
 
+  useEffect(() => {
+    if (msg != "") {
+      const timeout = setTimeout(() => {
+        setMsg("")
+        router.push("/dashboard")
+      }, 3000)
+
+      return () => {
+        clearTimeout(timeout)
+      }
+    }
+  }, [msg])
+  
   useEffect(() => 
     setDemoOptions({
       ...demoOptions, 
@@ -81,7 +94,13 @@ export default function CreateListing({ searchParams } : any) {
     })
     .then(async data => {
       // Server responds with error
-      if (!data.ok) {
+      if (data.status == 401) {
+        setSuccess(false)
+        setMsg(`Please sign in to ${action} a new listing.`)
+        await new Promise(r => setTimeout(r, 2000))
+        router.push("/sign-in")
+        return
+      } else if (!data.ok) {
         setSuccess(false)
         setMsg(`Sorry! Listing was not ${action} successfully. Try again.`)
         return
