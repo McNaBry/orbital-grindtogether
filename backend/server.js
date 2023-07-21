@@ -122,22 +122,16 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
-// app.post("/validate-token", async (req, res) => {
-//   const authToken = req.cookies.jwt
-//   if (authToken == undefined) {
-//     res.status(400).send()
-//     return
-//   }
-//   const users = await validateToken(authToken)
-//   if (users.length == 0) {
-//     console.log("Null array for user UID query")
-//     res.status(400).send()
-//   } else if (users.length >= 1) {
-//     // If all goes well, only one user will be returned
-//     // If not we still return the first user in the array
-//     res.status(200).json(users[0]).send()
-//   }
-// })
+app.post("/validate-token", verifyAuthCookie, async (req, res) => {
+  // Session validation is already done by verifyAuthCookie
+  // So, next layer is just to verify the UID cookie exists
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  return res.status(200).send()
+})
 
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -337,7 +331,7 @@ app.post("/create-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post("/edit-listing", async (req, res) => {
+app.post("/edit-listing", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()

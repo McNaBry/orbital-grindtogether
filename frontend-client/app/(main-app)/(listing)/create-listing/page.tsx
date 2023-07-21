@@ -81,7 +81,13 @@ export default function CreateListing({ searchParams } : any) {
     })
     .then(async data => {
       // Server responds with error
-      if (!data.ok) {
+      if (data.status == 401) {
+        setSuccess(false)
+        setMsg(`Please sign in to ${action} a new listing.`)
+        await new Promise(r => setTimeout(r, 2000))
+        router.push("/sign-in")
+        return
+      } else if (!data.ok) {
         setSuccess(false)
         setMsg(`Sorry! Listing was not ${action} successfully. Try again.`)
         return

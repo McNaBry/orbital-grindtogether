@@ -130,33 +130,43 @@ export default function ProfilePage() {
 
   // UseEffect hook to fetch profile data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/get-profile`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        )
-        if (response.status == 200) {
-          const data = await response.json()
-          setFields(data)
-          setProfilePic(data.profilePic || "")
-          console.log(data)
-          setIsLoading(false)
-        } else {
-          console.log("Profile fetch error")
+    const fetchData = async () => { 
+      const validateRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/validate-token`,
+        { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
         }
-      } catch (error) {
-        console.log("User not found.")
+      )
+
+      if (validateRes.status != 200) {
+        router.push("/sign-in")
+      }
+      
+      const fetchRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/get-profile`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      )
+      if (fetchRes.status == 200) {
+        const data = await fetchRes.json()
+        setFields(data)
+        setProfilePic(data.profilePic || "")
+        setIsLoading(false)
+      } else {
+        console.log("Profile fetch error")
       }
     }
 
-    fetchData()
+    fetchData().catch(error => console.log("User not found."))
   }, [])
 
   // Function to handle change on the Editable Card.
