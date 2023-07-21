@@ -70,7 +70,7 @@ function InterestedUsersList({ interestedUsers, listingUID } : { interestedUsers
         ? <></>
         : <div id={interestStyles["interested-users-list"]}>
             { interestedUsers.map((user: User) => (
-              <UserEntry user={user} listingUID={listingUID} />
+              <UserEntry key={user.uid} user={user} listingUID={listingUID} />
             )) }
           </div>
       }
