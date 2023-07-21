@@ -25,14 +25,14 @@ const {
   getLikedListings,
   getCreatedListings,
   getListingLikers,
-} = require("../listingDb")
+} = require("./listingDb")
 const { updateNotifFilters, sendListingNotif } = require("../email")
 const {
   getFullProfile,
   getViewProfile,
   updateProfile,
   setProfilePic
-} = require('../profile')
+} = require('./profile')
 const { verifyAuthCookie } = require("../authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
@@ -120,22 +120,16 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
-// app.post("/validate-token", async (req, res) => {
-//   const authToken = req.cookies.jwt
-//   if (authToken == undefined) {
-//     res.status(400).send()
-//     return
-//   }
-//   const users = await validateToken(authToken)
-//   if (users.length == 0) {
-//     console.log("Null array for user UID query")
-//     res.status(400).send()
-//   } else if (users.length >= 1) {
-//     // If all goes well, only one user will be returned
-//     // If not we still return the first user in the array
-//     res.status(200).json(users[0]).send()
-//   }
-// })
+app.post("/validate-token", verifyAuthCookie, async (req, res) => {
+  // Session validation is already done by verifyAuthCookie
+  // So, next layer is just to verify the UID cookie exists
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  return res.status(200).send()
+})
 
 // API Endpoint to receive email to send password reset link
 app.post("/input-email-for-reset", async (req, res) => {
@@ -335,7 +329,7 @@ app.post("/create-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post("/edit-listing", async (req, res) => {
+app.post("/edit-listing", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -419,6 +413,23 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
     res.status(200).send()
   } else {
     res.status(400).send()
+  }
+})
+
+
+app.post("/report-user", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  try {
+    const reportData = req.body
+    reportData.reporter = uid
+    await db.collection("user-reports").add({reportData})
+    res.status(200).send()
+  } catch (error) {
+    res.status(500).send()
   }
 })
 

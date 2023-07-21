@@ -15,6 +15,7 @@ import FilterPanel from "./filterPanel"
 import { Row } from "react-bootstrap"
 import viewStyles from './studyListings.module.css'
 import { StudyListing } from "../studyCard"
+import LoadingCard from "../loadingCard"
 
 const SortFunctions : SortFunction[] = [
   (a: StudyListing, b: StudyListing) => {
@@ -80,21 +81,23 @@ export default function ListingsPage() {
 
   return (
     <div id={viewStyles["study-listings-container"]}>
-      {/* <h1 style={{color:"white"}}>Status: {error ? "error" : (isLoading ? "loading..." : "done")}</h1> */}
       <div id="header-container">
         <h1 style={{color: "white", textAlign: "center"}}>Study Listings</h1>
         <ListingPageControl page={page} setPage={setPage} />
       </div>
       <Row id={viewStyles["listings-filter-container"]}>
         <div className="col-lg-8 col-12">
-          <StudyListings 
-            page={page} 
-            limit={5} 
-            filters={filters} 
-            sortFunction={SortFunctions[sortOption]}
-            sortReverse={sortDirection}
-            data={error ? testData : (isLoading ? testData : data)}
-            variant="display" />
+          { isLoading 
+            ? <LoadingCard />
+            : <StudyListings 
+                page={page} 
+                limit={5} 
+                filters={filters} 
+                sortFunction={SortFunctions[sortOption]}
+                sortReverse={sortDirection}
+                data={error ? [] : data}
+                variant="display" />
+          }
         </div>
         <div className="col-lg-4 col-12" style={{padding: "0px", marginBottom: "10px"}}>
           <FilterPanel handleChange={handleMultipleOptionChange} />
