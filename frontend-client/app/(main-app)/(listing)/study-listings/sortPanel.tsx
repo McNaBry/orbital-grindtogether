@@ -47,8 +47,9 @@ function SortDropdownButton({
 function SortOptionsButton({ setSortOption } : Pick<SortPanelProps, 'setSortOption'>) {
   const optionsList: {[key: string] : number} = {
     "date": 0,
-    "creation date": 1,
-    "creator": 2
+    "date created": 1,
+    "creator": 2,
+    "users interested": 3
   }
 
   return (
@@ -57,7 +58,7 @@ function SortOptionsButton({ setSortOption } : Pick<SortPanelProps, 'setSortOpti
       <SortDropdownButton
         optionsList={Object.keys(optionsList)}
         handleOptionSelect={(option: string) => setSortOption(optionsList[option])}
-        title="date"
+        title="date created"
       />
     </div>
   )
@@ -75,7 +76,7 @@ function SortDirectionButton({ setSortDirection } : Pick<SortPanelProps, 'setSor
       <SortDropdownButton
         optionsList={Object.keys(optionsList)}
         handleOptionSelect={(option: string) => setSortDirection(optionsList[option])}
-        title="ascending"
+        title="descending"
       />
       <span style={{fontSize: "18px", color: "white", marginLeft: "6px"}}>order</span>
     </div>

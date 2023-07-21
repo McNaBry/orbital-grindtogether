@@ -5,14 +5,15 @@ import { useRouter } from 'next/navigation'
 
 import StudyCard, { StudyListing } from '../studyCard'
 import EditPanel from "./editPanel"
-import { Form, Button, Toast, ToastContainer } from 'react-bootstrap'
+import Notif from "../../notif"
+import { Form, Button } from 'react-bootstrap'
 import styles from './create-listing.module.css' 
-import Notif from './notif'
 
 // Typescript has a weird error where you can't index the object with string keys
 // Hence instead of giving it a StudyListing type, it is given a dict type
 const defaultOptions : {[key:string]: any} = {
-  "createdBy": "Xiao Ming",
+  "createdBy": "hXAnaW",
+  "creatorName": "Xiao Ming",
   "title":     "Title",
   "desc":      "Description",
   "tags":      {"modules":[], "locations":[], "faculties":[]},
@@ -34,9 +35,10 @@ export default function CreateListing({ searchParams } : any) {
 
   // Options to be displayed on the card as a preview (demo)
   const [demoOptions, setDemoOptions] = useState<StudyListing>({
-    createdBy: editMode ? urlParams.get("createdBy") : defaultOptions['createdBy'],
-    title:     editMode ? urlParams.get("title")     : defaultOptions['title'],
-    desc:      editMode ? urlParams.get("desc")      : defaultOptions['desc'],
+    createdBy:   editMode ? urlParams.get("createdBy") : defaultOptions['createdBy'],
+    creatorName: editMode ? urlParams.get("creatorName") : defaultOptions['creatorName'],
+    title:       editMode ? urlParams.get("title")     : defaultOptions['title'],
+    desc:        editMode ? urlParams.get("desc")      : defaultOptions['desc'],
     tags: {
       "modules":   editMode ? tags[0].split(",").slice(1) : [], 
       "locations": editMode ? tags[1].split(",").slice(1) : [],
@@ -66,6 +68,12 @@ export default function CreateListing({ searchParams } : any) {
       }
     }
   }, [msg])
+  
+  useEffect(() => 
+    setDemoOptions({
+      ...demoOptions, 
+      creatorName: window.localStorage.getItem("fullName") || "Xiao Ming"}
+  ), [])
 
   // Function to handle form submit and create/update listing
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -86,7 +94,13 @@ export default function CreateListing({ searchParams } : any) {
     })
     .then(async data => {
       // Server responds with error
-      if (!data.ok) {
+      if (data.status == 401) {
+        setSuccess(false)
+        setMsg(`Please sign in to ${action} a new listing.`)
+        await new Promise(r => setTimeout(r, 2000))
+        router.push("/sign-in")
+        return
+      } else if (!data.ok) {
         setSuccess(false)
         setMsg(`Sorry! Listing was not ${action} successfully. Try again.`)
         return
@@ -119,7 +133,7 @@ export default function CreateListing({ searchParams } : any) {
         />
         <Button variant="success" type="submit">{editMode ? "Edit Listing" : "Create Listing"}</Button>
       </Form>
-      <Notif msg={msg} success={success} />
+      <Notif msg={msg} success={success} setMsg={(msg: string) => setMsg(msg)}/>
     </div>
   )
 }

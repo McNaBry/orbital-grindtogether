@@ -73,7 +73,8 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
         : <>
           <div id={profileStyles["notif-tag-row"]}>{ tags }</div>
           { editMode
-            ? <> 
+            ? <>
+                <div style={{color: "black", margin: "5px 0px"}}>
                 <SelectMultiOption
                   params={{
                     name: "Filters",
@@ -83,6 +84,7 @@ export default function NotifFilters({ isLoading, filters, onSave } : NotifFilte
                     handleChange: handleMultipleOptionChange
                   }} 
                 />
+                </div>
                 <SaveCancelBar
                   onSaveChanges={handleSaveChanges}
                   onCancelChanges={handleCancelChanges}

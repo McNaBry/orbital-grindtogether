@@ -34,7 +34,11 @@ const SortFunctions : SortFunction[] = [
   },
 
   (a: StudyListing, b: StudyListing) => {
-    return a.createdBy <= b.createdBy ? -1 : 1 
+    return a.creatorName <= b.creatorName ? -1 : 1 
+  },
+
+  (a: StudyListing, b: StudyListing) => {
+    return a.interest <= b.interest ? -1 : 1 
   },
 ]
 
@@ -51,7 +55,7 @@ export default function ListingsPage() {
   })
 
   const [sortOption, setSortOption] = useState<number>(1)
-  const [sortDirection, setSortDirection] = useState<boolean>(false)
+  const [sortDirection, setSortDirection] = useState<boolean>(true)
 
   // Method to fetch data from the server
   const fetcher = async (url:string) => fetch(url, {method: 'POST', credentials: "include"})

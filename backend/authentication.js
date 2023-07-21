@@ -27,8 +27,9 @@ async function createAccount(data) {
     course: "",
     teleHandle: "@",
     year: 0,
-    rating: 0,
-    listings: [],
+    rating: -1,
+    totalStars: 0,
+    numOfRaters: 0,
     likes: [],
     notifFilters: [],
     optInStatus: false
@@ -41,10 +42,10 @@ async function createAccount(data) {
   */
   return await fireAuth
     .createUser({
-      email: user.email,
+      email: data.email,
       emailVerified: true,
       password: data.password,
-      displayName: user.fullName,
+      displayName: data.fullName,
       disabled: false,
     })
     .then(async payload => {
