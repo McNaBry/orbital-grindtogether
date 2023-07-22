@@ -1,18 +1,16 @@
 "use client"
 
-import LocationButton from "./locationButton";
-import { MouseEvent } from "react"
-import locStyles from "./locations.module.css"
+import { MouseEvent, useState } from "react"
+import { tagData } from "../(listing)/study-listings/data"
+import { ActionMeta } from "react-select"
+import { Button, Spinner } from "react-bootstrap"
 import {
   Option,
   SelectSingleOption, SelectSingleOptionProps,
   DateOption, DateOptionProps
 } from "../(components)/select"
-import { tagData } from "../(listing)/study-listings/data"
-import { ActionMeta } from "react-select";
-import { useState } from "react";
-import { Button, Spinner } from "react-bootstrap";
 import Notif from "../notif"
+import locStyles from "./locations.module.css"
 
 function LocationPicker({ handleChange } :  Pick<SelectSingleOptionProps, 'handleChange'>) {
   return (
@@ -68,7 +66,7 @@ function Locations() {
 
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
-  const [ isLoading, setIsLoading ] = useState<boolean>(true)
+  const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
   // Function to handle option change on single select
   function handleSingleOptionChange(type:string, option: Option | null, actionMeta: ActionMeta<Option>) {
