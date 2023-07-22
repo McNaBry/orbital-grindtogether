@@ -14,6 +14,9 @@ function COM3B1() {
       `${process.env.NEXT_PUBLIC_API_URL}/count-locations`,
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           location: ["Basement 1"]
         })

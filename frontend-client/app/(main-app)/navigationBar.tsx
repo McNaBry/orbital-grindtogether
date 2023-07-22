@@ -3,6 +3,7 @@
 import { Container, Navbar, Nav } from 'react-bootstrap'
 import navStyles from "./navigationBar.module.css"
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 function NavLink({ href, value } : { href: string, value: string}) {
   return (
@@ -20,14 +21,19 @@ export default function NavigationBar() {
         <Navbar.Brand href="/dashboard" style={{color: "white"}}>GrindTogether</Navbar.Brand>
         <Navbar.Toggle className={navStyles["toggler"]} aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav style={{color: "white"}} className="me-auto">
-            <NavLink href={"/create-listing"} value={"Create Listing"} />
-            <NavLink href={"/study-listings"} value={"View Listings"} />
-            <NavLink href={"/locations"} value={"Locations"} />
-            <NavLink href={"/profile-page"} value={"Profile Page"} />
-            <NavLink href={"/about"} value={"About GT"} />
+          <Nav style={{color: "white"}} id={navStyles["nav-link-container"]} className="me-auto">
+            <NavLink key="1" href={"/create-listing"} value={"Create Listing"} />
+            <NavLink key="2" href={"/study-listings"} value={"View Listings"} />
+            <NavLink key="3" href={"/locations"} value={"Locations"} />
+            <NavLink key="4" href={"/profile-page"} value={"Profile Page"} />
+            <NavLink key="5" href={"/about"} value={"About GT"} />
           </Nav>
-          <Navbar.Text style={{color: "white", textAlign: "right"}}>Welcome, {username}</Navbar.Text>
+          { username == "Guest"
+            ? <Navbar.Text id={navStyles["guest-sign-in"]}>
+                <Link style={{color: "white", textDecoration: "none"}} href="/sign-in">Sign In</Link>
+              </Navbar.Text> 
+            : <Navbar.Text style={{color: "white", textAlign: "right"}}>Welcome, {username}</Navbar.Text>          
+          }
         </Navbar.Collapse>
       </Container>
     </Navbar>

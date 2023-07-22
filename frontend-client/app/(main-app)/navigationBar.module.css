@@ -15,3 +15,20 @@
 .navBar-link:hover {
   background-color: rgba(97, 91, 91, 0.394);
 }
+
+#guest-sign-in {
+  background: #6c5ce7;
+  padding: 6px 8px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+#guest-sign-in:hover {
+  background: #5946e7;
+}
+
+@media (max-width: 1200px) {
+  #nav-link-container {
+    margin-bottom: 10px;
+  }
+}
