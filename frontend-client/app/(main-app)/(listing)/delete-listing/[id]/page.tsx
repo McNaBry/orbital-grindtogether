@@ -1,6 +1,6 @@
 "use client"
 
-import StudyCard, { StudyListing } from "../../studyCard"
+import StudyCard, { StudyListing } from "../../../(components)/studyCard"
 import { Button, ToastContainer, Toast } from "react-bootstrap"
 import deleteStyles from "./delete-listing.module.css"
 import { useRouter } from "next/navigation"

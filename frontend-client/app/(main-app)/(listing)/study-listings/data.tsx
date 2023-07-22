@@ -1,4 +1,4 @@
-import { StudyListing } from "../studyCard"
+import { StudyListing } from "../../(components)/studyCard"
 
 export const tagData : {[key:string]: string[]} = {
   "modules"   : ["CS1101S", "CS1010X", "CS1010S" ,"CS1231", "CS1231S", "BT1101", "CS2030", "CS2030S", 

@@ -3,10 +3,10 @@ import {
   SelectFreeOption, 
   SelectMultiOption,
   DateOption 
-} from "./select"
+} from "../../(components)/select"
 
 import { Container } from "react-bootstrap"
-import { StudyListing } from '../studyCard'
+import { StudyListing } from '../../(components)/studyCard'
 import styles from "./create-listing.module.css"
 import { tagData } from "../study-listings/data"
 import { SetStateAction } from "react"
@@ -45,7 +45,7 @@ export default function EditPanel(
   function handleDateOptionChange(date: Date | null) {
     if (date == null) setDemoOptions(prevOptions => ({
       ...prevOptions,
-      date: new Date()
+      date: new Date(new Date().toDateString())
     }))
     else setDemoOptions(prevOptions => ({
       ...prevOptions,

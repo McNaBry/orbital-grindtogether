@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import StudyCard, { StudyListing } from "../studyCard"
+import StudyCard, { StudyListing } from "../../(components)/studyCard"
 import viewStyles from "./studyListings.module.css"
 
 type StudyListingsProps = {

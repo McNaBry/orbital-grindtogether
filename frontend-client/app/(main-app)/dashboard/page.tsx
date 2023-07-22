@@ -4,7 +4,7 @@ import styles from './dashboard.module.css'
 
 import useSWR from 'swr'
 import StudyListings from '../(listing)/study-listings/studyListings'
-import { StudyListing } from '../(listing)/studyCard'
+import { StudyListing } from '../(components)/studyCard'
 import { useState } from 'react'
  
 type ListingProps = {

@@ -4,7 +4,7 @@ import {
   Option, 
   SelectMultiOption, 
   SelectMultiOptionProps 
-} from "../create-listing/select"
+} from "../../(components)/select"
 import viewStyles from "./studyListings.module.css"
 import { tagData } from "./data"
 
