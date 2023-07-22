@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, MouseEventHandler } from "react";
+import { useState, ChangeEvent, FormEvent, MouseEventHandler, useEffect } from "react";
 import styles from "../auth.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation"
@@ -12,7 +12,6 @@ import CreateStatus from "../createStatus";
 import ValidatePassword from "../validatePassword"
 import { useAuth } from "../../authProvider"
 
-import * as pc from "./passwordChecks.js";
 import { Button, Spinner } from "react-bootstrap";
 
 function GetStarted() {
@@ -75,7 +74,24 @@ function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [msg, setMsg] = useState<string>("")
   const [success, setSuccess] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  // Check if user is signed in
+  useEffect(() => {
+    async function checkSignIn() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-token`, {
+        method: "POST",
+        credentials: "include"
+      })
+      
+      if (res.status == 200) {
+        router.push("/dashboard")
+      } else {
+        setIsLoading(false)
+      }
+    }
+    checkSignIn()
+  }, [])
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);

@@ -1,17 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { MouseEvent } from "react"
+import profileStyles from "./profile-page.module.css"
 
-function EditButton({onClick} : {onClick: () => void}) {
-    return (
-        <div className="edit-button">
-          <FontAwesomeIcon
-            icon= {faPencil}
-            className="pen-icon"
-            onClick = {onClick}
-          />
-        </div>
-      );
+export default function EditButton({ onEditChanges } : { onEditChanges: () => void}) {
+  return (
+    <div className="edit-button">
+      <FontAwesomeIcon
+        icon={faPencil}
+        className={profileStyles["pen-icon"]}
+        onClick={onEditChanges}
+      />
+    </div>
+  );
 }
-
-export default EditButton;

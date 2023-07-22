@@ -36,7 +36,8 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
   // Set each field to the respective URL search param value(s)
   // These fields are used to display the details of the listing to be deleted
   const listing: StudyListing = {
-    createdBy: urlParams.get('createdBy') || "Anonymous",
+    createdBy: urlParams.get('createdBy') || "AxAWDSa",
+    creatorName: urlParams.get('creatorName') || "Annonymous",
     title: urlParams.get('title') || "Title",
     desc: urlParams.get('desc') || "Desc",
     tags: {
@@ -45,6 +46,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
       "faculties": tags[2].split(",").slice(1)
     },
     date: new Date(urlParams.get('date') || Date.now()),
+    dateCreated: new Date(urlParams.get('dateCreated') || Date.now()), 
     freq: urlParams.get('freq') || "Every day",
     interest: parseInt(urlParams.get('interest') || '0'),
     id: urlParams.get('id') || "",
@@ -80,7 +82,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
     <div id={deleteStyles["delete-listing-container"]}>
       <h1 style={{color: "white", textAlign: "center"}}>Delete Listing</h1>
       <div id={deleteStyles["delete-listing-subcontainer"]}>
-        <StudyCard listingData={listing} variant="delete" />
+        <StudyCard listingData={listing} variant="delete" router={router} />
         <h5 id={deleteStyles["delete-prompt"]}>Are you sure you wish to delete this listing?</h5>
         <Button variant="danger" onClick={(event) => deleteListing()}>I am sure.</Button>
       </div>

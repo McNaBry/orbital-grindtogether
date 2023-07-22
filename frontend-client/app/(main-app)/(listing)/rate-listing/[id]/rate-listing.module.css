@@ -1,0 +1,59 @@
+#rate-listing-container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  align-items: center;
+}
+
+#overall-rating {
+  color: white;
+  font-size: 22px;
+  margin-bottom: 0px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+}
+
+#rating-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.rating-sub-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+#disclaimer-container {
+  background: rgba(231, 76, 60, 0.8);
+  width: 60%;
+  padding: 15px 15px 15px 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+#disclaimer {
+  color: #e3e3e3;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+#button-bar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+@media (max-width: 800px) {
+  #disclaimer-container {
+    width: 90%;
+    padding: 10px;
+  }
+}

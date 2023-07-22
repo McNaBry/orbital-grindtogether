@@ -1,8 +1,9 @@
 #dashboard-container {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   color: white;
   background-color: black;
+  padding: 10px;
 }
 
 #selector-container {
@@ -16,12 +17,39 @@
 .selector {
   margin: 2px 6px 2px 6px;
   padding: 5px 15px 5px 15px;
-  border-radius: 30px;
-  background-color: orange;
+  border-radius: 20px;
+  background-color: #1D2671;
+  border: none;
+  color: white;
+}
+
+.active-selector {
+  margin: 2px 6px 2px 6px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 20px;
+  background-color: #C33764;
   border: none;
   color: white;
 }
 
 .selector:hover {
-  background-color: red;
+  background-color: #702F6B;
+}
+
+#listing-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+#listing-container {
+  width: 60%;
+}
+
+@media (max-width: 1050px) {
+  #listing-container {
+    width: 90%;
+  }
 }

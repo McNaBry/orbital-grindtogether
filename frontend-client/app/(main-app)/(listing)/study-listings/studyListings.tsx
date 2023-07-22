@@ -1,15 +1,22 @@
+"use client"
+
+import { useRouter } from "next/navigation"
 import StudyCard, { StudyListing } from "../studyCard"
+import viewStyles from "./studyListings.module.css"
 
 type StudyListingsProps = {
   page: number, 
   limit: number,
   filters: { [key:string] : string[] },
+  sortFunction: (a: StudyListing, b: StudyListing) => number,
+  sortReverse: boolean,
   data: StudyListing[],
   variant: string
 }
 
-export default function StudyListings({ page, limit, filters, data, variant } : StudyListingsProps) {
-  if (data.length == 0 || data == null) return (<h1>No listings found.</h1>)
+export default function StudyListings({ page, limit, filters, sortFunction, sortReverse, data, variant } : StudyListingsProps) {
+  const router = useRouter()
+  if (data.length == 0 || data == null) return (<h5>No listings found.</h5>)
 
   const filterData = data.filter(listing => {
     const categories = Object.keys(listing.tags)
@@ -28,19 +35,25 @@ export default function StudyListings({ page, limit, filters, data, variant } : 
     return true
   })
 
+  filterData.sort(sortFunction)
+  if (sortReverse) filterData.reverse()
+
   const slicedData = page == -1
     ? filterData
     : filterData.slice((page - 1) * limit, page * limit)
 
   const listings = slicedData.map((listing) => {
-    return <StudyCard key={listing["id"]} listingData={listing} variant={variant} />
+    return <StudyCard 
+      key={listing["id"]} 
+      listingData={listing} 
+      variant={variant}
+      router={router} 
+    />
   })
 
   return (
-    <div className="container col-8" id="listing-container">
-      <div className="row g-0 justify-content-evenly">
-        {listings}
-      </div>
+    <div id={viewStyles["listing-container"]}>
+      {listings}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 const { db, FieldValue } = require("./firebase")
+const { getInterestProfile } = require("./profile.js")
 
 async function getListing(listingUID) {
   const docRef = await db
@@ -10,7 +11,7 @@ async function getListing(listingUID) {
 async function getListings(userID) {
   const snapshot = await db
     .collection("listings")
-    .orderBy("date")
+    .orderBy("dateCreated", "desc")
     .get()
   return await processListings(userID, snapshot)
 }
@@ -26,6 +27,7 @@ async function createListing(userID, data) {
       faculties: data.tags.faculties
     },
     date : data.date,
+    dateCreated: data.dateCreated,
     freq : data.freq,
     interest: 0,
     likes: []
@@ -35,8 +37,32 @@ async function createListing(userID, data) {
   return !docRef.empty
 }
 
-async function updateListing(userID, listingUID, fieldToUpdate, newValue) {
-  // TODO
+async function updateListing(userID, listingUID, data) {
+  const listingRef = db.collection("listings").doc(listingUID)
+  const listingData = (await listingRef.get()).data()
+  if (listingData.createdBy != userID) return false
+
+  const updatedListing = {
+    title: data.title,
+    desc : data.desc,
+    tags : {
+      modules  : data.tags.modules,
+      locations: data.tags.locations,
+      faculties: data.tags.faculties
+    },
+    date : data.date,
+    dateCreated: data.dateCreated,
+    freq : data.freq,
+  }
+  
+  try {
+    await listingRef.update(updatedListing)
+    console.log("Successfully updated record")
+    return true
+  } catch (error) {
+    console.error("Error occurred when updating record", error)
+    return false
+  }
 }
 
 async function deleteListing(userID, listingUID) {
@@ -100,7 +126,7 @@ async function processListings(userID, listingSnapshot) {
     docData = {
       ...docData,
       id: doc.id,
-      createdBy: !user.exists ? "Anonymous" : userData.fullName,
+      creatorName: !user.exists ? "Anonymous" : userData.fullName,
       liked: docData.likes.includes(userID)
     }
     results.push(docData)
@@ -112,7 +138,7 @@ async function getLikedListings(userID) {
   const snapshot = await db
     .collection('listings')
     .where('likes', 'array-contains', userID)
-    .orderBy('date')
+    .orderBy('dateCreated', 'desc')
     .get()
   const results = []
   snapshot.forEach(doc => {
@@ -125,9 +151,26 @@ async function getCreatedListings(userID) {
   const snapshot = await db
     .collection('listings')
     .where('createdBy', '==', userID)
-    .orderBy('date')
+    .orderBy('dateCreated', 'desc')
     .get()
   return await processListings(userID, snapshot)
+}
+
+async function getListingLikers(listingID) {
+  const snapshot = await db.collection("listings").doc(listingID).get()
+  const likersInfo = []
+  
+  if (snapshot.exists) {
+    const likers = snapshot.data().likes
+    // console.log("Likers UID: ", likers)
+    
+    for (let i = 0; i < likers.length; i += 1) {
+      // console.log("Liker: ", likers[i])
+      likersInfo.push(getInterestProfile(likers[i]))
+    }
+  } 
+
+  return Promise.all(likersInfo)
 }
 
 module.exports = {
@@ -139,5 +182,6 @@ module.exports = {
   likeListing,
   processListings,
   getLikedListings, 
-  getCreatedListings
+  getCreatedListings,
+  getListingLikers
 }

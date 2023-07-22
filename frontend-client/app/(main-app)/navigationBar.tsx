@@ -1,7 +1,6 @@
 'use client'
 
 import { Container, Navbar, Nav } from 'react-bootstrap'
-import { useAuth } from "../authProvider"
 import navStyles from "./navigationBar.module.css"
 import { useEffect, useState } from 'react'
 

@@ -2,12 +2,10 @@
 
 import styles from './dashboard.module.css'
 
-import { Container, Row } from 'react-bootstrap'
 import useSWR from 'swr'
 import StudyListings from '../(listing)/study-listings/studyListings'
 import { StudyListing } from '../(listing)/studyCard'
-import { useEffect, useState } from 'react'
-import { useAuth } from "../../authProvider"
+import { useState } from 'react'
  
 type ListingProps = {
   data: Array<StudyListing[]>, 
@@ -21,12 +19,21 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
     <>
       <h3 style={{textAlign:"center", marginBottom: "15px"}}>Your Liked Listings</h3>
       { error 
-        ? <h6 style={{textAlign:"center"}}>Error.</h6>
+        ? <h5 style={{textAlign:"center"}}>Error.</h5>
         : isLoading
-          ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
+          ? <h5 style={{textAlign:"center"}}>Loading data...</h5>
           : data[0].length == 0
-            ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            : <StudyListings page={-1} limit={0} filters={emptyFilters} data={data[0]} variant="dashboard-display" />}
+            ? <h5 style={{textAlign:"center"}}>No Listings Found.</h5>
+            : <StudyListings 
+              page={-1} 
+              limit={0} 
+              filters={emptyFilters} 
+              sortFunction={(a: StudyListing, b: StudyListing) => -1}
+              sortReverse={true}
+              data={data[0]} 
+              variant="dashboard-display" 
+            />
+      }
     </>
   )
 }
@@ -34,14 +41,23 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
 function CreatedListings({ data, error, isLoading, emptyFilters } : ListingProps) {
   return (
     <>
-      <h3 style={{textAlign:"center"}}>Your Created Listings</h3>
+      <h3 style={{textAlign:"center", marginBottom: "15px"}}>Your Created Listings</h3>
       { error 
-        ? <h6 style={{textAlign:"center"}}>Error.</h6>
+        ? <h5 style={{textAlign:"center"}}>Error.</h5>
         : isLoading
-          ? <h6 style={{textAlign:"center"}}>Loading data...</h6>
+          ? <h5 style={{textAlign:"center"}}>Loading data...</h5>
           : data[1].length == 0
-            ? <h6 style={{textAlign:"center"}}>No Listings Found.</h6>
-            :<StudyListings page={-1} limit={0} filters={emptyFilters} data={data[1]} variant="modify" />}
+            ? <h5 style={{textAlign:"center"}}>No Listings Found.</h5>
+            : <StudyListings 
+              page={-1} 
+              limit={0} 
+              filters={emptyFilters} 
+              sortFunction={(a: StudyListing, b: StudyListing) => -1}
+              sortReverse={true}
+              data={data[1]} 
+              variant="modify" 
+            />
+      }
     </>
   )
 }
@@ -56,12 +72,29 @@ type ListingViewerProps = {
 function ListingViewer({ option, data, error, isLoading } : ListingViewerProps) {
   const emptyFilters = {"modules":[], "locations":[], "faculties":[]}
   return (
-    <Container style={{marginTop:"20px"}}>
+    <div id={styles["listing-viewer"]}>
     { option === "liked"
-      ? <LikedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
-      : <CreatedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
+      ? <div id={styles["listing-container"]}>
+         <LikedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
+        </div>
+      : <div id={styles["listing-container"]}>
+          <CreatedListings data={data} error={error} isLoading={isLoading} emptyFilters={emptyFilters} />
+        </div>
     }
-    </Container>
+    </div>
+  )
+}
+
+function SelectorContainer({ toggleState, viewState } : { toggleState: (state: string) => void, viewState: string }) {
+  return (
+    <div id={styles["selector-container"]}>
+      <button 
+        className={viewState == "liked" ? styles["active-selector"] : styles["selector"]} 
+        onClick={() => toggleState("liked")}>Liked</button>
+      <button 
+        className={viewState == "created" ? styles["active-selector"] : styles["selector"]} 
+        onClick={() => toggleState("created")}>Created</button>
+    </div>
   )
 }
 
@@ -77,15 +110,13 @@ export default function Dashboard() {
     })
   
   const [viewState, setViewState] = useState<string>("liked")
+  const toggleState = (state: string) => setViewState(state)
   
   return (
-    <Container id={styles["dashboard-container"]}>
+    <div id={styles["dashboard-container"]}>
       <h1 style={{textAlign:"center"}}>Dashboard</h1>
-      <div id={styles["selector-container"]}>
-        <button className={styles["selector"]} onClick={() => setViewState("liked")}>Liked</button>
-        <button className={styles["selector"]} onClick={() => setViewState("created")}>Created</button>
-      </div>
+      <SelectorContainer toggleState={toggleState} viewState={viewState} />
       <ListingViewer option={viewState} data={data} error={error} isLoading={isLoading} />
-    </Container>
+    </div>
   )
 }
