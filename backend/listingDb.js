@@ -2,10 +2,7 @@ const { db, FieldValue } = require("./firebase")
 const { getInterestProfile } = require("./profile.js")
 
 async function getListing(listingUID) {
-  const docRef = await db
-    .collection("listings")
-    .doc(listingUID)
-    .get()
+  const docRef = await db.collection("listings").doc(listingUID).get()
 }
 
 async function getListings(userID) {
@@ -20,17 +17,17 @@ async function createListing(userID, data) {
   const listing = {
     createdBy: userID,
     title: data.title,
-    desc : data.desc,
-    tags : {
-      modules  : data.tags.modules,
+    desc: data.desc,
+    tags: {
+      modules: data.tags.modules,
       locations: data.tags.locations,
-      faculties: data.tags.faculties
+      faculties: data.tags.faculties,
     },
-    date : data.date,
+    date: data.date,
     dateCreated: data.dateCreated,
-    freq : data.freq,
+    freq: data.freq,
     interest: 0,
-    likes: []
+    likes: [],
   }
   const docRef = await db.collection("listings").add(listing)
   console.log("New listing added with ID:", docRef.id)
@@ -44,17 +41,17 @@ async function updateListing(userID, listingUID, data) {
 
   const updatedListing = {
     title: data.title,
-    desc : data.desc,
-    tags : {
-      modules  : data.tags.modules,
+    desc: data.desc,
+    tags: {
+      modules: data.tags.modules,
       locations: data.tags.locations,
-      faculties: data.tags.faculties
+      faculties: data.tags.faculties,
     },
-    date : data.date,
+    date: data.date,
     dateCreated: data.dateCreated,
-    freq : data.freq,
+    freq: data.freq,
   }
-  
+
   try {
     await listingRef.update(updatedListing)
     console.log("Successfully updated record")
@@ -74,41 +71,53 @@ async function deleteListing(userID, listingUID) {
   if (listingData.createdBy != userID) {
     return false
   }
-  return await db.collection("listings").doc(listingUID)
+  return await db
+    .collection("listings")
+    .doc(listingUID)
     .delete()
-    .then(res => true)
-    .catch(err => false)
+    .then((res) => true)
+    .catch((err) => false)
 }
 
 async function likeListing(userID, listingUID, action) {
-  console.log("User ID: ", userID, " Listing ID: ", listingUID, " action: ", action)
+  console.log(
+    "User ID: ",
+    userID,
+    " Listing ID: ",
+    listingUID,
+    " action: ",
+    action
+  )
   const listingRef = db.collection("listings").doc(listingUID)
   const listingData = (await listingRef.get()).data()
   // Limit max no. of users that like a listing to be 20
   if (listingData.likes.length >= 20) return false
   const updateListingRes = await listingRef
     .update({
-      likes: action == "like" 
-        ? FieldValue.arrayUnion(userID)
-        : FieldValue.arrayRemove(userID),
-      interest: action == "like" 
-        ? FieldValue.increment(1)
-        : FieldValue.increment(-1),
+      likes:
+        action == "like"
+          ? FieldValue.arrayUnion(userID)
+          : FieldValue.arrayRemove(userID),
+      interest:
+        action == "like" ? FieldValue.increment(1) : FieldValue.increment(-1),
     })
-    .then(res => true)
-    .catch(err => {
+    .then((res) => true)
+    .catch((err) => {
       console.log(err)
       return false
     })
   if (!updateListingRes) return false
-  return await db.collection("users").doc(userID)
+  return await db
+    .collection("users")
+    .doc(userID)
     .update({
-      likes: action == "like" 
-        ? FieldValue.arrayUnion(listingUID)
-        : FieldValue.arrayRemove(listingUID)
+      likes:
+        action == "like"
+          ? FieldValue.arrayUnion(listingUID)
+          : FieldValue.arrayRemove(listingUID),
     })
-    .then(res => true)
-    .catch(err => {
+    .then((res) => true)
+    .catch((err) => {
       console.log(err)
       return false
     })
@@ -118,16 +127,16 @@ async function likeListing(userID, listingUID, action) {
 // As references to users are stored by their doc UID, it needs to be converted to the user's fullname
 async function processListings(userID, listingSnapshot) {
   const results = []
-  // Note: Can't use forEach. Have to use a for..of loop for async 
+  // Note: Can't use forEach. Have to use a for..of loop for async
   for (const doc of listingSnapshot.docs) {
     let docData = doc.data()
-    const user = await db.collection('users').doc(docData.createdBy).get()
+    const user = await db.collection("users").doc(docData.createdBy).get()
     const userData = user.data()
     docData = {
       ...docData,
       id: doc.id,
       creatorName: !user.exists ? "Anonymous" : userData.fullName,
-      liked: docData.likes.includes(userID)
+      liked: docData.likes.includes(userID),
     }
     results.push(docData)
   }
@@ -136,12 +145,12 @@ async function processListings(userID, listingSnapshot) {
 
 async function getLikedListings(userID) {
   const snapshot = await db
-    .collection('listings')
-    .where('likes', 'array-contains', userID)
-    .orderBy('dateCreated', 'desc')
+    .collection("listings")
+    .where("likes", "array-contains", userID)
+    .orderBy("dateCreated", "desc")
     .get()
   const results = []
-  snapshot.forEach(doc => {
+  snapshot.forEach((doc) => {
     results.push(doc.data())
   })
   return await processListings(userID, snapshot)
@@ -149,9 +158,9 @@ async function getLikedListings(userID) {
 
 async function getCreatedListings(userID) {
   const snapshot = await db
-    .collection('listings')
-    .where('createdBy', '==', userID)
-    .orderBy('dateCreated', 'desc')
+    .collection("listings")
+    .where("createdBy", "==", userID)
+    .orderBy("dateCreated", "desc")
     .get()
   return await processListings(userID, snapshot)
 }
@@ -159,18 +168,27 @@ async function getCreatedListings(userID) {
 async function getListingLikers(listingID) {
   const snapshot = await db.collection("listings").doc(listingID).get()
   const likersInfo = []
-  
+
   if (snapshot.exists) {
     const likers = snapshot.data().likes
     // console.log("Likers UID: ", likers)
-    
+
     for (let i = 0; i < likers.length; i += 1) {
       // console.log("Liker: ", likers[i])
       likersInfo.push(getInterestProfile(likers[i]))
     }
-  } 
+  }
 
   return Promise.all(likersInfo)
+}
+
+async function countListings(location) {
+  const snapshot = await db
+    .collection("listings")
+    .where("tag.locations", "==", location)
+    .get()
+  const n = snapshot.size()
+  return n
 }
 
 module.exports = {
@@ -181,7 +199,8 @@ module.exports = {
   deleteListing,
   likeListing,
   processListings,
-  getLikedListings, 
+  getLikedListings,
   getCreatedListings,
-  getListingLikers
+  getListingLikers,
+  countListings
 }

@@ -26,14 +26,15 @@ const {
   getLikedListings,
   getCreatedListings,
   getListingLikers,
+  countListings,
 } = require("./listingDb")
 const { updateNotifFilters, sendListingNotif } = require("./email")
 const {
   getFullProfile,
   getViewProfile,
   updateProfile,
-  setProfilePic
-} = require('./profile')
+  setProfilePic,
+} = require("./profile")
 const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
@@ -220,18 +221,14 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
     return
   }
   const userData = await getFullProfile(uid)
-  userData == null 
-    ? res.status(400).json({}).send()
-    : res.json(userData).send()
+  userData == null ? res.status(400).json({}).send() : res.json(userData).send()
 })
 
 app.post("/view-profile", async (req, res) => {
   const { uid } = req.body
   const userData = await getViewProfile(uid)
-  userData == null 
-    ? res.status(400).json({}).send()
-    : res.json(userData).send()
-}) 
+  userData == null ? res.status(400).json({}).send() : res.json(userData).send()
+})
 
 // Update the database when the user modifies a field in the profile page
 app.post("/update-profile", verifyAuthCookie, async (req, res) => {
@@ -242,9 +239,7 @@ app.post("/update-profile", verifyAuthCookie, async (req, res) => {
   }
   const { fieldToUpdate, value } = req.body
   const updateRes = await updateProfile(uid, fieldToUpdate, value)
-  updateRes
-    ? res.status(200).send()
-    : res.status(400).send()
+  updateRes ? res.status(200).send() : res.status(400).send()
 })
 
 app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
@@ -273,11 +268,12 @@ app.post(
       return
     }
 
-  const setProfilePicRes = setProfilePic(uid, req.file)
-  setProfilePicRes
-    ? res.status(200).json({ message: "upload success" }).send()
-    : res.status(400).json({ error: "upload error" }).send()
-})
+    const setProfilePicRes = setProfilePic(uid, req.file)
+    setProfilePicRes
+      ? res.status(200).json({ message: "upload success" }).send()
+      : res.status(400).json({ error: "upload error" }).send()
+  }
+)
 
 app.post("/sign-out", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
@@ -390,9 +386,9 @@ app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
 
 app.post("/get-interested-users", async (req, res) => {
   const { listingUID } = req.body
-  
+
   try {
-    const users = await getListingLikers(listingUID);
+    const users = await getListingLikers(listingUID)
     res.status(200).json(users)
   } catch (error) {
     console.error("error getting likers list", error)
@@ -418,7 +414,6 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-
 app.post("/report-user", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
@@ -428,7 +423,7 @@ app.post("/report-user", verifyAuthCookie, async (req, res) => {
   try {
     const reportData = req.body
     reportData.reporter = uid
-    await db.collection("user-reports").add({reportData})
+    await db.collection("user-reports").add({ reportData })
     res.status(200).send()
   } catch (error) {
     res.status(500).send()
@@ -455,21 +450,27 @@ app.post("/get-rating", async (req, res) => {
     .get()
 
   if (ratingSnapshot.empty) {
-    res.status(200).json({
-      friendly:  0,
-      helpful:   0,
-      recommend: 0,
-    }).send()
+    res
+      .status(200)
+      .json({
+        friendly: 0,
+        helpful: 0,
+        recommend: 0,
+      })
+      .send()
     return
   }
 
   const ratingData = []
-  ratingSnapshot.forEach(ratingDoc => ratingData.push(ratingDoc.data()))
-  res.status(200).json({
-    friendly:  ratingData[0].friendly,
-    helpful:   ratingData[0].helpful,
-    recommend: ratingData[0].recommend,
-  }).send()
+  ratingSnapshot.forEach((ratingDoc) => ratingData.push(ratingDoc.data()))
+  res
+    .status(200)
+    .json({
+      friendly: ratingData[0].friendly,
+      helpful: ratingData[0].helpful,
+      recommend: ratingData[0].recommend,
+    })
+    .send()
 })
 
 app.post("/update-rating", verifyAuthCookie, async (req, res) => {
@@ -480,13 +481,13 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
   }
 
   const rating = {
-    userID:    uid,
+    userID: uid,
     creatorID: req.body.creatorID,
     listingID: req.body.listingID,
-    friendly:  req.body.friendly,
-    helpful:   req.body.helpful,
+    friendly: req.body.friendly,
+    helpful: req.body.helpful,
     recommend: req.body.recommend,
-    overall:   req.body.overall
+    overall: req.body.overall,
   }
 
   if (rating.userID == rating.creatorID) {
@@ -539,16 +540,14 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
       const updatedTotalStars = user.totalStars + rating.overall
       const updatedRating = updatedTotalStars / updatedNumOfRaters
       await Promise.all([
-        db.collection("ratings")
-          .add(rating),
-        db.collection("users").doc(rating.creatorID)
-          .update({
-            "numOfRaters": updatedNumOfRaters,
-            "totalStars": updatedTotalStars,
-            "rating": updatedRating,
-          })
+        db.collection("ratings").add(rating),
+        db.collection("users").doc(rating.creatorID).update({
+          numOfRaters: updatedNumOfRaters,
+          totalStars: updatedTotalStars,
+          rating: updatedRating,
+        }),
       ])
-    } 
+    }
     // Or update existing
     else {
       for (const ratingDoc of ratingSnapshot.docs) {
@@ -558,12 +557,11 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
         const updatedRating = updatedTotalStars / updatedNumOfRaters
         await Promise.all([
           db.collection("ratings").doc(ratingDoc.id).update(rating),
-          db.collection("users").doc(rating.creatorID)
-            .update({
-              "numOfRaters": updatedNumOfRaters,
-              "totalStars": updatedTotalStars,
-              "rating": updatedRating,
-            })
+          db.collection("users").doc(rating.creatorID).update({
+            numOfRaters: updatedNumOfRaters,
+            totalStars: updatedTotalStars,
+            rating: updatedRating,
+          }),
         ])
       }
     }
@@ -571,6 +569,23 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
   } catch (error) {
     console.log("There was an error updating the rating:", error)
     res.status(500).send()
+  }
+})
+
+app.post("/count-locations", async (req, res) => {
+  const { location } = req.body
+  console.log(location)
+
+  try {
+    let count = 0
+    for (let i = 0; i < location.length; i += 1) {
+      let currentLocation = location[i]
+      count += await countListings(currentLocation)
+    }
+
+    res.status(200).json({count})
+  } catch (error) {
+    console.log("Error encountered when counting locations", error)
   }
 })
 
