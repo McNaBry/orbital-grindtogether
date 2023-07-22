@@ -3,6 +3,8 @@ const { getInterestProfile } = require("./profile.js")
 
 async function getListing(listingUID) {
   const docRef = await db.collection("listings").doc(listingUID).get()
+  if (!docRef.exists) return null
+  return docRef.data()
 }
 
 async function getListings(userID) {
@@ -50,6 +52,7 @@ async function updateListing(userID, listingUID, data) {
     date: data.date,
     dateCreated: data.dateCreated,
     freq: data.freq,
+    expired: false
   }
 
   try {
@@ -81,12 +84,9 @@ async function deleteListing(userID, listingUID) {
 
 async function likeListing(userID, listingUID, action) {
   console.log(
-    "User ID: ",
-    userID,
-    " Listing ID: ",
-    listingUID,
-    " action: ",
-    action
+    "User ID: ", userID,
+    " Listing ID: ", listingUID,
+    " action: ", action
   )
   const listingRef = db.collection("listings").doc(listingUID)
   const listingData = (await listingRef.get()).data()
@@ -182,13 +182,36 @@ async function getListingLikers(listingID) {
   return Promise.all(likersInfo)
 }
 
-async function countListings(location) {
+async function countListings(location, date) {
+  if (location == "" || location == undefined || date == "" || date == undefined) return 0
+  const dateGiven = new Date(date)
   const snapshot = await db
     .collection("listings")
-    .where("tag.locations", "==", location)
+    .where("tags.locations", "array-contains", location)
+    .where("expired", "==", false)
     .get()
-  const n = snapshot.size()
-  return n
+  let count = 0
+  snapshot.forEach(doc => {
+    const docData = doc.data()
+    const docDate = new Date(docData.date)
+    // Check if listing falls on the day itself
+    if (docData.freq == "One time only") {
+      if (docDate >= dateGiven) count += 1
+    // Check if the date given is a weekend.
+    // If yes, then the listing is valid on that date.
+    } else if (docData.freq == "Weekends") {
+      const day = dateGiven.getDay()
+      if (day == 0 || day == 6) count += 1
+    // Check if the difference in days between the date given and the listing date 
+    // is a multiple of 7
+    } else if (docData.freq == "Once a week") {
+      const rawDiff = Math.abs(dateGiven - docDate)
+      // console.log("Date given: ", dateGiven, " Date of listing: ", docDate, " Raw Diff: ", rawDiff)
+      const dayDiff = Math.ceil(rawDiff / (1000 * 60 * 60 * 24))
+      if (dayDiff % 7 == 0) count += 1
+    }
+  })
+  return count
 }
 
 module.exports = {

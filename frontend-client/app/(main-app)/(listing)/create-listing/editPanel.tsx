@@ -47,10 +47,13 @@ export default function EditPanel(
       ...prevOptions,
       date: new Date(new Date().toDateString())
     }))
-    else setDemoOptions(prevOptions => ({
-      ...prevOptions,
-      date: date
-    }))
+    else {
+      const stripDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        setDemoOptions(prevOptions => ({
+        ...prevOptions,
+        date: stripDate
+      }))
+    }
   }
 
   // Function to handle option change on single select

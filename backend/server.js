@@ -58,9 +58,6 @@ async function getUserByEmail(email) {
 }
 
 function isValidUID(uid) {
-  // return !(
-  //   (uid == undefined) || (uid == "")
-  // )
   if (uid == undefined || uid == "") {
     console.log("invalid token")
     return false
@@ -123,6 +120,33 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
+app.post("/sign-out", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  try {
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      res.status(200).send()
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
+  }
+})
+
 app.post("/validate-token", verifyAuthCookie, async (req, res) => {
   // Session validation is already done by verifyAuthCookie
   // So, next layer is just to verify the UID cookie exists
@@ -176,38 +200,80 @@ app.post("/reset-password", async (req, res) => {
 })
 
 app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
   const { email, password } = req.body
 
-  // Check if details given are valid by signing in
-  const signInRes = await signInUser(email, password)
-  // Either email/password not valid or user is not in Firebase Auth
-  if (signInRes.status != 200) {
-    res.status(401).send()
-  }
-
-  // Get the user record to retrieve the UID for deletion
-  console.log(email)
-  const userRecord = await getUserByEmail(email)
-  if (!userRecord) {
-    console.log("No user record found with the email provided")
-    return res.status(400).send()
-  }
-
-  // Delete user from Firebase Auth
-  const deleteAccAuth = await deleteAccount(userRecord.uid)
-  if (!deleteAccAuth) {
-    console.log("Deletion error")
-    return res.status(400).send()
-  }
-
-  // Delete user from Firestore
   try {
-    const snapshot = await db
+    // Check if details given are valid by signing in
+    const signInRes = await signInUser(email, password)
+    // Either email/password not valid or user is not in Firebase Auth
+    if (signInRes.status != 200) {
+      res.status(401).send()
+    }
+
+    // Get the user record to retrieve the UID for deletion
+    const userRecord = await getUserByEmail(email)
+    if (!userRecord) {
+      console.log("No user record found with the email provided")
+      return res.status(400).send()
+    }
+
+    // Delete user from Firebase Auth
+    const deleteAccAuth = await deleteAccount(userRecord.uid)
+    if (!deleteAccAuth) {
+      console.log("Deletion error")
+      return res.status(400).send()
+    }
+
+    // Delete user from Firestore
+    await db
       .collection("users")
-      .where("email", "==", email)
-      .get()
-    snapshot.forEach((doc) => doc.ref.delete())
+      .doc(uid)
+      .delete()
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
     res.status(200).send()
+
+    // Scrub every listing the user has created
+    const createdSnapshot = await db
+      .collection("listings")
+      .where("createdBy", "==", uid)
+      .get()
+    createdSnapshot
+      .forEach(doc => {
+        db.collection("listings").doc(doc.id).delete()
+      })
+
+    // Scrub every listing the user has liked
+    const likedSnapshot = await db
+      .collection("listings")
+      .where("likes", "array-contains", uid)
+      .get()
+    likedSnapshot
+      .forEach(doc => {
+        db.collection("listings").doc(doc.id)
+          .update({
+            likes: FieldValue.arrayRemove(uid)
+          })
+      })
+
+    console.log("Successfully scrubbed user's created and liked listings")
+
   } catch (error) {
     console.log(error)
     res.status(400).send()
@@ -258,10 +324,7 @@ app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post(
-  "/upload-profile-pic",
-  upload.single("profilePic"),
-  async (req, res) => {
+app.post("/upload-profile-pic", upload.single("profilePic"), async (req, res) => {
     const uid = req.cookies.uid
     if (!isValidUID(uid)) {
       res.status(400).send()
@@ -274,33 +337,6 @@ app.post(
       : res.status(400).json({ error: "upload error" }).send()
   }
 )
-
-app.post("/sign-out", verifyAuthCookie, async (req, res) => {
-  const uid = req.cookies.uid
-  if (!isValidUID(uid)) {
-    res.status(400).send()
-    return
-  }
-  const userRef = await db.collection("users").doc(uid).get()
-  if (!userRef.exists) {
-    res.status(400).send()
-    return
-  }
-  const user = userRef.data()
-  const email = user.email
-  const authUser = await fireAuth.getUserByEmail(email).then((auth) => auth.uid)
-  // forces users to sign out from all devices
-  await fireAuth
-    .revokeRefreshTokens(authUser)
-    .then(() => {
-      console.log("Sign out successful")
-      res.status(200).send()
-    })
-    .catch((error) => {
-      console.log("Sign out unsuccessful")
-      res.status(500).send()
-    })
-})
 
 // API Endpoint to create listing
 app.post("/create-listing", verifyAuthCookie, async (req, res) => {
@@ -573,19 +609,15 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
 })
 
 app.post("/count-locations", async (req, res) => {
-  const { location } = req.body
-  console.log(location)
+  const { location, date } = req.body
+  console.log(date)
 
   try {
-    let count = 0
-    for (let i = 0; i < location.length; i += 1) {
-      let currentLocation = location[i]
-      count += await countListings(currentLocation)
-    }
-
-    res.status(200).json({count})
+    const count = await countListings(location, date)
+    res.status(200).json({count: count}).send()
   } catch (error) {
     console.log("Error encountered when counting locations", error)
+    res.status(400).send()
   }
 })
 

@@ -78,6 +78,15 @@ export default function CreateListing({ searchParams } : any) {
   // Function to handle form submit and create/update listing
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (demoOptions.date == null) {
+      setSuccess(false)
+      setMsg("Select a date first.")
+      return
+    } else if (demoOptions.date < defaultOptions["date"]) {
+      setSuccess(false)
+      setMsg("Listing date must not be before today's date.")
+      return
+    }
     
     const endpoint = editMode 
       ? `${process.env.NEXT_PUBLIC_API_URL}/edit-listing` 

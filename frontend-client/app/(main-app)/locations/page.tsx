@@ -39,7 +39,7 @@ function DatePicker({ startDate, setStartDate } :  DateOptionProps) {
   )
 }
 
-function LocationData({ isLoading } : { isLoading: boolean }) {
+function LocationData({ isLoading, locationData } : { isLoading: boolean, locationData: number }) {
   if (isLoading) {
     return (
       <div id={locStyles["location-data"]}>
@@ -56,7 +56,7 @@ function LocationData({ isLoading } : { isLoading: boolean }) {
     )
   }
   return (
-    <div id={locStyles["location-data"]}>Location data goes here!</div>
+    <div id={locStyles["location-data"]}>{locationData} listings are scheduled to take place.</div>
   )
 }
 
@@ -67,6 +67,8 @@ function Locations() {
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
   const [ isLoading, setIsLoading ] = useState<boolean>(false)
+
+  const [ locationData, setLocationData ] = useState<number>(0)
 
   // Function to handle option change on single select
   function handleSingleOptionChange(type:string, option: Option | null, actionMeta: ActionMeta<Option>) {
@@ -104,6 +106,8 @@ function Locations() {
         console.log("location success!")
         setMsg("Fetched new data")
         setSuccess(true)
+        const data = await res.json()
+        setLocationData(data.count)
       } else {
         console.log("location failure!")
         setMsg("Failed to fetch new data")
@@ -122,7 +126,7 @@ function Locations() {
       <LocationPicker handleChange={handleSingleOptionChange} />
       <DatePicker startDate={date} setStartDate={handleDateChange} />
       <Button style={{marginTop: "15px"}} type="submit" variant="success" onClick={handleSubmit}>Check Location</Button>
-      <LocationData isLoading={isLoading} />
+      <LocationData isLoading={isLoading} locationData={locationData} />
       <Notif msg={msg} success={success} setMsg={setMsg} />
     </div>
   )
