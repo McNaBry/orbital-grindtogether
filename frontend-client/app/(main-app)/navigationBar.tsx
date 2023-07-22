@@ -16,7 +16,7 @@ export default function NavigationBar() {
   useEffect(() => setUsername(window.localStorage.getItem("fullName") || "Guest"), [])
 
   return (
-    <Navbar style={{backgroundColor: "black", marginBottom: "15px"}} bg="" expand="xl">
+    <Navbar data-bs-theme="dark" style={{backgroundColor: "black", marginBottom: "15px"}} bg="" expand="xl">
       <Container id={navStyles["nav-bar-container"]}>
         <Navbar.Brand href="/dashboard" style={{color: "white"}}>GrindTogether</Navbar.Brand>
         <Navbar.Toggle className={navStyles["toggler"]} aria-controls="basic-navbar-nav" />
