@@ -175,7 +175,8 @@ async function getListingLikers(listingID) {
 
     for (let i = 0; i < likers.length; i += 1) {
       // console.log("Liker: ", likers[i])
-      likersInfo.push(getInterestProfile(likers[i]))
+      const profile = getInterestProfile(likers[i])
+      if (profile != null) likersInfo.push(profile)
     }
   }
 

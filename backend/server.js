@@ -268,7 +268,8 @@ app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
       .forEach(doc => {
         db.collection("listings").doc(doc.id)
           .update({
-            likes: FieldValue.arrayRemove(uid)
+            likes: FieldValue.arrayRemove(uid),
+            interest: FieldValue.increment(-1),
           })
       })
 
