@@ -9,6 +9,7 @@ import {
   SelectSingleOption, SelectSingleOptionProps,
   DateOption, DateOptionProps
 } from "../(components)/select"
+import CrowdLevels from "./crowdLevels"
 import Notif from "../notif"
 import locStyles from "./locations.module.css"
 
@@ -61,7 +62,7 @@ function LocationData({ isLoading, locationData } : { isLoading: boolean, locati
 }
 
 function Locations() {
-  const [ date, setDate ] = useState<Date | null>(new Date(new Date().toDateString()))
+  const [ date, setDate ] = useState<Date>(new Date(new Date().toDateString()))
   const [ location, setLocation ] = useState<string>("")
 
   const [ msg, setMsg ] = useState<string>("")
@@ -69,6 +70,7 @@ function Locations() {
   const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
   const [ locationData, setLocationData ] = useState<number>(0)
+  const [ crowdLevels, setCrowdLevels ] = useState<{[id: string] : string}>({'0': '0,0'})
 
   // Function to handle option change on single select
   function handleSingleOptionChange(type:string, option: Option | null, actionMeta: ActionMeta<Option>) {
@@ -90,7 +92,7 @@ function Locations() {
     if (location == "" || date == null) return
     try {
       setIsLoading(true)
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/count-locations`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-location-data`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,6 +110,7 @@ function Locations() {
         setSuccess(true)
         const data = await res.json()
         setLocationData(data.count)
+        setCrowdLevels(data.crowdLevels)
       } else {
         console.log("location failure!")
         setMsg("Failed to fetch new data")
@@ -126,6 +129,7 @@ function Locations() {
       <LocationPicker handleChange={handleSingleOptionChange} />
       <DatePicker startDate={date} setStartDate={handleDateChange} />
       <Button style={{marginTop: "15px"}} type="submit" variant="success" onClick={handleSubmit}>Check Location</Button>
+      <CrowdLevels isLoading={isLoading} crowdLevels={crowdLevels} date={date}/>
       <LocationData isLoading={isLoading} locationData={locationData} />
       <Notif msg={msg} success={success} setMsg={setMsg} />
     </div>

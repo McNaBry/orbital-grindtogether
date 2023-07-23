@@ -1,21 +1,11 @@
 "use client"
 
-import StudyCard, { StudyListing } from "../../../(components)/studyCard"
-import { Button, ToastContainer, Toast } from "react-bootstrap"
-import deleteStyles from "./delete-listing.module.css"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-
-function Notif(
-  { msg, success } : { msg: string, success: boolean }) {
-  return (
-    <ToastContainer position="bottom-end" style={{position: "fixed", margin: "20px"}}>
-      <Toast bg={success ? "success" : "danger"} autohide={true} show={msg == "" ? false : true}>
-          <Toast.Body style={{color: "white"}}>{msg}</Toast.Body>
-      </Toast>
-    </ToastContainer>
-  )
-}
+import StudyCard, { StudyListing } from "../../../(components)/studyCard"
+import { Button } from "react-bootstrap"
+import deleteStyles from "./delete-listing.module.css"
+import Notif from "../../../notif"
 
 type DeleteListingProps = {
   params: { id: string },
@@ -86,7 +76,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
         <h5 id={deleteStyles["delete-prompt"]}>Are you sure you wish to delete this listing?</h5>
         <Button variant="danger" onClick={(event) => deleteListing()}>I am sure.</Button>
       </div>
-      <Notif msg={msg} success={success} />
+      <Notif msg={msg} setMsg={setMsg} success={success} />
     </div>
   )
 }

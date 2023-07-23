@@ -35,6 +35,7 @@ const {
   updateProfile,
   setProfilePic,
 } = require("./profile")
+const { retrieveLocationCrowd, updateLocationCrowd } = require("./location")
 const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
@@ -609,13 +610,17 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post("/count-locations", async (req, res) => {
+app.post("/get-location-data", async (req, res) => {
   const { location, date } = req.body
   console.log(date)
 
   try {
     const count = await countListings(location, date)
-    res.status(200).json({count: count}).send()
+    const crowdLevels = await retrieveLocationCrowd(location, date)
+    res.status(200).json({
+      count: count,
+      crowdLevels: crowdLevels
+    }).send()
   } catch (error) {
     console.log("Error encountered when counting locations", error)
     res.status(400).send()
