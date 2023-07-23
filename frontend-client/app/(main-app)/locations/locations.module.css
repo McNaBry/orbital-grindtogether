@@ -1,0 +1,94 @@
+#locations-container {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#location-picker {
+  width: 40%;
+  margin-top: 15px;
+}
+
+#location-data {
+  color: white;
+  margin-top: 25px;
+}
+
+#time-picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+#crowd-levels {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+#crowd-tool-tip {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px 10px 0px;
+}
+
+#timings {
+  width: 60%;
+  padding: 15px 5px;
+}
+
+.timing-data-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.timing-data {
+  padding: 4px 5px;
+  background-color: purple;
+  border-radius: 5px;
+  color: white;
+}
+
+#time-contribute {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0px 15px 0px;
+}
+
+#crowd-level-picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0px 10px 0px;
+}
+
+@media (max-width: 992px) {
+  #location-picker {
+    width: 60%;
+    margin-top: 15px;
+  }
+
+  #timings {
+    width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  #timings {
+    width: 100%;
+  }
+}

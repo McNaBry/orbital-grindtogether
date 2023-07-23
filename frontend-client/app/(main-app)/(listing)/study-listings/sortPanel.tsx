@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Dropdown, DropdownButton } from "react-bootstrap"
 import viewStyles from "./studyListings.module.css"
-import { StudyListing } from "../studyCard"
+import { StudyListing } from "../../(components)/studyCard"
 
 export type SortFunction = (a: StudyListing, b: StudyListing) => number
 

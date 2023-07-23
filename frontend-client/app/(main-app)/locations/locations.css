@@ -1,0 +1,14 @@
+.com3-layout img {
+    width: 1000px;
+    margin-top: 25px;
+}
+
+.layout-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.locations-count {
+    color: white;
+}

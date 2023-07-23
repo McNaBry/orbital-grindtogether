@@ -1,7 +1,7 @@
-import NavBar from "./navigationBar"
 import '../globals.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import '@smastrom/react-rating/style.css'
+import NavBar from "./navigationBar"
 
 export const metadata = {
   title: 'GrindTogether',

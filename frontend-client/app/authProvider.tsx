@@ -57,24 +57,6 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
-// Function that POST a request to validate stored Firebase tokenID
-async function validateUser() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-token`, {
-    method: 'POST'
-  })
-  // If request is successful, server returns...
-  // User's firestore document UID and full name.
-  if (res.ok) {
-    const data = await res.json()
-    window.localStorage.setItem("fullName", data.fullName)
-    //console.log("User data from backend: ", data)
-    return true
-  } else {
-    window.localStorage.removeItem("fullName")
-    return false
-  }
-}
-
 function getStoredUser() {
   const fullName = window.localStorage.getItem("fullName")
   const profile: user = {
