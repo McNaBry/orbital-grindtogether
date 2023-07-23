@@ -1,9 +1,9 @@
 import 'react-datepicker/dist/react-datepicker.css'
-import styles from './select.module.css'
 
 import Select, { ActionMeta } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import DatePicker from 'react-datepicker'
+import './select.css'
 
 /* Taken from react-select src/types.ts
 export type ActionMeta<Option> =
@@ -37,7 +37,7 @@ function SelectFreeOption({params} : {params : SelectFreeOptionProps}) {
 
   return (
     <CreatableSelect 
-      className={styles["single-option-input"]} 
+      className="single-option-input" 
       name={name}
       placeholder={name}
       isClearable
@@ -58,7 +58,7 @@ export function SelectSingleOption({params} : {params : SelectSingleOptionProps}
   const { name, type, options, defaultValue, handleChange } = params
   return (
     <Select
-      className={"basic-single " + styles["single-option-input"]}
+      className="basic-single single-option-input"
       name={name}
       placeholder={name}
       defaultValue={defaultValue}
@@ -79,7 +79,7 @@ function SelectMultiOption({params} : {params : SelectMultiOptionProps}) {
 
   return (
     <Select
-      className={"basic-multi-select " + styles["multi-option-input"]}
+      className="basic-multi-select multi-option-input"
       name={name}
       placeholder={name}
       isMulti
@@ -97,10 +97,10 @@ export type DateOptionProps = {
 
 function DateOption({startDate, setStartDate} : DateOptionProps) {
   return (
-    <div className={styles["date-option-container"]}>
+    <div style={{width: "100%"}} className="date-option-container">
       <DatePicker
         dateFormat="dd/MM/yyyy"
-        className={styles["date-option-input"]}
+        className="date-option-input"
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />

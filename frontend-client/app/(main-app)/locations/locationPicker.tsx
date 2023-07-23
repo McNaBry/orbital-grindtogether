@@ -8,7 +8,7 @@ type LocationPickerProps =
 
 export default function LocationPicker({ defaultValue, handleChange } :  LocationPickerProps) {
   return (
-    <div id={locStyles["location-picker"]}>
+    <div className={locStyles["location-picker"]}>
       <SelectSingleOption 
         params={{
           name: "Location",
