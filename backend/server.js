@@ -101,24 +101,23 @@ app.post("/sign-in", async (req, res) => {
       res.status(400).send()
     } else {
       // Set httpOnly cookies on the frontend browser
-      // res
-      //   .cookie("authCookie", seshCookie, {
-      //     maxAge: 60 * 60 * 24 * 7 * 1000,
-      //     httpOnly: true,
-      //     secure: process.env.NODE_ENV == "production",
-      //     sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-      //   })
-      //   .cookie("uid", users[0].uid, {
-      //     maxAge: 60 * 60 * 24 * 7 * 1000,
-      //     httpOnly: true,
-      //     secure: process.env.NODE_ENV == "production",
-      //     sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-      //   })
-      // res.status(200).json(users[0]).send()
-      res.status(200).json({"seshCookie": seshCookie, "uid": users[0].uid, fullName: users[0].fullName}).send()
+      res
+        .cookie("authCookie", seshCookie, {
+          maxAge: 60 * 60 * 24 * 7 * 1000,
+          httpOnly: true,
+          secure: process.env.NODE_ENV == "production",
+          sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+        })
+        .cookie("uid", users[0].uid, {
+          maxAge: 60 * 60 * 24 * 7 * 1000,
+          httpOnly: true,
+          secure: process.env.NODE_ENV == "production",
+          sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+        })
+      res.status(200).json(users[0]).send()
     }
   } else {
-    res.status(400).json({}).send()
+    res.status(400).send()
   }
 })
 
@@ -129,20 +128,20 @@ app.post("/sign-out", verifyAuthCookie, async (req, res) => {
     return
   }
   try {
-    // res
-    //   .clearCookie("authCookie", {
-    //     maxAge: 60 * 60 * 24 * 7 * 1000,
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV == "production",
-    //     sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-    //   })
-    //   .clearCookie("uid", {
-    //     maxAge: 60 * 60 * 24 * 7 * 1000,
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV == "production",
-    //     sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-    //   })
-    res.status(200).send()
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      res.status(200).send()
   } catch (error) {
     console.log(error)
     res.status(400).send()
@@ -236,19 +235,19 @@ app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
       .collection("users")
       .doc(uid)
       .delete()
-    // res
-    //   .clearCookie("authCookie", {
-    //     maxAge: 60 * 60 * 24 * 7 * 1000,
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV == "production",
-    //     sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-    //   })
-    //   .clearCookie("uid", {
-    //     maxAge: 60 * 60 * 24 * 7 * 1000,
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV == "production",
-    //     sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-    //   })
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
     res.status(200).send()
 
     // Scrub every listing the user has created
