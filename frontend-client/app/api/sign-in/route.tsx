@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'authCookie',
       value: resData.seshCookie,
+      domain: process.env.NEXT_PUBLIC_API_URL,
       httpOnly: true,
       secure: process.env.NODE_ENV == "production",
       sameSite: process.env.NODE_ENV == "production" ? "none" : "lax"
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'uid',
       value: resData.uid,
+      domain: process.env.NEXT_PUBLIC_API_URL,
       httpOnly: true,
       secure: process.env.NODE_ENV == "production",
       sameSite: process.env.NODE_ENV == "production" ? "none" : "lax"
