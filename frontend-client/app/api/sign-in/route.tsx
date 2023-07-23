@@ -21,7 +21,6 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'authCookie',
       value: resData.seshCookie,
-      domain: "netlify.app",
       httpOnly: true,
       secure: process.env.NODE_ENV == "production",
       sameSite: process.env.NODE_ENV == "production" ? "none" : "lax"
@@ -29,7 +28,6 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'uid',
       value: resData.uid,
-      domain: "netlify.app",
       httpOnly: true,
       secure: process.env.NODE_ENV == "production",
       sameSite: process.env.NODE_ENV == "production" ? "none" : "lax"
