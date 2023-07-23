@@ -110,6 +110,10 @@ function DeleteAccountPage({ searchParams } : DeleteAccountProps) {
       
       switch (res.status) {
         case 200:
+          const res = await fetch(`${window.origin}/api/sign-out`, {
+            method: 'POST',
+            credentials: "include"
+          });
           await auth.signOut()
           setDisplayModal(true);
           setSuccess(true);

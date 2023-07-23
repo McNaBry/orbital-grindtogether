@@ -13,13 +13,14 @@ function SignOutButton() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-out`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         credentials: "include"
       });
 
       if (res.ok) {
+        const clearCookieRes = await fetch(`${window.origin}/api/sign-out`, {
+          method: "POST",
+          credentials: "include"
+        });
         console.log("Successfully logged out.");
         await auth.signOut()
         router.push("/");
