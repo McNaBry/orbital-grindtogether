@@ -1,50 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Dropdown, DropdownButton, Row } from "react-bootstrap"
+import { Row } from "react-bootstrap"
+import TimePicker from "./timePicker"
 import locStyles from "./locations.module.css"
-
-type TimePickerProps = {
-  selectedTiming: number | null,
-  timingMode: string,
-  handleSelect: (timing: number) => void, 
-  setTimingMode: (mode: string) => void
-}
-function TimePicker({ selectedTiming, timingMode, handleSelect, setTimingMode } : TimePickerProps) {
-  const timings = []
-  for (let i = 0; i < 12; i++) {
-    timings.push(i + 1)
-  }
-
-  return (
-    <div id={locStyles["time-picker"]}>
-      <DropdownButton 
-        id="dropdown-button" 
-        className={locStyles["timing-button"]} 
-        title={selectedTiming || "Select a timing"}
-        variant="dark"
-      >
-        { timings.map(timing => {
-          return (
-            <Dropdown.Item key={timing} onClick={() => handleSelect(timing)}>
-              {timing}
-            </Dropdown.Item>
-          )
-        })}
-      </DropdownButton>
-      <DropdownButton 
-        id="dropdown-button" 
-        className={locStyles["timing-mode-button"]} 
-        title={timingMode}
-        variant="dark"
-        style={{marginLeft: "5px"}}
-      >
-        <Dropdown.Item key="am" onClick={() => setTimingMode("am")}>am</Dropdown.Item>
-        <Dropdown.Item key="pm" onClick={() => setTimingMode("pm")}>pm</Dropdown.Item>
-      </DropdownButton>
-    </div>
-  )
-}
 
 const levels = ["no data", "low", "moderate", "busy", "very busy"]
 const colors = ["grey", "#19a974", "#61bb00", "#ff6300", "#e7040f"]
@@ -84,29 +43,26 @@ function Timings({ selectedTiming, timingMode, crowdLevels } : TimingsProps) {
     }
     
     return (
-      <div className={locStyles["timing-data-container"]}>
-        <div style={{width: "100%", margin: "10px 0px 15px 0px"}}>
-          <span 
-            style={{background: colors[parseInt(level[0])]}} 
-            className={locStyles["timing-data"]}>
-              {levels[parseInt(level[0])]}
-            </span>
-        </div>
-        <div style={{width: "100%"}}>
-          <span 
-            style={{background: colors[parseInt(level[1])]}} 
-            className={locStyles["timing-data"]}>
-              {levels[parseInt(level[1])]}
-            </span>
-        </div>
-      </div>
+      <>
+        <span 
+          style={{marginBottom: "10px", background: colors[parseInt(level[0])]}} 
+          className={locStyles["timing-data"]}>
+            {levels[parseInt(level[0])]}
+        </span>
+
+        <span 
+          style={{background: colors[parseInt(level[1])]}} 
+          className={locStyles["timing-data"]}>
+            {levels[parseInt(level[1])]}
+        </span>
+      </>
     )
   }
 
 
   return (
     <Row id={locStyles["timings"]}>
-      <div className={"col-4 " + locStyles["timing"]}>
+      <div className={"col-4 " + locStyles["timing-data-container"]}>
         { selectedTiming == 12 && timingMode == "am"
           ? "--"
           : <>
@@ -116,12 +72,12 @@ function Timings({ selectedTiming, timingMode, crowdLevels } : TimingsProps) {
         }
       </div>
 
-      <div className={"col-4 " + locStyles["timing"]}>
+      <div className={"col-4 " + locStyles["timing-data-container"]}>
         {getTiming(selectedTiming)}
         {getCrowdLevel(selectedTiming)}
       </div>
 
-      <div className={"col-4 " + locStyles["timing"]}>
+      <div className={"col-4 " + locStyles["timing-data-container"]}>
         { selectedTiming == 11 && timingMode == "pm" 
           ? "--"
           : <>
@@ -136,10 +92,11 @@ function Timings({ selectedTiming, timingMode, crowdLevels } : TimingsProps) {
 
 type CrowdLevelsProps = {
   isLoading: boolean, 
+  location: string,
   crowdLevels: {[id: string] : string}, 
   date: Date
 }
-export default function CrowdLevels({ isLoading, crowdLevels, date } : CrowdLevelsProps) {
+export default function CrowdLevels({ isLoading, location, crowdLevels, date } : CrowdLevelsProps) {
   const [ selectedTiming, setSelectedTiming ] = useState<number>(new Date().getHours() % 12)
   const [ timingMode, setTimingMode ] = useState<string>(new Date().getHours() > 12 ? "pm" : "am")
 
@@ -151,16 +108,10 @@ export default function CrowdLevels({ isLoading, crowdLevels, date } : CrowdLeve
     setSelectedTiming(timing)
   }
 
-  const getTiming = (timing: number) => {
-    return timing > 12
-      ? `${timing % 12}pm`
-      : `${timing}${timingMode}`
-  }
-
   return (
     <div id={locStyles["crowd-levels"]}>
       <p style={{textAlign: "center", color: "white", margin: "25px 0px 10px 0px"}}>
-        Expected Crowd Levels for {date.toDateString()}
+        Expected Crowd Levels for {date.toDateString()} ({location})
       </p>
       <TimePicker 
         selectedTiming={selectedTiming}
@@ -168,6 +119,22 @@ export default function CrowdLevels({ isLoading, crowdLevels, date } : CrowdLeve
         handleSelect={handleSelect}
         setTimingMode={(mode: string) => setTimingMode(mode)}
       />
+      <div id={locStyles["crowd-tool-tip"]}>
+        <span 
+          style={{color: "white", marginBottom: "5px", textAlign: "center"}}>
+            Legend:
+        </span>
+        <span 
+          style={{background: "grey", marginBottom: "5px", textAlign: "center"}} 
+          className={locStyles["timing-data"]}>
+            From GrindTogether
+        </span>
+        <span 
+          style={{background: "grey", textAlign: "center"}} 
+          className={locStyles["timing-data"]}>
+            From Users Contributions
+        </span>
+      </div>
       <Timings selectedTiming={selectedTiming} timingMode={timingMode} crowdLevels={crowdLevels} />
     </div>
   )

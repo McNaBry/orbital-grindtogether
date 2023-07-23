@@ -34,25 +34,46 @@
   align-items: center;
 }
 
+#crowd-tool-tip {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px 10px 0px;
+}
+
 #timings {
   width: 60%;
   padding: 15px 5px;
 }
 
-.timing {
-  text-align: center;
-  color: white;
-}
-
 .timing-data-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
 }
 
 .timing-data {
   padding: 4px 5px;
   background-color: purple;
   border-radius: 5px;
+  color: white;
+}
+
+#time-contribute {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0px 15px 0px;
+}
+
+#crowd-level-picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0px 10px 0px;
 }
 
 @media (max-width: 992px) {
@@ -63,5 +84,11 @@
 
   #timings {
     width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  #timings {
+    width: 100%;
   }
 }

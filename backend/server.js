@@ -627,6 +627,19 @@ app.post("/get-location-data", async (req, res) => {
   }
 })
 
+app.post("/contribute-location", verifyAuthCookie, async (req, res) => {
+  const { location, day, time, updateCrowd } = req.body
+  const updateRes = await updateLocationCrowd(
+    location, 
+    parseInt(day), 
+    parseInt(time), 
+    parseInt(updateCrowd)
+  )
+  updateRes 
+    ? res.status(200).send()
+    : res.status(400).send()
+})
+
 const port = 5000
 
 app.listen(port, () => console.log("Listening on " + port))

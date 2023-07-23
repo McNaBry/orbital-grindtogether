@@ -1,42 +1,26 @@
 "use client"
 
 import { MouseEvent, useState } from "react"
-import { tagData } from "../(listing)/study-listings/data"
 import { ActionMeta } from "react-select"
 import { Button, Spinner } from "react-bootstrap"
-import {
-  Option,
-  SelectSingleOption, SelectSingleOptionProps,
-  DateOption, DateOptionProps
-} from "../(components)/select"
+import { Option } from "../(components)/select"
 import CrowdLevels from "./crowdLevels"
 import Notif from "../notif"
 import locStyles from "./locations.module.css"
+import { useRouter } from "next/navigation"
+import LocationPicker from "./locationPicker"
+import DatePicker from "./datePicker"
 
-function LocationPicker({ handleChange } :  Pick<SelectSingleOptionProps, 'handleChange'>) {
+function Contribute({ isLoading, location, date } : { isLoading: boolean, location: string, date: Date }) {
+  const router = useRouter()
+  if (isLoading) return <></>
   return (
-    <div id={locStyles["location-picker"]}>
-      <SelectSingleOption 
-        params={{
-          name: "Location",
-          type: "locations",
-          options: tagData["locations"].map(value => ({value: value, label: value})),
-          defaultValue: null,
-          handleChange: handleChange
-        }}
-      />
-    </div>
-  )
-}
-
-function DatePicker({ startDate, setStartDate } :  DateOptionProps) {
-  return (
-    <div id={locStyles["location-picker"]}>
-      <DateOption 
-        startDate={startDate}
-        setStartDate={setStartDate}
-      />
-    </div>
+    <Button 
+      style={{marginTop: "10px"}}
+      variant="secondary"
+      onClick={() => router.push(`/locations/contribute?location=${location}&date=${date}`)}>
+        Contribute
+    </Button>
   )
 }
 
@@ -76,13 +60,17 @@ function Locations() {
   function handleSingleOptionChange(type:string, option: Option | null, actionMeta: ActionMeta<Option>) {
     if (option == null) {
       setLocation("")
-      return
+    } else {
+      setLocation(option.value)
     }
-    setLocation(option.value)
+    setCrowdLevels({'0': '0,0'})
+    setLocationData(0)
   }
 
   function handleDateChange(date: Date | null) {
     if (date == null) return
+    setCrowdLevels({'0': '0,0'})
+    setLocationData(0)
     const stripDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
     setDate(stripDate)
   }
@@ -126,10 +114,11 @@ function Locations() {
   return (
     <div id={locStyles["locations-container"]}>
       <h1 style={{color: "white"}}>Locations</h1>
-      <LocationPicker handleChange={handleSingleOptionChange} />
+      <LocationPicker defaultValue={null} handleChange={handleSingleOptionChange} />
       <DatePicker startDate={date} setStartDate={handleDateChange} />
       <Button style={{marginTop: "15px"}} type="submit" variant="success" onClick={handleSubmit}>Check Location</Button>
-      <CrowdLevels isLoading={isLoading} crowdLevels={crowdLevels} date={date}/>
+      <Contribute isLoading={isLoading} location={location} date={date}/>
+      <CrowdLevels isLoading={isLoading} location={location} crowdLevels={crowdLevels} date={date}/>
       <LocationData isLoading={isLoading} locationData={locationData} />
       <Notif msg={msg} success={success} setMsg={setMsg} />
     </div>

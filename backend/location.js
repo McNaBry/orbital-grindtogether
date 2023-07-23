@@ -7,7 +7,7 @@ async function initalizeLocation(location) {
   if (location == "" || location == undefined) return
   const emptyDay = {}
   for (let i = 0; i < 24; i++) {
-    emptyDay[i] = "0,0"
+    emptyDay[i] = "0,0,0"
   }
   const newLocationListing = {
     name: location
@@ -19,19 +19,24 @@ async function initalizeLocation(location) {
   await db.collection("locations").doc(location).set(newLocationListing)
 }
 
-// initalizeLocation("Basement 1").catch(error => console.log(error))
+// initalizeLocation("Benches @ LT-19").catch(error => console.log(error))
 
 async function retrieveLocationCrowd(location, date) {
-  if (location == "" || date == "") return
+  if (location == "" || date == "") return {}
   const day = new Date(date).getDay()
   try {
     const locationSnapshot = await db.collection("locations").doc(location).get()
-    if (!locationSnapshot.exists) return null
+    if (!locationSnapshot.exists) return {}
     const locationData = locationSnapshot.data()
     const dayData = locationData[days[day]]
-    return dayData
+    const processedData = {}
+    Object.keys(dayData).forEach(key => {
+      const slicedData = dayData[key].split(",")
+      processedData[key] = `${slicedData[0]},${slicedData[1]}`
+    })
+    return processedData
   } catch (error) {
-    return null
+    return {}
   }
 }
 
@@ -39,16 +44,21 @@ async function updateLocationCrowd(location, day, time, updateCrowd) {
   if (location == "" 
     || day < 0 || day > 6 
     || time < 0 || time > 23
-    || updateCrowd < 0 || updateCrowd > 4) return false
+    || updateCrowd < 1 || updateCrowd > 4) return false
   const fieldString = `${days[day]}.${time}`
   try {
     const locationSnapshot = await db.collection("locations").doc(location).get()
-    if (!locationSnapshot.exists) return null
-    const adminValue = (locationSnapshot.data()[days[day]])[time].split(",")[0]
-    console.log(adminValue)
-    const updateLocation = await db.collection("locations").doc(location)
+    if (!locationSnapshot.exists) return false
+
+    const crowdValues = (locationSnapshot.data()[days[day]])[time].split(",")
+    const adminValue = crowdValues[0]
+    const oldUserValue = parseInt(crowdValues[1])
+    const count = parseInt(crowdValues[2])
+    const newCrowdLevel = parseFloat((((oldUserValue * count) + updateCrowd) / (count + 1)).toFixed(5))
+
+    await db.collection("locations").doc(location)
       .update({
-        [fieldString]: `${adminValue},${updateCrowd}`
+        [fieldString]: `${adminValue},${newCrowdLevel},${parseInt(count) + 1}`
       })
     return true
   } catch (error) {
@@ -57,7 +67,7 @@ async function updateLocationCrowd(location, day, time, updateCrowd) {
 }
 
 // retrieveLocationCrowd("Terrace", new Date().toDateString())
-// updateLocationCrowd("Terrace", 0, 4, 2)
+// updateLocationCrowd("Terrace", 0, 4, 3)
 
 module.exports = {
   retrieveLocationCrowd,
