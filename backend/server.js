@@ -612,7 +612,6 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
 
 app.post("/get-location-data", async (req, res) => {
   const { location, date } = req.body
-  console.log(date)
 
   try {
     const count = await countListings(location, date)
