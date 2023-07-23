@@ -5,7 +5,7 @@ import { Button, Spinner } from "react-bootstrap"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import "react-datepicker/dist/react-datepicker.css"
-import Notif from "../(listing)/create-listing/notif"
+import Notif from "../notif"
 import DatePicker from "react-datepicker"
 import styles from "../../(authentication)/auth.module.css"
 import reportStyles from "./report-user.module.css"
@@ -172,7 +172,7 @@ function ReportUserPage({ searchParams } : { searchParams: any }) {
         <Reason />
         <ReportUserButton isLoading={isLoading} />
       </form>
-      <Notif msg={msg} success={success} />
+      <Notif msg={msg} success={success} setMsg={setMsg} />
     </div>
   )
 }
