@@ -6,7 +6,7 @@ import { tagData } from "../(listing)/study-listings/data"
 import {
   Option,
   SelectMultiOption
-} from "../(listing)/create-listing/select"
+} from "../(components)/select"
 import { ActionMeta } from "react-select"
 import EditButton from "./editButton"
 import SaveCancelBar from "./saveCancelBar"

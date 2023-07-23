@@ -78,7 +78,7 @@ export default function StudyCard(
         <div className="col-12 col-sm-6 col-md-9">
           <Card.Body>
             <Card.Title style={{marginBottom: "0px"}}>{title}</Card.Title>
-            <small style={{fontSize: "14px"}}>{date ? dayjs(dateCreated).format("DD/MM/YYYY") : "No date given"}</small>
+            <small style={{fontSize: "14px"}}>{dateCreated ? dayjs(dateCreated).format("DD/MM/YYYY") : "No date given"}</small>
             <Tags tags={tags}/>
             <Card.Text style={{marginBottom: "0.5rem"}}>{desc}</Card.Text>
             <Card.Text className="row" style={{marginTop: "auto"}}>

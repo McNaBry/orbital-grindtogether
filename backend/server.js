@@ -26,14 +26,16 @@ const {
   getLikedListings,
   getCreatedListings,
   getListingLikers,
+  countListings,
 } = require("./listingDb")
 const { updateNotifFilters, sendListingNotif } = require("./email")
 const {
   getFullProfile,
   getViewProfile,
   updateProfile,
-  setProfilePic
-} = require('./profile')
+  setProfilePic,
+} = require("./profile")
+const { retrieveLocationCrowd, updateLocationCrowd } = require("./location")
 const { verifyAuthCookie } = require("./authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
@@ -57,9 +59,6 @@ async function getUserByEmail(email) {
 }
 
 function isValidUID(uid) {
-  // return !(
-  //   (uid == undefined) || (uid == "")
-  // )
   if (uid == undefined || uid == "") {
     console.log("invalid token")
     return false
@@ -122,6 +121,33 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
+app.post("/sign-out", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  try {
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      res.status(200).send()
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
+  }
+})
+
 app.post("/validate-token", verifyAuthCookie, async (req, res) => {
   // Session validation is already done by verifyAuthCookie
   // So, next layer is just to verify the UID cookie exists
@@ -175,38 +201,81 @@ app.post("/reset-password", async (req, res) => {
 })
 
 app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
   const { email, password } = req.body
 
-  // Check if details given are valid by signing in
-  const signInRes = await signInUser(email, password)
-  // Either email/password not valid or user is not in Firebase Auth
-  if (signInRes.status != 200) {
-    res.status(401).send()
-  }
-
-  // Get the user record to retrieve the UID for deletion
-  console.log(email)
-  const userRecord = await getUserByEmail(email)
-  if (!userRecord) {
-    console.log("No user record found with the email provided")
-    return res.status(400).send()
-  }
-
-  // Delete user from Firebase Auth
-  const deleteAccAuth = await deleteAccount(userRecord.uid)
-  if (!deleteAccAuth) {
-    console.log("Deletion error")
-    return res.status(400).send()
-  }
-
-  // Delete user from Firestore
   try {
-    const snapshot = await db
+    // Check if details given are valid by signing in
+    const signInRes = await signInUser(email, password)
+    // Either email/password not valid or user is not in Firebase Auth
+    if (signInRes.status != 200) {
+      res.status(401).send()
+    }
+
+    // Get the user record to retrieve the UID for deletion
+    const userRecord = await getUserByEmail(email)
+    if (!userRecord) {
+      console.log("No user record found with the email provided")
+      return res.status(400).send()
+    }
+
+    // Delete user from Firebase Auth
+    const deleteAccAuth = await deleteAccount(userRecord.uid)
+    if (!deleteAccAuth) {
+      console.log("Deletion error")
+      return res.status(400).send()
+    }
+
+    // Delete user from Firestore
+    await db
       .collection("users")
-      .where("email", "==", email)
-      .get()
-    snapshot.forEach((doc) => doc.ref.delete())
+      .doc(uid)
+      .delete()
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
     res.status(200).send()
+
+    // Scrub every listing the user has created
+    const createdSnapshot = await db
+      .collection("listings")
+      .where("createdBy", "==", uid)
+      .get()
+    createdSnapshot
+      .forEach(doc => {
+        db.collection("listings").doc(doc.id).delete()
+      })
+
+    // Scrub every listing the user has liked
+    const likedSnapshot = await db
+      .collection("listings")
+      .where("likes", "array-contains", uid)
+      .get()
+    likedSnapshot
+      .forEach(doc => {
+        db.collection("listings").doc(doc.id)
+          .update({
+            likes: FieldValue.arrayRemove(uid),
+            interest: FieldValue.increment(-1),
+          })
+      })
+
+    console.log("Successfully scrubbed user's created and liked listings")
+
   } catch (error) {
     console.log(error)
     res.status(400).send()
@@ -220,18 +289,14 @@ app.post("/get-profile", verifyAuthCookie, async (req, res) => {
     return
   }
   const userData = await getFullProfile(uid)
-  userData == null 
-    ? res.status(400).json({}).send()
-    : res.json(userData).send()
+  userData == null ? res.status(400).json({}).send() : res.json(userData).send()
 })
 
 app.post("/view-profile", async (req, res) => {
   const { uid } = req.body
   const userData = await getViewProfile(uid)
-  userData == null 
-    ? res.status(400).json({}).send()
-    : res.json(userData).send()
-}) 
+  userData == null ? res.status(400).json({}).send() : res.json(userData).send()
+})
 
 // Update the database when the user modifies a field in the profile page
 app.post("/update-profile", verifyAuthCookie, async (req, res) => {
@@ -242,9 +307,7 @@ app.post("/update-profile", verifyAuthCookie, async (req, res) => {
   }
   const { fieldToUpdate, value } = req.body
   const updateRes = await updateProfile(uid, fieldToUpdate, value)
-  updateRes
-    ? res.status(200).send()
-    : res.status(400).send()
+  updateRes ? res.status(200).send() : res.status(400).send()
 })
 
 app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
@@ -263,48 +326,19 @@ app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
   }
 })
 
-app.post(
-  "/upload-profile-pic",
-  upload.single("profilePic"),
-  async (req, res) => {
+app.post("/upload-profile-pic", upload.single("profilePic"), async (req, res) => {
     const uid = req.cookies.uid
     if (!isValidUID(uid)) {
       res.status(400).send()
       return
     }
 
-  const setProfilePicRes = setProfilePic(uid, req.file)
-  setProfilePicRes
-    ? res.status(200).json({ message: "upload success" }).send()
-    : res.status(400).json({ error: "upload error" }).send()
-})
-
-app.post("/sign-out", verifyAuthCookie, async (req, res) => {
-  const uid = req.cookies.uid
-  if (!isValidUID(uid)) {
-    res.status(400).send()
-    return
+    const setProfilePicRes = setProfilePic(uid, req.file)
+    setProfilePicRes
+      ? res.status(200).json({ message: "upload success" }).send()
+      : res.status(400).json({ error: "upload error" }).send()
   }
-  const userRef = await db.collection("users").doc(uid).get()
-  if (!userRef.exists) {
-    res.status(400).send()
-    return
-  }
-  const user = userRef.data()
-  const email = user.email
-  const authUser = await fireAuth.getUserByEmail(email).then((auth) => auth.uid)
-  // forces users to sign out from all devices
-  await fireAuth
-    .revokeRefreshTokens(authUser)
-    .then(() => {
-      console.log("Sign out successful")
-      res.status(200).send()
-    })
-    .catch((error) => {
-      console.log("Sign out unsuccessful")
-      res.status(500).send()
-    })
-})
+)
 
 // API Endpoint to create listing
 app.post("/create-listing", verifyAuthCookie, async (req, res) => {
@@ -390,9 +424,9 @@ app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
 
 app.post("/get-interested-users", async (req, res) => {
   const { listingUID } = req.body
-  
+
   try {
-    const users = await getListingLikers(listingUID);
+    const users = await getListingLikers(listingUID)
     res.status(200).json(users)
   } catch (error) {
     console.error("error getting likers list", error)
@@ -418,7 +452,6 @@ app.post("/like-listing", verifyAuthCookie, async (req, res) => {
   }
 })
 
-
 app.post("/report-user", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
@@ -428,7 +461,7 @@ app.post("/report-user", verifyAuthCookie, async (req, res) => {
   try {
     const reportData = req.body
     reportData.reporter = uid
-    await db.collection("user-reports").add({reportData})
+    await db.collection("user-reports").add({ reportData })
     res.status(200).send()
   } catch (error) {
     res.status(500).send()
@@ -455,21 +488,27 @@ app.post("/get-rating", async (req, res) => {
     .get()
 
   if (ratingSnapshot.empty) {
-    res.status(200).json({
-      friendly:  0,
-      helpful:   0,
-      recommend: 0,
-    }).send()
+    res
+      .status(200)
+      .json({
+        friendly: 0,
+        helpful: 0,
+        recommend: 0,
+      })
+      .send()
     return
   }
 
   const ratingData = []
-  ratingSnapshot.forEach(ratingDoc => ratingData.push(ratingDoc.data()))
-  res.status(200).json({
-    friendly:  ratingData[0].friendly,
-    helpful:   ratingData[0].helpful,
-    recommend: ratingData[0].recommend,
-  }).send()
+  ratingSnapshot.forEach((ratingDoc) => ratingData.push(ratingDoc.data()))
+  res
+    .status(200)
+    .json({
+      friendly: ratingData[0].friendly,
+      helpful: ratingData[0].helpful,
+      recommend: ratingData[0].recommend,
+    })
+    .send()
 })
 
 app.post("/update-rating", verifyAuthCookie, async (req, res) => {
@@ -480,13 +519,13 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
   }
 
   const rating = {
-    userID:    uid,
+    userID: uid,
     creatorID: req.body.creatorID,
     listingID: req.body.listingID,
-    friendly:  req.body.friendly,
-    helpful:   req.body.helpful,
+    friendly: req.body.friendly,
+    helpful: req.body.helpful,
     recommend: req.body.recommend,
-    overall:   req.body.overall
+    overall: req.body.overall,
   }
 
   if (rating.userID == rating.creatorID) {
@@ -539,16 +578,14 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
       const updatedTotalStars = user.totalStars + rating.overall
       const updatedRating = updatedTotalStars / updatedNumOfRaters
       await Promise.all([
-        db.collection("ratings")
-          .add(rating),
-        db.collection("users").doc(rating.creatorID)
-          .update({
-            "numOfRaters": updatedNumOfRaters,
-            "totalStars": updatedTotalStars,
-            "rating": updatedRating,
-          })
+        db.collection("ratings").add(rating),
+        db.collection("users").doc(rating.creatorID).update({
+          numOfRaters: updatedNumOfRaters,
+          totalStars: updatedTotalStars,
+          rating: updatedRating,
+        }),
       ])
-    } 
+    }
     // Or update existing
     else {
       for (const ratingDoc of ratingSnapshot.docs) {
@@ -558,12 +595,11 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
         const updatedRating = updatedTotalStars / updatedNumOfRaters
         await Promise.all([
           db.collection("ratings").doc(ratingDoc.id).update(rating),
-          db.collection("users").doc(rating.creatorID)
-            .update({
-              "numOfRaters": updatedNumOfRaters,
-              "totalStars": updatedTotalStars,
-              "rating": updatedRating,
-            })
+          db.collection("users").doc(rating.creatorID).update({
+            numOfRaters: updatedNumOfRaters,
+            totalStars: updatedTotalStars,
+            rating: updatedRating,
+          }),
         ])
       }
     }
@@ -572,6 +608,35 @@ app.post("/update-rating", verifyAuthCookie, async (req, res) => {
     console.log("There was an error updating the rating:", error)
     res.status(500).send()
   }
+})
+
+app.post("/get-location-data", async (req, res) => {
+  const { location, date } = req.body
+
+  try {
+    const count = await countListings(location, date)
+    const crowdLevels = await retrieveLocationCrowd(location, date)
+    res.status(200).json({
+      count: count,
+      crowdLevels: crowdLevels
+    }).send()
+  } catch (error) {
+    console.log("Error encountered when counting locations", error)
+    res.status(400).send()
+  }
+})
+
+app.post("/contribute-location", verifyAuthCookie, async (req, res) => {
+  const { location, day, time, updateCrowd } = req.body
+  const updateRes = await updateLocationCrowd(
+    location, 
+    parseInt(day), 
+    parseInt(time), 
+    parseInt(updateCrowd)
+  )
+  updateRes 
+    ? res.status(200).send()
+    : res.status(400).send()
 })
 
 const port = 5000

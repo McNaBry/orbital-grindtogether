@@ -1,48 +1,82 @@
 #start-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background: black;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: black;
 }
 
 #header {
-    /* font-weight: bold; */
-    font-size: 80px;
-    text-align: center;
+  /* font-weight: bold; */
+  font-size: 80px;
+  text-align: center;
 }
 
 #sub-header {
-    text-align: center;
+  text-align: center;
 }
 
 #sign-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#study-listings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.view-link {
+  width: 150px;
+  text-align: center;
+  border-radius: 0.3rem;
+  outline: solid 1px white;
+  margin: 0px 5px 0px 5px;
+  padding: 5px;
 }
 
 .sign-link {
-    width: 100px;
-    text-align: center;
-    border-radius: 0.3rem;
-    outline: solid 1px white;
-    margin: 0px 5px 0px 5px;
-    padding: 5px;
+  width: 100px;
+  text-align: center;
+  border-radius: 0.3rem;
+  outline: solid 1px white;
+  margin: 0px 5px 0px 5px;
+  padding: 5px;
 }
 
-.sign-link:hover {
-    background-color: #6c5ce7;
-    outline: solid 1px #6c5ce7;
+.sign-link:hover,
+.view-link:hover {
+  background-color: #6c5ce7;
+  outline: solid 1px #6c5ce7;
 }
 
-.sign-link:hover * {
-    color: white;
+.sign-link:hover *,
+.view-link:hover * {
+  color: white;
 }
 
-.sign-link * {
-    color: white;
+.sign-link *,
+.view-link * {
+  color: white;
+}
+
+@media (max-width: 630px) {
+  #header {
+    font-size: 40px;
+  }
+
+  #sub-header {
+    font-size: 18px;
+  }
+
+  .sign-link {
+    font-size: 14px;
+    padding: 4px;
+  }
 }

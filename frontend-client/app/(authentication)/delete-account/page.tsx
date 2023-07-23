@@ -7,6 +7,7 @@ import { Button, Card, Modal } from "react-bootstrap";
 import "../reusable.css"
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { useAuth } from "@/app/authProvider";
 
 function DeleteAccount() {
   return (
@@ -69,17 +70,17 @@ function SuccessDialog({ show, onHide } : ModalProps) {
 }
 
 type DeleteAccountProps = {
-  params: { id: string },
   searchParams: any
 }
 
-function DeleteAccountPage({params, searchParams} : DeleteAccountProps) {
+function DeleteAccountPage({ searchParams } : DeleteAccountProps) {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState("");
   const [displayModal, setDisplayModal] = useState(false)
   const urlParams = new URLSearchParams(searchParams)
   const email = urlParams.get("email")
+  const auth = useAuth()
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -109,6 +110,7 @@ function DeleteAccountPage({params, searchParams} : DeleteAccountProps) {
       
       switch (res.status) {
         case 200:
+          await auth.signOut()
           setDisplayModal(true);
           setSuccess(true);
           setMsg("Goodbye! Hope to see you back again one day...");
@@ -138,7 +140,7 @@ function DeleteAccountPage({params, searchParams} : DeleteAccountProps) {
           <Card.Img variant="top" src="images/delete.png" />
           <Card.Body>
             <Card.Title> Delete your account </Card.Title>
-            <Card.Text>This action is irreversible. If you wish to proceed, please key in your email and password. </Card.Text>
+            <Card.Text>This action is irreversible. If you wish to proceed, please key in your password. </Card.Text>
             <Password value={password} onChange={handlePasswordChange} />
             <DeleteAccount />
             <CreateStatus

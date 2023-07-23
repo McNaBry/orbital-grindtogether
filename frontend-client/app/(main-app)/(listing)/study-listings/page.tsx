@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import useSWR from 'swr'
-import { Option } from "../create-listing/select"
+import { Option } from "../../(components)/select"
 import { ActionMeta } from "react-select"
 
 import { testData } from "./data"
@@ -14,8 +14,8 @@ import FilterPanel from "./filterPanel"
 
 import { Row } from "react-bootstrap"
 import viewStyles from './studyListings.module.css'
-import { StudyListing } from "../studyCard"
 import LoadingCard from "../loadingCard"
+import { StudyListing } from "../../(components)/studyCard"
 
 const SortFunctions : SortFunction[] = [
   (a: StudyListing, b: StudyListing) => {
