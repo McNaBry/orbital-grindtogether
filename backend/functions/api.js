@@ -25,6 +25,7 @@ const {
   getLikedListings,
   getCreatedListings,
   getListingLikers,
+  countListings
 } = require("../listingDb")
 const { updateNotifFilters, sendListingNotif } = require("../email")
 const {
