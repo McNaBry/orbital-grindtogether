@@ -97,7 +97,10 @@ type CrowdLevelsProps = {
   date: Date
 }
 export default function CrowdLevels({ isLoading, location, crowdLevels, date } : CrowdLevelsProps) {
-  const [ selectedTiming, setSelectedTiming ] = useState<number>(new Date().getHours() % 12)
+  let hours = new Date().getHours()
+  if (hours == 0) hours = 12
+  else hours = hours % 12
+  const [ selectedTiming, setSelectedTiming ] = useState<number>(hours)
   const [ timingMode, setTimingMode ] = useState<string>(new Date().getHours() > 12 ? "pm" : "am")
 
   if (isLoading) {
