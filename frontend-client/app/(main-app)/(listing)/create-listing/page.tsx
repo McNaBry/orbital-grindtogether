@@ -24,10 +24,10 @@ const defaultOptions : {[key:string]: any} = {
   "id":        "invitedefault"
 }
 
-export default function CreateListing({ searchParams } : any) {
+export default function CreateListing({ searchParams } : { searchParams: any }) {
   const router = useRouter()
   const urlParams = new URLSearchParams(searchParams)
-  
+  console.log(urlParams.get("edit"))
   // Boolean flag to determine whether a NEW listing is being created
   // Or an EXISTING listing is being edited
   const editMode = (urlParams.get("edit") || "create") != "create"
