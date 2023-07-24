@@ -8,7 +8,7 @@ import { Option } from "../../(components)/select"
 import Notif from "../../notif"
 import { Button, Dropdown, DropdownButton, Spinner } from "react-bootstrap"
 import TimePicker from "../timePicker"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import locStyles from "../locations.module.css"
 
 const levels = [1, 2, 3, 4]
@@ -65,7 +65,7 @@ function SubmitButton({ isLoading, handleSubmit } :
 
 export default function ContributeLocations({ searchParams } : { searchParams: any }) {
   const router = useRouter()
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
 
   const [ date, setDate ] = useState<Date>(new Date(urlParams.get("date") || new Date()))
   const [ location, setLocation ] = useState<string>(urlParams.get("location") || "")

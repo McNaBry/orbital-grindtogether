@@ -29,7 +29,7 @@ export default function RateListing({
   params: { id: string }
   searchParams: any
 }) {
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
   const router = useRouter()
   const [msg, setMsg] = useState("")
   const [success, setSuccess] = useState(false)

@@ -81,7 +81,7 @@ function InterestedUsersList({ interestedUsers, listingUID } : { interestedUsers
 function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
   const router = useRouter()
   // Retrieve URL search params
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
   const [ interestedUsers, setInterestedUsers ] = useState<User[]>([])
   const [ isLoading, setIsLoading ] = useState<boolean>(true)
 

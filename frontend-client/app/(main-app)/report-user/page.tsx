@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent } from "react"
 import { Button, Spinner } from "react-bootstrap"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import "react-datepicker/dist/react-datepicker.css"
 import Notif from "../notif"
 import DatePicker from "react-datepicker"
@@ -97,7 +97,7 @@ type expectedParams = {
 }
 
 function ReportUserPage({ searchParams } : { searchParams: any }) {
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
   const [success, setSuccess] = useState<boolean>(false)
   const [msg, setMsg] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)

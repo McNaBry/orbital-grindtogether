@@ -20,7 +20,7 @@ export default function DeleteListing({ params, searchParams }: DeleteListingPro
   const [ success, setSuccess ] = useState<boolean>(false)
 
   // Retrieve URL search params taht were passed in
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
   // Unpack tags into the respective categories
   const tags = urlParams.get("tags")?.split("|") || []
   // Set each field to the respective URL search param value(s)
