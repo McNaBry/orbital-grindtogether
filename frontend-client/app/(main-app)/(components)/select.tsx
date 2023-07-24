@@ -1,5 +1,5 @@
 import 'react-datepicker/dist/react-datepicker.css'
-import styles from './create-listing.module.css'
+import styles from './select.module.css'
 
 import Select, { ActionMeta } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
@@ -48,6 +48,26 @@ function SelectFreeOption({params} : {params : SelectFreeOptionProps}) {
   )
 }
 
+export type SelectSingleOptionProps = SelectProps & {
+  defaultValue: Option | null
+  handleChange:
+    ((type:string, option: Option | null, actionMeta: ActionMeta<Option>) => void)
+}
+
+export function SelectSingleOption({params} : {params : SelectSingleOptionProps}) {
+  const { name, type, options, defaultValue, handleChange } = params
+  return (
+    <Select
+      className={"basic-single " + styles["single-option-input"]}
+      name={name}
+      placeholder={name}
+      defaultValue={defaultValue}
+      options={options}
+      onChange={(option, actionMeta) => handleChange(type, option, actionMeta)}
+    />
+  )
+}
+
 export type SelectMultiOptionProps = SelectProps & {
   defaultValue: Option[]
   handleChange:
@@ -70,7 +90,7 @@ function SelectMultiOption({params} : {params : SelectMultiOptionProps}) {
   )
 }
 
-type DateOptionProps = {
+export type DateOptionProps = {
   startDate: Date | null,
   setStartDate: (date: Date | null) => void
 }

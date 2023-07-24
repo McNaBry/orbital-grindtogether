@@ -4,7 +4,7 @@ import styles from './dashboard.module.css'
 
 import useSWR from 'swr'
 import StudyListings from '../(listing)/study-listings/studyListings'
-import { StudyListing } from '../(listing)/studyCard'
+import { StudyListing } from '../(components)/studyCard'
 import { useState } from 'react'
  
 type ListingProps = {
@@ -29,7 +29,7 @@ function LikedListings({ data, error, isLoading, emptyFilters } : ListingProps) 
               limit={0} 
               filters={emptyFilters} 
               sortFunction={(a: StudyListing, b: StudyListing) => -1}
-              sortReverse={false}
+              sortReverse={true}
               data={data[0]} 
               variant="dashboard-display" 
             />
@@ -53,7 +53,7 @@ function CreatedListings({ data, error, isLoading, emptyFilters } : ListingProps
               limit={0} 
               filters={emptyFilters} 
               sortFunction={(a: StudyListing, b: StudyListing) => -1}
-              sortReverse={false}
+              sortReverse={true}
               data={data[1]} 
               variant="modify" 
             />

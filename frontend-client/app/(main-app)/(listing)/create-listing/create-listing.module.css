@@ -3,9 +3,9 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   background-color: black;
+  padding-bottom: 15px;
 }
 
 #options-container {
@@ -13,19 +13,6 @@
   flex-direction: column;
   width: 500px;
   align-items: center;
-}
-
-.single-option-input,
-.multi-option-input,
-.date-option-container {
-  width: 100%;
-}
-
-.date-option-input {
-  width: 100%;
-  padding: 5px 5px 5px 10px;
-  border: 1px solid lightgrey;
-  border-radius: 4px;
 }
 
 #demo-card-container {

@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { StudyListing } from "./studyCard"
 import { mutate } from "swr"
-import LoadingLikeButton from "./loadingLikeButton";
-import cardStyles from "./studyCard.module.css";
+import LoadingLikeButton from "../(listing)/loadingLikeButton";
+import cardStyles from "../(components)/studyCard.module.css";
 import classnames from "classnames"
 
 function LikeButton({ listingData, variant } : { listingData: StudyListing, variant: string }) {

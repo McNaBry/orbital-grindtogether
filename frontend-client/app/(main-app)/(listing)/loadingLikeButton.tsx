@@ -1,4 +1,4 @@
-import cardStyles from "./studyCard.module.css";
+import cardStyles from "../(components)/studyCard.module.css";
 import { Spinner } from "react-bootstrap"
 
 function LoadingLikeButton({ likeStatus } : { likeStatus: boolean }) {

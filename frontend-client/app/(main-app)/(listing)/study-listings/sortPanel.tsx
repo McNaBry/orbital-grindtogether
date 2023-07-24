@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Dropdown, DropdownButton } from "react-bootstrap"
 import viewStyles from "./studyListings.module.css"
-import { StudyListing } from "../studyCard"
+import { StudyListing } from "../../(components)/studyCard"
 
 export type SortFunction = (a: StudyListing, b: StudyListing) => number
 
@@ -47,7 +47,7 @@ function SortDropdownButton({
 function SortOptionsButton({ setSortOption } : Pick<SortPanelProps, 'setSortOption'>) {
   const optionsList: {[key: string] : number} = {
     "date": 0,
-    "creation date": 1,
+    "date created": 1,
     "creator": 2,
     "users interested": 3
   }
@@ -58,7 +58,7 @@ function SortOptionsButton({ setSortOption } : Pick<SortPanelProps, 'setSortOpti
       <SortDropdownButton
         optionsList={Object.keys(optionsList)}
         handleOptionSelect={(option: string) => setSortOption(optionsList[option])}
-        title="date"
+        title="date created"
       />
     </div>
   )
@@ -76,7 +76,7 @@ function SortDirectionButton({ setSortDirection } : Pick<SortPanelProps, 'setSor
       <SortDropdownButton
         optionsList={Object.keys(optionsList)}
         handleOptionSelect={(option: string) => setSortDirection(optionsList[option])}
-        title="ascending"
+        title="descending"
       />
       <span style={{fontSize: "18px", color: "white", marginLeft: "6px"}}>order</span>
     </div>

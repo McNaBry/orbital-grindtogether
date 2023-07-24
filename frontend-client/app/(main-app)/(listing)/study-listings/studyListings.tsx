@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import StudyCard, { StudyListing } from "../studyCard"
+import StudyCard, { StudyListing } from "../../(components)/studyCard"
 import viewStyles from "./studyListings.module.css"
 
 type StudyListingsProps = {
@@ -15,9 +15,8 @@ type StudyListingsProps = {
 }
 
 export default function StudyListings({ page, limit, filters, sortFunction, sortReverse, data, variant } : StudyListingsProps) {
-  if (data.length == 0 || data == null) return (<h5>No listings found.</h5>)
-
   const router = useRouter()
+  if (data.length == 0 || data == null) return (<h5>No listings found.</h5>)
 
   const filterData = data.filter(listing => {
     const categories = Object.keys(listing.tags)

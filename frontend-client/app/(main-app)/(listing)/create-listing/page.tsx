@@ -1,9 +1,9 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-import StudyCard, { StudyListing } from '../studyCard'
+import StudyCard, { StudyListing } from '../../(components)/studyCard'
 import EditPanel from "./editPanel"
 import Notif from "../../notif"
 import { Form, Button } from 'react-bootstrap'
@@ -17,8 +17,8 @@ const defaultOptions : {[key:string]: any} = {
   "title":     "Title",
   "desc":      "Description",
   "tags":      {"modules":[], "locations":[], "faculties":[]},
-  "date":        new Date(), // Set current timing
-  "dateCreated": new Date(), // Set current timing
+  "date":        new Date(new Date().toDateString()), // Set current date
+  "dateCreated": new Date(new Date().toDateString()), // Set current date
   "freq":      "Every day",
   "interest":  0,
   "id":        "invitedefault"
@@ -44,8 +44,8 @@ export default function CreateListing({ searchParams } : any) {
       "locations": editMode ? tags[1].split(",").slice(1) : [],
       "faculties": editMode ? tags[2].split(",").slice(1) : []
     },
-    date:        editMode ? new Date(urlParams.get('date') || Date.now()) : defaultOptions['date'],
-    dateCreated: editMode ? new Date(urlParams.get('date') || Date.now()) : defaultOptions['date'],
+    date:        editMode ? new Date(urlParams.get('date') || new Date().toDateString()) : defaultOptions['date'],
+    dateCreated: editMode ? new Date(urlParams.get('date') || new Date().toDateString()) : defaultOptions['date'],
     freq:     editMode ? urlParams.get("freq") : defaultOptions['freq'],
     interest: editMode ? parseInt(urlParams.get("interest") || '0') : defaultOptions['interest'],
     id:       editMode ? urlParams.get("id") : defaultOptions['id'],
@@ -56,6 +56,19 @@ export default function CreateListing({ searchParams } : any) {
   const [ msg, setMsg ] = useState<string>("")
   const [ success, setSuccess ] = useState<boolean>(false)
 
+  useEffect(() => {
+    if (msg != "") {
+      const timeout = setTimeout(() => {
+        setMsg("")
+        router.push("/dashboard")
+      }, 3000)
+
+      return () => {
+        clearTimeout(timeout)
+      }
+    }
+  }, [msg])
+  
   useEffect(() => 
     setDemoOptions({
       ...demoOptions, 
@@ -65,6 +78,15 @@ export default function CreateListing({ searchParams } : any) {
   // Function to handle form submit and create/update listing
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (demoOptions.date == null) {
+      setSuccess(false)
+      setMsg("Select a date first.")
+      return
+    } else if (demoOptions.date < defaultOptions["date"]) {
+      setSuccess(false)
+      setMsg("Listing date must not be before today's date.")
+      return
+    }
     
     const endpoint = editMode 
       ? `${process.env.NEXT_PUBLIC_API_URL}/edit-listing` 
@@ -81,7 +103,13 @@ export default function CreateListing({ searchParams } : any) {
     })
     .then(async data => {
       // Server responds with error
-      if (!data.ok) {
+      if (data.status == 401) {
+        setSuccess(false)
+        setMsg(`Please sign in to ${action} a new listing.`)
+        await new Promise(r => setTimeout(r, 2000))
+        router.push("/sign-in")
+        return
+      } else if (!data.ok) {
         setSuccess(false)
         setMsg(`Sorry! Listing was not ${action} successfully. Try again.`)
         return
