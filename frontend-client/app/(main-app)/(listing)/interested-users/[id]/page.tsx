@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button, Spinner } from "react-bootstrap"
 import interestStyles from "./interested-users.module.css"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 type InterestedUsersProps = {

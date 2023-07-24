@@ -5,7 +5,7 @@ import RatingBar from "./ratingBar"
 import Notif from "../../../notif"
 import { useState } from "react"
 import { Button } from "react-bootstrap"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 function Disclaimer() {
   return (
