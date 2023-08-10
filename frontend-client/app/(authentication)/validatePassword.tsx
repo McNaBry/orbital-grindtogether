@@ -20,7 +20,7 @@ function ValidatePassword(details: ValidatePasswordParams) {
   } else if (!pc.atLeastOneLower(pw)) {
     setMsg("Password should at least have one lowercase letter.")
   } else if (!pc.atLeastOneNumber(pw)) {
-    setMsg("Password should at least have one number")
+    setMsg("Password should at least have one number.")
   } else if (!pc.atLeastOneSpecial(pw)) {
     setMsg("Password should at least have one special character.")
   } else {
