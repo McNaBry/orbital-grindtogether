@@ -130,7 +130,6 @@ export default function ContributeLocations({ searchParams } : { searchParams: a
         console.log("submission success!")
         setMsg("Thank you for contributing!")
         setSuccess(true)
-        const data = await res.json()
       } else {
         console.log("submission failure!")
         setMsg("Submission failed. Try again!")
