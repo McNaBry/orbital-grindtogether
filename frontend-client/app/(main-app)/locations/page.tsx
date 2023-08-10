@@ -17,8 +17,8 @@ function Contribute({ isLoading, location, date } : { isLoading: boolean, locati
   return (
     <Button 
       style={{marginTop: "10px"}}
-      variant="secondary"
-      onClick={() => router.push(`/locations/contribute?location=${location}&date=${new Date(date.toDateString())}`)}>
+      variant="secondary"e
+      onClick={() => router.push(`/locations/contribute?location=${location}&date=${date.toISOString()}`)}>
         Contribute
     </Button>
   )
