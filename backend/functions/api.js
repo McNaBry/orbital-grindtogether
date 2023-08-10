@@ -1,12 +1,12 @@
-// require("dotenv").config()
+require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const axios = require("axios")
 const multer = require("multer")
-const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser")
 const serverless = require("serverless-http")
 
-const { db, fireAuth, storage, bucket } = require("../firebase")
+const { db, fireAuth } = require("../firebase")
 const {
   signInUser,
   createAccount,
@@ -24,7 +24,18 @@ const {
   likeListing,
   getLikedListings,
   getCreatedListings,
+  getListingLikers,
+  countListings
 } = require("../listingDb")
+const { updateNotifFilters, sendListingNotif } = require("../email")
+const {
+  getFullProfile,
+  getViewProfile,
+  updateProfile,
+  setProfilePic
+} = require('../profile')
+const { retrieveLocationCrowd, updateLocationCrowd } = require("../location")
+const { verifyAuthCookie } = require("../authMiddleware")
 
 const apiKey = process.env.FIREBASE_API_KEY
 
@@ -75,13 +86,15 @@ app.post("/sign-in", async (req, res) => {
   */
   const signInRes = await signInUser(email, password)
 
-  if (signInRes.status == 200) {
+  if (signInRes != undefined && signInRes.status == 200) {
     // Retrieve the id token that Firebase Auth returns
     const idToken = signInRes.data.idToken
 
     // Use the idToken to create a session cookie that will persist user sign-in for a week
-    const seshCookie = await fireAuth.createSessionCookie(idToken, { expiresIn: 60 * 60 * 24 * 7 * 1000 })
-    
+    const seshCookie = await fireAuth.createSessionCookie(idToken, {
+      expiresIn: 60 * 60 * 24 * 7 * 1000,
+    })
+
     // Retrieve user's Firestore UID and full name
     const users = await validateToken(idToken)
     if (users.length == 0) {
@@ -94,18 +107,14 @@ app.post("/sign-in", async (req, res) => {
           maxAge: 60 * 60 * 24 * 7 * 1000,
           httpOnly: true,
           secure: process.env.NODE_ENV == "production",
-          sameSite: "none",
+          sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
         })
         .cookie("uid", users[0].uid, {
           maxAge: 60 * 60 * 24 * 7 * 1000,
           httpOnly: true,
           secure: process.env.NODE_ENV == "production",
-          sameSite: "none",
+          sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
         })
-      // const maxAge = 60 * 60 * 24 * 7 * 1000
-      // res.append('Set-Cookie', `authCookie=${seshCookie}; Max-Age=${maxAge}; Path=/; HttpOnly`)
-      // res.append('Set-Cookie', `uid=${users[0].uid}; Max-Age=${maxAge}; Path=/; HttpOnly`)
-      // Provide the frontend with the user's Firestore UID and full name
       res.status(200).json(users[0]).send()
     }
   } else {
@@ -113,21 +122,42 @@ app.post("/sign-in", async (req, res) => {
   }
 })
 
-app.post("/validate-token", async (req, res) => {
-  const authToken = req.cookies.jwt
-  if (authToken == undefined) {
+app.post("/sign-out", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
     res.status(400).send()
     return
   }
-  const users = await validateToken(authToken)
-  if (users.length == 0) {
-    console.log("Null array for user UID query")
+  try {
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      res.status(200).send()
+  } catch (error) {
+    console.log(error)
     res.status(400).send()
-  } else if (users.length >= 1) {
-    // If all goes well, only one user will be returned
-    // If not we still return the first user in the array
-    res.status(200).json(users[0]).send()
   }
+})
+
+app.post("/validate-token", verifyAuthCookie, async (req, res) => {
+  // Session validation is already done by verifyAuthCookie
+  // So, next layer is just to verify the UID cookie exists
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  return res.status(200).send()
 })
 
 // API Endpoint to receive email to send password reset link
@@ -171,206 +201,148 @@ app.post("/reset-password", async (req, res) => {
   }
 })
 
-app.delete("/delete-account", async (req, res) => {
+app.delete("/delete-account", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
   const { email, password } = req.body
 
-  // Check if details given are valid by signing in
-  const signInRes = await signInUser(email, password)
-  // Either email/password not valid or user is not in Firebase Auth
-  if (signInRes.status != 200) {
-    res.status(401).send()
-  }
-
-  // Get the user record to retrieve the UID for deletion
-  console.log(email)
-  const userRecord = await getUserByEmail(email)
-  if (!userRecord) {
-    console.log("No user record found with the email provided")
-    return res.status(400).send()
-  }
-
-  // Delete user from Firebase Auth
-  const deleteAccAuth = await deleteAccount(userRecord.uid)
-  if (!deleteAccAuth) {
-    console.log("Deletion error")
-    return res.status(400).send()
-  }
-
-  // Delete user from Firestore
   try {
-    const snapshot = await db
+    // Check if details given are valid by signing in
+    const signInRes = await signInUser(email, password)
+    // Either email/password not valid or user is not in Firebase Auth
+    if (signInRes.status != 200) {
+      res.status(401).send()
+    }
+
+    // Get the user record to retrieve the UID for deletion
+    const userRecord = await getUserByEmail(email)
+    if (!userRecord) {
+      console.log("No user record found with the email provided")
+      return res.status(400).send()
+    }
+
+    // Delete user from Firebase Auth
+    const deleteAccAuth = await deleteAccount(userRecord.uid)
+    if (!deleteAccAuth) {
+      console.log("Deletion error")
+      return res.status(400).send()
+    }
+
+    // Delete user from Firestore
+    await db
       .collection("users")
-      .where("email", "==", email)
-      .get()
-    snapshot.forEach((doc) => doc.ref.delete())
+      .doc(uid)
+      .delete()
+    res
+      .clearCookie("authCookie", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
+      .clearCookie("uid", {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+      })
     res.status(200).send()
+
+    // Scrub every listing the user has created
+    const createdSnapshot = await db
+      .collection("listings")
+      .where("createdBy", "==", uid)
+      .get()
+    createdSnapshot
+      .forEach(doc => {
+        db.collection("listings").doc(doc.id).delete()
+      })
+
+    // Scrub every listing the user has liked
+    const likedSnapshot = await db
+      .collection("listings")
+      .where("likes", "array-contains", uid)
+      .get()
+    likedSnapshot
+      .forEach(doc => {
+        db.collection("listings").doc(doc.id)
+          .update({
+            likes: FieldValue.arrayRemove(uid),
+            interest: FieldValue.increment(-1),
+          })
+      })
+
+    console.log("Successfully scrubbed user's created and liked listings")
+
   } catch (error) {
     console.log(error)
     res.status(400).send()
   }
 })
 
-// middleware to extract token from cookie and verify it before use
-// const verifyIdToken = async (req, res, next) => {
-//   const idToken = req.cookies.idToken;
-
-//   if (!idToken) {
-//     return res.status(401).send("Unauthorised");
-//   }
-
-//   try {
-//     const decodedToken = await fireAuth.verifyIdToken(idToken);
-//     const userId = decodedToken.uid;
-//     const email = decodedToken.email;
-
-//     // we will attach the user object to the req object to be passed around
-//     req.user = { userId, email }
-//     next();
-//   } catch (error) {
-//     console.log('Failed to verify idToken:', error);
-//     res.status(401).send('Unauthorized');
-//   }
-// }
-
-app.post("/get-profile", async (req, res) => {
+app.post("/get-profile", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).json({}).send()
     return
   }
+  const userData = await getFullProfile(uid)
+  userData == null ? res.status(400).json({}).send() : res.json(userData).send()
+})
 
-  const docRef = await db.collection("users").doc(uid).get()
-  if (docRef.exists) {
-    let userData = docRef.data()
-    // Sets a file object to point to the user's profile pic in Firebase Storage
-    const file = bucket.file(`${uid}.png`)
-    // Check if file exists
-    file.exists()
-      .then(async ([exists]) => {
-        if (exists) {
-          console.log("Profile pic exists. Retrieving signed URL...")
-          // Retrieve the download URL for frontend to fetch from
-          const expiresAtMs = Date.now() + 60 * 60 * 1000; // Expiry date of the URL
-          const signedUrl = await file.getSignedUrl({
-            action: 'read',
-            expires: expiresAtMs,
-          });
-          // console.log(signedUrl)
-          userData = {
-            ...userData,
-            profilePic: signedUrl
-          }
-          res.status(200).json(userData).send()
-        } else {
-          console.log("Profile pic does not exist")
-          userData = {
-            ...userData,
-            profilePic: ""
-          }
-          res.status(200).json(userData).send()
-        }
-      })
-      .catch(error => {
-        console.log("Error checking if file exists:\n")
-        console.log(error)
-        res.status(400).send()
-      })
-  } else {
-    res.status(400).json({}).send()
-  }
+app.post("/view-profile", async (req, res) => {
+  const { uid } = req.body
+  const userData = await getViewProfile(uid)
+  userData == null ? res.status(400).json({}).send() : res.json(userData).send()
 })
 
 // Update the database when the user modifies a field in the profile page
-app.post("/update-profile", async (req, res) => {
-  try {
-    const { fieldToUpdate, value } = req.body
+app.post("/update-profile", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  const { fieldToUpdate, value } = req.body
+  const updateRes = await updateProfile(uid, fieldToUpdate, value)
+  updateRes ? res.status(200).send() : res.status(400).send()
+})
+
+app.post("/update-notif-filters", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+
+  const filters = req.body.filters
+  const updateFilterRes = await updateNotifFilters(uid, filters)
+  if (updateFilterRes) {
+    res.status(200).send()
+  } else {
+    res.status(400).send()
+  }
+})
+
+app.post("/upload-profile-pic", upload.single("profilePic"), async (req, res) => {
     const uid = req.cookies.uid
     if (!isValidUID(uid)) {
       res.status(400).send()
       return
     }
-    await db
-      .collection("users")
-      .doc(uid)
-      .update({ [fieldToUpdate]: value })
-    res.status(200).send()
-  } catch (error) {
-    console.log("cannot update")
-    res.status(500).send()
-  }
-})
 
-app.post("/upload-profile-pic", upload.single('profilePic'), async (req, res) => {
-  const uid = req.cookies.uid
-  if (!isValidUID(uid)) {
-    console.log("No user ID detected")
-    res.status(400).send()
-    return 
+    const setProfilePicRes = setProfilePic(uid, req.file)
+    setProfilePicRes
+      ? res.status(200).json({ message: "upload success" }).send()
+      : res.status(400).json({ error: "upload error" }).send()
   }
-
-  const file = req.file
-  if (!file) {
-    console.log("No file detected")
-    res.status(400).send()
-    return
-  }
-
-  try {
-    const fileRef = bucket.file(`${uid}.png`)
-    const uploadStream = fileRef.createWriteStream({
-      metadata: {
-        contentType: file.mimetype
-      }
-    })
-    
-    uploadStream.on('error', (error) => {
-      console.error('Error uploading file:', error);
-      res.status(500).json({ error: 'Error uploading file' });
-    })
-    uploadStream.on('finish', () => {
-      console.log('File uploaded successfully');
-      res.status(200).json({ message: 'File uploaded successfully' });
-    })
-  
-    // Pipe the file stream from Multer to the write stream
-    // end basically allows one last write before it closes the stream
-    uploadStream.end(file.buffer)
-  } catch (error) {
-    console.log("Profile Pic Upload Error:\n")
-    console.log(error)
-    res.status(500).send()
-  }
-})
-
-app.post("/sign-out", async (req, res) => {
-  const uid = req.cookies.uid
-  if (!isValidUID(uid)) {
-    res.status(400).send()
-    return
-  }
-  const userRef = await db.collection("users").doc(uid).get()
-  if (!userRef.exists) {
-    res.status(400).send()
-    return
-  }
-  const user = userRef.data()
-  const email = user.email
-  const authUser = await fireAuth.getUserByEmail(email).then((auth) => auth.uid)
-  // forces users to sign out from all devices
-  await fireAuth
-    .revokeRefreshTokens(authUser)
-    .then(() => {
-      console.log("Sign out successful")
-      res.status(200).send()
-    })
-    .catch((error) => {
-      console.log("Sign out unsuccessful")
-      res.status(500).send()
-    })
-})
+)
 
 // API Endpoint to create listing
-app.post("/create-listing", async (req, res) => {
+app.post("/create-listing", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -378,13 +350,23 @@ app.post("/create-listing", async (req, res) => {
   }
   const createListingRes = await createListing(uid, req.body)
   if (createListingRes) {
+    // Send OK status to the user who created the listing
+    // Whether the notification succeeds does not matter to the creator
     res.status(200).send()
+
+    try {
+      // We will send an email to all users with optInStatus true
+      // And filter for those interested in the listing's tag
+      await sendListingNotif(req.body)
+    } catch (error) {
+      console.log(error)
+    }
   } else {
     res.status(400).send()
   }
 })
 
-app.post("/edit-listing", async (req, res) => {
+app.post("/edit-listing", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
@@ -412,7 +394,7 @@ app.post("/get-listings", async (req, res) => {
   }
 })
 
-app.delete("/delete-listing", async (req, res) => {
+app.delete("/delete-listing", verifyAuthCookie, async (req, res) => {
   const { listingUID } = req.body
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
@@ -427,7 +409,7 @@ app.delete("/delete-listing", async (req, res) => {
   }
 })
 
-app.post("/get-dashboard-listings", async (req, res) => {
+app.post("/get-dashboard-listings", verifyAuthCookie, async (req, res) => {
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     console.log(uid)
@@ -441,13 +423,25 @@ app.post("/get-dashboard-listings", async (req, res) => {
   return res.json(results).send()
 })
 
-app.post("/like-listing", async (req, res) => {
+app.post("/get-interested-users", async (req, res) => {
+  const { listingUID } = req.body
+
+  try {
+    const users = await getListingLikers(listingUID)
+    res.status(200).json(users)
+  } catch (error) {
+    console.error("error getting likers list", error)
+    res.status(500).send()
+  }
+})
+
+app.post("/like-listing", verifyAuthCookie, async (req, res) => {
   const { listingUID, action } = req.body
   const uid = req.cookies.uid
   if (!isValidUID(uid)) {
     res.status(400).send()
     return
-  } 
+  }
   if (action != "like" && action != "unlike") {
     res.status(500).json({ error: "Invalid action" }).send()
   }
@@ -457,6 +451,193 @@ app.post("/like-listing", async (req, res) => {
   } else {
     res.status(400).send()
   }
+})
+
+app.post("/report-user", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+  try {
+    const reportData = req.body
+    reportData.reporter = uid
+    await db.collection("user-reports").add({ reportData })
+    res.status(200).send()
+  } catch (error) {
+    res.status(500).send()
+  }
+})
+
+app.post("/get-rating", async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+
+  const { listingID } = req.body
+  if (listingID == "" || listingID == undefined) {
+    res.status(400).send()
+    return
+  }
+
+  const ratingSnapshot = await db
+    .collection("ratings")
+    .where("userID", "==", uid)
+    .where("listingID", "==", listingID)
+    .get()
+
+  if (ratingSnapshot.empty) {
+    res
+      .status(200)
+      .json({
+        friendly: 0,
+        helpful: 0,
+        recommend: 0,
+      })
+      .send()
+    return
+  }
+
+  const ratingData = []
+  ratingSnapshot.forEach((ratingDoc) => ratingData.push(ratingDoc.data()))
+  res
+    .status(200)
+    .json({
+      friendly: ratingData[0].friendly,
+      helpful: ratingData[0].helpful,
+      recommend: ratingData[0].recommend,
+    })
+    .send()
+})
+
+app.post("/update-rating", verifyAuthCookie, async (req, res) => {
+  const uid = req.cookies.uid
+  if (!isValidUID(uid)) {
+    res.status(400).send()
+    return
+  }
+
+  const rating = {
+    userID: uid,
+    creatorID: req.body.creatorID,
+    listingID: req.body.listingID,
+    friendly: req.body.friendly,
+    helpful: req.body.helpful,
+    recommend: req.body.recommend,
+    overall: req.body.overall,
+  }
+
+  if (rating.userID == rating.creatorID) {
+    res.status(400).send()
+    return
+  }
+
+  try {
+    // Retrieve user who created the listing
+    const userSnapshot = await db
+      .collection("users")
+      .doc(rating.creatorID)
+      .get()
+
+    // User does not exists so we terminate
+    if (!userSnapshot.exists) {
+      res.status(400).send()
+      return
+    }
+
+    // Check if requester has liked the listing
+    const listingSnapshot = await db
+      .collection("listings")
+      .doc(rating.listingID)
+      .get()
+    const likers = listingSnapshot.data().likes
+    let isALiker = false
+    for (let i = 0; i < likers.length; i += 1) {
+      if (likers[i] == uid) {
+        isALiker = true
+        break
+      }
+    }
+    if (!isALiker) {
+      res.status(400).send()
+      return
+    }
+
+    // Retrieve existing rating (if it exists)
+    const ratingSnapshot = await db
+      .collection("ratings")
+      .where("userID", "==", uid)
+      .where("listingID", "==", rating.listingID)
+      .get()
+    const user = userSnapshot.data()
+
+    // Add new entry
+    if (ratingSnapshot.empty) {
+      const updatedNumOfRaters = user.numOfRaters + 1
+      const updatedTotalStars = user.totalStars + rating.overall
+      const updatedRating = updatedTotalStars / updatedNumOfRaters
+      await Promise.all([
+        db.collection("ratings").add(rating),
+        db.collection("users").doc(rating.creatorID).update({
+          numOfRaters: updatedNumOfRaters,
+          totalStars: updatedTotalStars,
+          rating: updatedRating,
+        }),
+      ])
+    }
+    // Or update existing
+    else {
+      for (const ratingDoc of ratingSnapshot.docs) {
+        const oldValue = ratingDoc.data().overall
+        const updatedNumOfRaters = user.numOfRaters
+        const updatedTotalStars = user.totalStars - oldValue + rating.overall
+        const updatedRating = updatedTotalStars / updatedNumOfRaters
+        await Promise.all([
+          db.collection("ratings").doc(ratingDoc.id).update(rating),
+          db.collection("users").doc(rating.creatorID).update({
+            numOfRaters: updatedNumOfRaters,
+            totalStars: updatedTotalStars,
+            rating: updatedRating,
+          }),
+        ])
+      }
+    }
+    res.status(200).send()
+  } catch (error) {
+    console.log("There was an error updating the rating:", error)
+    res.status(500).send()
+  }
+})
+
+app.post("/get-location-data", async (req, res) => {
+  const { location, date } = req.body
+
+  try {
+    const count = await countListings(location, date)
+    const crowdLevels = await retrieveLocationCrowd(location, date)
+    res.status(200).json({
+      count: count,
+      crowdLevels: crowdLevels
+    }).send()
+  } catch (error) {
+    console.log("Error encountered when counting locations", error)
+    res.status(400).send()
+  }
+})
+
+app.post("/contribute-location", verifyAuthCookie, async (req, res) => {
+  const { location, day, time, updateCrowd } = req.body
+  const updateRes = await updateLocationCrowd(
+    location, 
+    parseInt(day), 
+    parseInt(time), 
+    parseInt(updateCrowd)
+  )
+  updateRes 
+    ? res.status(200).send()
+    : res.status(400).send()
 })
 
 api.use('/api', app);

@@ -1,7 +1,7 @@
 'use client'
 
 import { FormEvent, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import StudyCard, { StudyListing } from '../../(components)/studyCard'
 import EditPanel from "./editPanel"
@@ -24,10 +24,10 @@ const defaultOptions : {[key:string]: any} = {
   "id":        "invitedefault"
 }
 
-export default function CreateListing({ searchParams } : any) {
+export default function CreateListing({ searchParams } : { searchParams: any }) {
   const router = useRouter()
-  const urlParams = new URLSearchParams(searchParams)
-  
+  const urlParams = useSearchParams()
+  console.log(urlParams.get("edit"))
   // Boolean flag to determine whether a NEW listing is being created
   // Or an EXISTING listing is being edited
   const editMode = (urlParams.get("edit") || "create") != "create"

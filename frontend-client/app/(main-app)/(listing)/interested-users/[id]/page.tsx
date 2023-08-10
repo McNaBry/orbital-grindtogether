@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button, Spinner } from "react-bootstrap"
 import interestStyles from "./interested-users.module.css"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 type InterestedUsersProps = {
@@ -70,7 +70,7 @@ function InterestedUsersList({ interestedUsers, listingUID } : { interestedUsers
         ? <></>
         : <div id={interestStyles["interested-users-list"]}>
             { interestedUsers.map((user: User) => (
-              <UserEntry user={user} listingUID={listingUID} />
+              <UserEntry key={user.uid} user={user} listingUID={listingUID} />
             )) }
           </div>
       }
@@ -81,7 +81,7 @@ function InterestedUsersList({ interestedUsers, listingUID } : { interestedUsers
 function InterestedUsers({ params, searchParams }: InterestedUsersProps) {
   const router = useRouter()
   // Retrieve URL search params
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
   const [ interestedUsers, setInterestedUsers ] = useState<User[]>([])
   const [ isLoading, setIsLoading ] = useState<boolean>(true)
 

@@ -5,7 +5,7 @@ import { Rating, RoundedStar } from '@smastrom/react-rating'
 import profileStyles from "../../profile-page/profile-page.module.css"
 import viewProfileStyles from "./view-profile.module.css"
 import { Button, Placeholder } from "react-bootstrap"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 const myStyles = {
   itemShapes: RoundedStar,
@@ -172,7 +172,7 @@ export default function ViewProfile({
     numOfRaters: 0
   })
   const [profilePic, setProfilePic] = useState("")
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
 
   // UseEffect hook to fetch profile data
   useEffect(() => {

@@ -6,7 +6,7 @@ import Password from "../password";
 import { Button, Card, Modal } from "react-bootstrap";
 import "../reusable.css"
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from "@/app/authProvider";
 
 function DeleteAccount() {
@@ -78,7 +78,7 @@ function DeleteAccountPage({ searchParams } : DeleteAccountProps) {
   const [success, setSuccess] = useState(false);
   const [msg, setMsg] = useState("");
   const [displayModal, setDisplayModal] = useState(false)
-  const urlParams = new URLSearchParams(searchParams)
+  const urlParams = useSearchParams()
   const email = urlParams.get("email")
   const auth = useAuth()
 
