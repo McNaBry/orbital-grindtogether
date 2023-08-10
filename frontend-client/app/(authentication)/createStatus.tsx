@@ -20,7 +20,7 @@ function CreateStatus({ msg, success, dismissAlert }: CreateStatusProps) {
           className="bi flex-shrink-0 me-2"
           id={styles["danger-icon"]}
         />
-        {msg}
+        <span data-testid="create-status-msg">{msg}</span>
         <button
           type="button"
           className="btn-close"
@@ -40,7 +40,7 @@ function CreateStatus({ msg, success, dismissAlert }: CreateStatusProps) {
           className="bi flex-shrink-0 me-2"
           id={styles["success-icon"]}
         />
-        {msg}
+        <span data-testid="create-status-msg">{msg}</span>
         <button
           type="button"
           className="btn-close"

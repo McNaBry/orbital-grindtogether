@@ -9,11 +9,18 @@
     "updateAll": "concurrently \"npm install\" \"npm run updateFrontend\" \"npm run updateBackend\"",
     "frontend": "cd frontend-client && npm run dev",
     "backend": "cd backend && npm run start",
-    "deploy": "concurrently \"npm run frontend\" \"npm run backend\""
+    "deploy": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "e2e": "cd frontend-client && cypress open",
+    "test": "concurrently \"npm run e2e\" \"npm run deploy\""
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.22.5",
+    "babel-loader": "^9.1.3",
     "concurrently": "^8.0.1"
+  },
+  "dependencies": {
+    "cypress": "^12.17.1"
   }
 }
