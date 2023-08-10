@@ -97,7 +97,6 @@ function Locations() {
         setMsg("Fetched new data")
         setSuccess(true)
         const data = await res.json()
-        console.log(data.crowdLevels)
         setLocationData(data.count)
         setCrowdLevels(data.crowdLevels)
       } else {
