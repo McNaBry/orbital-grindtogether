@@ -29,12 +29,12 @@ export default function Brains() {
       <div id={aboutStyles["creators-container"]}>
         <BrainsCard
           name="Choo Tze Jie"
-          desc="Year 1 noob Computer Science student at NUS"
+          desc="Year 2 Computer Science student at NUS"
           img="images/creator-1.png"
           alt="Brains #1" />
         <BrainsCard
           name="Bryan Lee Jek Yan"
-          desc="Year 1 top gae boi Computer Science student at NUS"
+          desc="Year 2 Computer Science student at NUS"
           img="images/bryan-img.jpg"
           alt="Brains #2" />
       </div>
